@@ -4,20 +4,12 @@ import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/re
 import { ArrowRightMini, XMark } from "@medusajs/icons"
 import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
-
+import SantaMonicaIcon from "modules/common/icons/santa-monica"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
 
-const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
-  Search: "/search",
-  Account: "/account",
-  Cart: "/cart",
-}
-
-const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
+const SideMenu = ({ regions, menuItems }: { regions: HttpTypes.StoreRegion[] | null, menuItems: {[key:string]: string} }) => {
   const toggleState = useToggleState()
 
   return (
@@ -31,7 +23,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                   data-testid="nav-menu-button"
                   className="relative flex items-center h-full transition-all duration-200 ease-out focus:outline-none hover:text-ui-fg-base"
                 >
-                  Menu
+                  <SantaMonicaIcon size={40} />
                 </PopoverButton>
               </div>
 
@@ -56,7 +48,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                       </button>
                     </div>
                     <ul className="flex flex-col items-start justify-start gap-6">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
+                      {Object.entries(menuItems).map(([name, href]) => {
                         return (
                           <li key={name}>
                             <LocalizedClientLink
@@ -91,7 +83,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                         />
                       </div>
                       <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Medusa Store. All rights
+                        © {new Date().getFullYear()} Santa Mónica. All rights
                         reserved.
                       </Text>
                     </div>

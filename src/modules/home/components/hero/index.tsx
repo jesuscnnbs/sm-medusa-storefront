@@ -1,24 +1,50 @@
-import { Button, Heading, Text } from "@medusajs/ui"
-import SantaMonicaIcon from "modules/common/icons/santa-monica"
+"use client"
+import * as React from "react"
+import Image from "next/image"
+import { Variants } from "framer-motion"
+import { Button } from "@medusajs/ui"
+import AnimatedComponent from "@modules/common/components/animated-component"
+import PageTitle from "@modules/common/components/page-title"
+import lighthouse from "../../../../../public/lighthouse.jpeg"
+
+
+const fadeUpVariant3: Variants = {
+  initial: { opacity: 0, y: 10 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      delay: 0.7,
+    },
+  },
+}
 
 const Hero = () => {
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative">
-      <div className="absolute inset-0 z-10 flex flex-col items-start justify-center gap-6 p-10 small:p-32">
-        <div className="flex flex-col items-center gap-2">
-          <SantaMonicaIcon size="250"/>
-          <Heading
-            level="h1"
-            className="text-center uppercase font-lemonMilk text-secondary-sm"
-          >
-            <span className="text-3xl md:text-7xl">Santa</span> <br/> <span className="text-2xl md:text-[3.5rem] leading-[1.1]">Mónica</span>
-          </Heading>
-        <Text className="font-sans text-md md:text-lg">El sabor inigualable de la carne a la parrilla.</Text>
+    <div className="h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
+      <Image
+        src={lighthouse}
+        alt="Santa Mónica Lighthouse"
+        loading="lazy"
+        fill={true}
+        objectFit="cover"
+        className="transition-opacity duration-1000 opacity-0"
+        onLoadingComplete={(image) => image.classList.replace("opacity-0", "opacity-30")}
+      />
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 p-4">
+        <div className="flex flex-col items-start gap-2">
+          <h1 className="santa-monica">
+            <PageTitle text="Santa" />
+            <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
+          </h1>
         </div>
-        <div className="flex gap-2">
-        <Button variant="secondary">Reserva tu mesa</Button>
-        <Button>Nuestra tienda</Button>
-        </div>
+        <AnimatedComponent variant={fadeUpVariant3}>
+          <div className="flex gap-2">
+            <Button>Reserva ya</Button>
+            <Button>Ir a la tienda</Button>
+          </div>
+        </AnimatedComponent>
       </div>
     </div>
   )

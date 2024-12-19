@@ -12,6 +12,27 @@ module.exports = {
   ],
   theme: {
     extend: {
+      transitionDelay: {
+        '50': '50ms',
+        '100': '100ms',
+        '150': '150ms',
+        '200': '200ms',
+        '250': '250ms',
+        '300': '300ms',
+        '350': '350ms',
+        '400': '400ms',
+        '450': '450ms',
+        '500': '500ms',
+        '550': '550ms',
+        '600': '600ms',
+        '650': '650ms',
+        '700': '700ms',
+        '750': '750ms',
+        '800': '800ms',
+        '850': '850ms',
+        '900': '900ms',
+        '950': '950ms',
+      },
       transitionProperty: {
         width: "width margin",
         height: "height",
@@ -90,6 +111,16 @@ module.exports = {
             transform: "translateX(0)",
           },
         },
+        "fade-in-bottom": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
         "fade-in-top": {
           "0%": {
             opacity: "0",
@@ -160,6 +191,7 @@ module.exports = {
         enter: "enter 200ms ease-out",
         "slide-in": "slide-in 1.2s cubic-bezier(.41,.73,.51,1.02)",
         leave: "leave 150ms ease-in forwards",
+        "fade-in-bottom": "fade-in-bottom 0.4s cubic-bezier(0.5, 0, 0.5, 1) forwards"
       },
     },
   },

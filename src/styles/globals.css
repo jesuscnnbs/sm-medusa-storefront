@@ -119,12 +119,19 @@
   }
 
   .santa-monica {
-    @apply text-transparent bg-clip-text bg-gradient-to-bl from-secondary-sm to-primary-sm;
+    @apply uppercase text-light-sm leading-[1.1];
+    font-size: min(calc(88 / 500 * 100vw), 161px);
+  }
+  .monica {
+    font-size: min(calc(71 / 500 * 100vw), 130px);
   }
   .bg-footer {
     background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.5)), url("/burguer.svg");
     background-repeat: no-repeat;
     background-size: 400px 400px;
     background-position: 80% -15%;
+  }
+  .parallax-text {
+    font-size: min(calc(30 / 500 * 100vw), 40px);
   }
 }
