@@ -41,8 +41,8 @@ const Hero = () => {
         </div>
         <AnimatedComponent variant={fadeUpVariant3}>
           <div className="flex gap-2">
-            <Button>Reserva ya</Button>
-            <Button>Ir a la tienda</Button>
+            <button className="btn-smonica btn-primary-sm">Reserva ya</button>
+            <button className="btn-smonica btn-primary-sm">Ir a la tienda</button>
           </div>
         </AnimatedComponent>
       </div>

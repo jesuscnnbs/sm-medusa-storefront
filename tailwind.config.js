@@ -56,7 +56,11 @@ module.exports = {
           90: "#111827",
         },
         "primary-sm": "var(--primary-sm)",
+        "primary-sm-lighter": "var(--primary-sm-lighter)",
+        "primary-sm-darker": "var(--primary-sm-darker)",
         "secondary-sm": "var(--secondary-sm)",
+        "secondary-sm-lighter": "var(--secondary-sm-lighter)",
+        "secondary-sm-darker": "var(--secondary-sm-darker)",
         "light-sm": "var(--light-sm)",
         "dark-sm": "var(--dark-sm)"
       },
