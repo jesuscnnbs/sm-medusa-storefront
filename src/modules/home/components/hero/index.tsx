@@ -29,10 +29,10 @@ const Hero = () => {
         loading="lazy"
         fill={true}
         objectFit="cover"
-        className="transition-opacity duration-1000 opacity-0"
+        className="transition-opacity duration-1000 opacity-0 blur-[2px]"
         onLoadingComplete={(image) => image.classList.replace("opacity-0", "opacity-30")}
       />
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 p-4">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 p-4">
         <div className="flex flex-col items-start gap-2">
           <h1 className="santa-monica">
             <PageTitle text="Santa" />

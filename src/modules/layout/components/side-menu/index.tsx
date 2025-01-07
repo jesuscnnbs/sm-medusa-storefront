@@ -1,10 +1,9 @@
 "use client"
 
 import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react"
-import { ArrowRightMini, XMark } from "@medusajs/icons"
+import { ArrowRightMini, XMark, BarsThree } from "@medusajs/icons"
 import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
-import SantaMonicaIcon from "modules/common/icons/santa-monica"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
@@ -14,7 +13,7 @@ const SideMenu = ({ regions, menuItems }: { regions: HttpTypes.StoreRegion[] | n
 
   return (
     <div className="h-full">
-      <div className="flex items-center h-full">
+      <div className="flex items-center h-full gap-4">
         <Popover className="flex h-full">
           {({ open, close }) => (
             <>
@@ -23,7 +22,7 @@ const SideMenu = ({ regions, menuItems }: { regions: HttpTypes.StoreRegion[] | n
                   data-testid="nav-menu-button"
                   className="relative flex items-center h-full transition-all duration-200 ease-out focus:outline-none hover:text-ui-fg-base"
                 >
-                  <SantaMonicaIcon size={40} />
+                 <BarsThree />
                 </PopoverButton>
               </div>
 

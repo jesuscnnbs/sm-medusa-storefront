@@ -1,15 +1,19 @@
 import PageTitle from "@modules/common/components/page-title"
+import MenuComponent from "@modules/menu"
 
-export default async function Menu(props: {
+export default async function MenuPage(props: {
   params: Promise<{ countryCode: string }>
 }) {
   return (
     <>
       {/** Section Tittle */}
-      <section className="py-20 bg-primary-sm pb-44">
+      <section className="flex flex-col items-center justify-center px-10 pt-20 pb-20 bg-secondary-sm">
         <h1 className="santa-monica">
           <PageTitle text="Menú" />
         </h1>
+      </section>
+      <section className="pb-10 bg-secondary-sm">
+        <MenuComponent />
       </section>
     </>
   )

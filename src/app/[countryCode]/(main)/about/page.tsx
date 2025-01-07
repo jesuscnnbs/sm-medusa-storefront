@@ -6,7 +6,7 @@ export default async function Menu(props: {
   return (
     <>
       {/** Section Tittle */}
-      <section className="py-20 bg-primary-sm pb-44">
+      <section className="flex flex-col items-center justify-center px-10 pt-20 pb-20 bg-secondary-sm">
         <h1 className="santa-monica">
           <PageTitle text="Historia" />
         </h1>

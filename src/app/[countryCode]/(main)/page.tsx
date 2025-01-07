@@ -31,11 +31,11 @@ export default async function Home(props: {
   return (
     <>
       <Hero />
-      <section className="py-20 bg-light-sm">
+      <section className="py-20 bg-ui-bg-base">
         <ParallaxText baseVelocity={-1}>Burguers · Tequeños ·</ParallaxText>
         <ParallaxText baseVelocity={1}>California · Venezuela ·</ParallaxText>
       </section>
-      <div className="py-12">
+      <div className="py-20 bg-ui-bg-base">
         <ul className="flex flex-col gap-x-6">
           <FeaturedProducts collections={collections} region={region} />
         </ul>

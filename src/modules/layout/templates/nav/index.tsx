@@ -5,7 +5,7 @@ import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
-import Instagram from "@modules/common/icons/instagram"
+import SantaMonicaIcon from "modules/common/icons/santa-monica"
 
 const MenuItems = {
   Home: "/",
@@ -19,13 +19,16 @@ const MenuItems = {
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
   return (
-    <div className="sticky inset-x-0 top-0 z-50 shadow-xl group">
-      <header className="relative h-16 mx-auto duration-200 border-b bg-light-sm border-ui-border-base">
+    <div className="sticky inset-x-0 top-0 z-20 shadow-xl group">
+      <header className="relative h-16 mx-auto duration-200 border-b bg-ui-bg-base border-ui-border-base">
         <nav className="flex items-center justify-between w-full h-full content-container txt-xsmall-plus text-ui-fg-subtle text-small-regular">
-          <div className="flex items-center flex-1 h-full basis-0">
-            <div className="h-full">
+          <div className="flex items-center flex-1 h-full gap-4 basis-0">
+            <div className="h-full lg:hidden">
               <SideMenu regions={regions} menuItems={MenuItems} />
             </div>
+            <LocalizedClientLink href="/" data-testid="nav-home-link">
+              <SantaMonicaIcon size={40} />
+            </LocalizedClientLink>
           </div>
 
           <div className="flex items-center h-full">

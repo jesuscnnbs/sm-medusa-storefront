@@ -181,6 +181,25 @@
 }
 
 @layer components {
+  .flip.card {
+    perspective: 1000px;
+  }
+
+  .flip.card-inner {
+    transition: transform .6s;
+    transform-style: preserve-3d;
+  }
+
+  .flip.card-front,
+  .flip.card-back {
+    position: absolute;
+    backface-visibility: hidden;
+  }
+
+  .flip.card-back {
+    transform: rotateY(180deg);
+  }
+
   .content-container {
     @apply max-w-[1440px] w-full mx-auto px-6;
   }
@@ -242,14 +261,14 @@
   }
 
   .santa-monica {
-    @apply uppercase text-light-sm leading-[1.1];
+    @apply uppercase text-ui-bg-base leading-[1.1];
     font-size: min(calc(88 / 500 * 100vw), 161px);
   }
   .monica {
     font-size: min(calc(71 / 500 * 100vw), 130px);
   }
   .bg-footer {
-    background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.5)), url("/burguer.svg");
+    background: url("/burguer.svg");
     background-repeat: no-repeat;
     background-size: 400px 400px;
     background-position: 80% -15%;
