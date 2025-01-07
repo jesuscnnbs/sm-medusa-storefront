@@ -3,6 +3,7 @@ import React from "react"
 import { Heading, Text } from "@medusajs/ui"
 import Image from "next/image"
 import { menu } from "./menu"
+import Modal from "@modules/common/components/modal"
 import img from "../../../public/emmy.jpg"
 
 const Menu = () => {
@@ -54,6 +55,15 @@ const Menu = () => {
           </div>
         )
       })}
+      <Modal isOpen={!!itemSelected} close={() => setItemSelected(null)}>
+        {itemSelected && (
+          <>
+          <Image src={img} alt={itemSelected["name"]} width={200} height={200} />
+          <Heading level="h3">{itemSelected["name"]}</Heading>
+          <Text>{itemSelected["description"]}</Text>
+          </>
+        )}
+      </Modal>
     </div>
   )
 }
