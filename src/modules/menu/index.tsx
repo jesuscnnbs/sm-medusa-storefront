@@ -8,8 +8,14 @@ import img from "../../../public/emmy.jpg"
 
 const Menu = () => {
   const [itemSelected, setItemSelected] = React.useState<any>(null)
-  const showItem = (item: any) => {
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false)
+  const handleOpen = (item: any) => {
     setItemSelected(item)
+    setModalOpen(true)
+  }
+  const handleClose = () => {
+    setModalOpen(false)
+    setTimeout(()=>setItemSelected(null), 201)
   }
   return (
     <div className="max-w-2xl px-6 py-12 mx-auto bg-ui-bg-base">
@@ -23,14 +29,14 @@ const Menu = () => {
             >
               {category.title}
             </Heading>
-            <div className="w-full">
+            <div className="w-full cursor-pointer">
               {category.items &&
                 category.items.map((item, i) => {
                   return (
                     <div
                       key={i}
                       className="flex mt-2 md:mt-4"
-                      onClick={() => showItem(item)}
+                      onClick={() => handleOpen(item)}
                     >
                       {/**<Image
                           src={img}
@@ -55,7 +61,7 @@ const Menu = () => {
           </div>
         )
       })}
-      <Modal isOpen={!!itemSelected} close={() => setItemSelected(null)}>
+      <Modal isOpen={modalOpen} close={handleClose}>
         {itemSelected && (
           <>
           <Image src={img} alt={itemSelected["name"]} width={200} height={200} />
