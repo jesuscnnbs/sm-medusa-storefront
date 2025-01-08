@@ -6,7 +6,9 @@ import { Button } from "@medusajs/ui"
 import AnimatedComponent from "@modules/common/components/animated-component"
 import PageTitle from "@modules/common/components/page-title"
 import lighthouse from "../../../../../public/lighthouse.jpeg"
-
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { MenuItems } from "@modules/layout/templates/nav"
+import Link from "next/link"
 
 const fadeUpVariant3: Variants = {
   initial: { opacity: 0, y: 10 },
@@ -22,7 +24,7 @@ const fadeUpVariant3: Variants = {
 
 const Hero = () => {
   return (
-    <div className="h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
+    <div className="min-h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
       <Image
         src={lighthouse}
         alt="Santa Mónica Lighthouse"
@@ -40,9 +42,9 @@ const Hero = () => {
           </h1>
         </div>
         <AnimatedComponent variant={fadeUpVariant3}>
-          <div className="flex gap-2">
-            <button className="btn-smonica btn-primary-sm">Reserva ya</button>
-            <button className="btn-smonica btn-primary-sm">Ir a la tienda</button>
+          <div className="flex flex-col gap-4 md:flex-row">
+            <Link href="https://restaurante.covermanager.com/santa-monica/" className="btn-smonica btn-primary-sm">Reserva</Link>
+            <LocalizedClientLink href={MenuItems.Store} className="btn-smonica btn-secondary-sm">Store</LocalizedClientLink>
           </div>
         </AnimatedComponent>
       </div>

@@ -261,11 +261,11 @@
   }
 
   .santa-monica {
-    @apply uppercase text-ui-bg-base leading-[1.1];
-    font-size: min(calc(88 / 500 * 100vw), 161px);
+    @apply uppercase text-ui-bg-base leading-[1.1] tracking-tight;
+    font-size: min(17vw, 210px);
   }
   .monica {
-    font-size: min(calc(71 / 500 * 100vw), 130px);
+    font-size: min(13.8vw, 170px);
   }
   .bg-footer {
     background: url("/burguer.svg");
@@ -277,9 +277,9 @@
     font-size: min(calc(30 / 500 * 100vw), 40px);
   }
   .btn-smonica {
-    @apply px-4 py-2 rounded-md transition-transform duration-200;
+    @apply text-center md:px-6 md:py-4 px-4 py-3 text-sm md:text-lg rounded-sm font-lemonMilk uppercase border-2 shadow-[0px_0.1em_0px_0px_var(--light-sm)];
     &:focus:active {
-      @apply scale-95;
+      @apply translate-y-[0.1em] shadow-[0px_0px_0px_0px_rgba(0,_0,_0,_0.1)];
     }
   }
   .btn-primary-sm {
@@ -295,9 +295,6 @@
     @apply bg-secondary-sm text-dark-sm;
     &:hover {
       @apply bg-secondary-sm-darker;
-    }
-    &:focus:active {
-      @apply scale-95;
     }
     &:focus-visible {
       @apply outline-2 outline-secondary-sm-darker;
