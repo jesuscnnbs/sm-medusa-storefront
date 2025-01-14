@@ -261,11 +261,11 @@
   }
 
   .santa-monica {
-    @apply uppercase text-ui-bg-base leading-[1.1] tracking-tight;
-    font-size: min(17vw, 210px);
+    @apply uppercase text-ui-bg-base leading-[1.1] tracking-tight drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)];
+    font-size: min(20vw, 210px);
   }
   .monica {
-    font-size: min(13.8vw, 170px);
+    font-size: min(16.22vw, 170px);
   }
   .bg-footer {
     background: url("/burguer.svg");
@@ -299,5 +299,38 @@
     &:focus-visible {
       @apply outline-2 outline-secondary-sm-darker;
     }
+  }
+}
+
+@layer base {
+  .font-outline-2 {
+    text-shadow: 1px 1px 1px var(--dark-sm),
+    -1px 1px 1px var(--dark-sm),
+    1px -1px 1px var(--dark-sm),
+    -1px -1px 1px var(--dark-sm),
+    0px 1px 1px var(--dark-sm),
+    0px -1px 1px var(--dark-sm),
+    -1px 0px 1px var(--dark-sm),
+    1px 0px 1px var(--dark-sm),
+    2px 2px 1px var(--dark-sm),
+    -2px 2px 1px var(--dark-sm),
+    2px -2px 1px var(--dark-sm),
+    -2px -2px 1px var(--dark-sm),
+    0px 2px 1px var(--dark-sm),
+    0px -2px 1px var(--dark-sm),
+    -2px 0px 1px var(--dark-sm),
+    2px 0px 1px var(--dark-sm),
+    1px 2px 1px var(--dark-sm),
+    -1px 2px 1px var(--dark-sm),
+    1px -2px 1px var(--dark-sm),
+    -1px -2px 1px var(--dark-sm),
+    2px 1px 1px var(--dark-sm),
+    -2px 1px 1px var(--dark-sm),
+    2px -1px 1px var(--dark-sm),
+    -2px -1px 1px var(--dark-sm);
+    
+  }
+  .font-outline-3 {
+    -webkit-text-stroke: 3px black;
   }
 }

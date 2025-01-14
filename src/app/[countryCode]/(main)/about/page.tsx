@@ -1,4 +1,5 @@
 import PageTitle from "@modules/common/components/page-title"
+import {SmoothScrollHero} from "@modules/history/components/hero"
 
 export default async function Menu(props: {
   params: Promise<{ countryCode: string }>
@@ -6,10 +7,13 @@ export default async function Menu(props: {
   return (
     <>
       {/** Section Tittle */}
-      <section className="flex flex-col items-center justify-center px-10 pt-20 pb-20 bg-secondary-sm">
-        <h1 className="santa-monica">
+      <section className="flex flex-col items-center justify-center px-2 pt-20 pb-20 lg:px-10 bg-secondary-sm">
+        <h1 className="santa-monica monica">
           <PageTitle text="Historia" />
         </h1>
+      </section>
+      <section>
+        <SmoothScrollHero />
       </section>
     </>
   )

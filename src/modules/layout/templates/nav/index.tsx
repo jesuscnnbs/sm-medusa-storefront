@@ -19,10 +19,10 @@ export const MenuItems = {
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
   return (
-    <div className="sticky inset-x-0 top-0 z-30 shadow-xl group">
-      <header className="relative h-16 mx-auto duration-200 border-b bg-ui-bg-base border-ui-border-base">
+    <div className="sticky inset-x-0 top-0 z-30 shadow-2xl group">
+      <header className="relative h-16 mx-auto duration-200 border-b bg-ui-bg-base border-ui-tag-neutral-border">
         <nav className="flex items-center justify-between w-full h-full content-container txt-xsmall-plus text-ui-fg-subtle text-small-regular">
-          <div className="flex items-center flex-1 h-full gap-4 basis-0">
+          <div className="flex items-center flex-1 h-full gap-8 basis-0">
             <div className="h-full lg:hidden">
               <SideMenu regions={regions} menuItems={MenuItems} />
             </div>
@@ -37,7 +37,7 @@ export default async function Nav() {
                 return (
                   <LocalizedClientLink
                     href={href}
-                    className="font-sans text-sm uppercase text-dark-sm hover:text-primary-sm"
+                    className="font-sans text-sm font-medium uppercase text-dark-sm hover:text-primary-sm"
                     data-testid={`nav-${name}-link`}
                     key={index}
                   >
