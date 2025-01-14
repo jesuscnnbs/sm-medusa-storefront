@@ -9,7 +9,8 @@ export default async function Menu(props: {
       {/** Section Tittle */}
       <section className="flex flex-col items-center justify-center px-2 pt-20 pb-20 lg:px-10 bg-secondary-sm">
         <h1 className="santa-monica monica">
-          <PageTitle text="Historia" />
+          <PageTitle text="Quiénes" />
+          <PageTitle text="somos" />
         </h1>
       </section>
       <section>

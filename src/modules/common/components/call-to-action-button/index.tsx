@@ -56,7 +56,7 @@ const CallToActionButton = () => {
           onMouseMove={handleMove}
           onMouseLeave={handleReset}
           onMouseDown={handleReset}
-          className="flex items-center justify-between w-full h-full px-6 text-lg font-semibold uppercase lg:text-xl lg:px-8 text-light-sm bg-primary-sm-lighter group"
+          className="flex items-center justify-between w-full h-full gap-4 px-6 text-lg font-semibold uppercase lg:text-xl lg:px-8 text-light-sm bg-primary-sm-lighter group"
         >
           <Copy>Reserva</Copy>
           <Arrow />
