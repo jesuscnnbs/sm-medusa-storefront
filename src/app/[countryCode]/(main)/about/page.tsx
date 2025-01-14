@@ -1,5 +1,5 @@
 import PageTitle from "@modules/common/components/page-title"
-import {SmoothScrollHero} from "@modules/history/components/hero"
+import {SmoothScrollHero} from "@modules/about/components/hero"
 
 export default async function Menu(props: {
   params: Promise<{ countryCode: string }>
