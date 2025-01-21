@@ -47,7 +47,7 @@ const CallToActionButton = () => {
   };
 
   return (
-      <div className="w-full h-16 mx-auto lg:h-20 bg-[rgba(0,0,0,0.2)] drop-shadow-[0px_10px_2px_rgba(0,0,0,0.3)] max-w-96">
+      <div className="w-full h-16 mx-auto bg-[rgba(0,0,0,0.2)] drop-shadow-[0px_10px_2px_rgba(0,0,0,0.3)] max-w-96">
         <motion.button
           ref={ref}
           style={{
@@ -56,7 +56,7 @@ const CallToActionButton = () => {
           onMouseMove={handleMove}
           onMouseLeave={handleReset}
           onMouseDown={handleReset}
-          className="flex items-center justify-between w-full h-full gap-4 px-6 text-lg font-semibold uppercase lg:text-xl lg:px-8 text-light-sm bg-primary-sm-lighter group"
+          className="flex items-center justify-between w-full h-full gap-4 px-6 text-lg font-semibold uppercase text-light-sm bg-primary-sm-lighter group"
         >
           <Copy>Reserva</Copy>
           <Arrow />
