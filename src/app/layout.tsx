@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-mode="light">
+    <html lang="es" data-mode="light">
       <body className={`${lemonMilkRegular.variable} ${lemonMilkMedium.variable} antialiased`}>
       
         <main className="relative">
@@ -31,7 +31,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             backgroundImage:
               `url(${noise.src})`,
           }}
-          className="pointer-events-none fixed h-full w-full opacity-[3%] z-[999999]"
+          className="pointer-events-none fixed h-full w-full opacity-5 z-[999999]"
         >
         </div>
           {props.children}
