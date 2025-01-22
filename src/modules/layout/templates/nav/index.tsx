@@ -5,7 +5,7 @@ import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
-import SantaMonicaIcon from "modules/common/icons/santa-monica"
+import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 
 export const MenuItems = {
   Home: "/",

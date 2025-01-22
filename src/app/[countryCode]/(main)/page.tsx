@@ -1,3 +1,4 @@
+import React from "react"
 import { Metadata } from "next"
 import Hero from "@modules/home/components/hero"
 import ParallaxText from "@modules/common/components/parallax-text"
@@ -27,12 +28,12 @@ export default async function Home(props: {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Hero />
       <section className="py-20 bg-ui-bg-base">
         <ParallaxText baseVelocity={-1}>Burguers · Tequeños ·</ParallaxText>
         <ParallaxText baseVelocity={1}>California · Venezuela ·</ParallaxText>
       </section>
-    </>
+    </React.Fragment>
   )
 }
