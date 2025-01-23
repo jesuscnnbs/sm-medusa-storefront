@@ -37,18 +37,20 @@ const SideMenu = ({ regions, menuItems }: { regions: HttpTypes.StoreRegion[] | n
                 leaveFrom="opacity-100 backdrop-blur-2xl translate-x-0"
                 leaveTo="opacity-0"
               >
-                <PopoverPanel className="absolute inset-x-0 z-30 flex flex-col w-full h-screen pr-4 m-0 text-sm sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min text-secondary-sm-darker backdrop-blur-2xl">
+                <PopoverPanel className="absolute inset-x-0 z-30 flex flex-col w-full h-screen pr-4 m-0 overflow-hidden text-sm sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min text-secondary-sm-darker backdrop-blur-2xl">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col justify-between h-full p-6 bg-light-sm"
+                    className="flex flex-col justify-between h-full p-6 overflow-hidden bg-light-sm"
                   >
+                    <div className="absolute opacity-25 pointer-events-none top-2 left-2 -rotate-12 ">
+                      <SantaMonicaIcon size={700} />
+                    </div>
                     <div className="flex justify-end" id="xmark">
                       <button data-testid="close-menu-button" onClick={close}>
                         <XMark />
                       </button>
                     </div>
                     <ul className="flex flex-col items-start justify-start gap-6 font-lemonMilk">
-                    <SantaMonicaIcon size={100} />
                       {Object.entries(menuItems).map(([name, href]) => {
                         return (
                           <li key={name}>

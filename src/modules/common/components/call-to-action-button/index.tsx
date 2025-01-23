@@ -1,10 +1,6 @@
 import {
   motion,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
 } from "framer-motion";
-import { useRef } from "react";
 import { MdOutlineArrowUpward } from "react-icons/md";
 
 
@@ -13,7 +9,7 @@ const CallToActionButton = () => {
   return (
     <motion.button
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="group drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] relative grid h-[135px] w-[135px] place-content-center rounded-full transition-colors duration-700 ease-out"
+      className="group drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)] relative grid h-[135px] w-[135px] place-content-center rounded-full transition-colors duration-700 ease-out"
     >
       <MdOutlineArrowUpward className="relative z-10 transition-all duration-700 ease-out rotate-90 pointer-events-none text-light-sm md:rotate-45 text-7xl group-hover:rotate-90" />
 
