@@ -25,7 +25,7 @@ const Hero = () => {
             <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
           </h1>
         </div>
-        <div className="z-10 opacity-0 delay-800 animate-fade-in-bottom">
+        <div className="absolute z-10 opacity-0 bottom-10 right-10 delay-800 animate-fade-in-bottom">
           <Link href="https://restaurante.covermanager.com/santa-monica/">
             <CallToActionButton />
           </Link>
