@@ -4,7 +4,7 @@ import Image from "next/image"
 import PageTitle from "@modules/common/components/page-title"
 import backgroundFadeIn from "../../../../../public/burger3.jpeg"
 import CallToActionButton from "@modules/common/components/call-to-action-button"
-import Link from "next/link"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const Hero = () => {
   return (
@@ -26,9 +26,9 @@ const Hero = () => {
           </h1>
         </div>
         <div className="absolute z-10 opacity-0 bottom-10 right-10 delay-800 animate-fade-in-bottom">
-          <Link href="https://restaurante.covermanager.com/santa-monica/">
+          <LocalizedClientLink href="/menu">
             <CallToActionButton />
-          </Link>
+          </LocalizedClientLink>
         </div>
       </div>
     </div>
