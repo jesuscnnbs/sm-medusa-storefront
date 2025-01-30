@@ -1,3 +1,4 @@
+"use client"
 import {
   motion,
 } from "framer-motion";
@@ -9,9 +10,9 @@ const CallToActionButton = () => {
   return (
     <motion.button
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="group drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)] relative grid h-[135px] w-[135px] place-content-center rounded-full transition-colors duration-700 ease-out"
+      className="group drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)] relative grid h-[60px] w-[60px] place-content-center rounded-full transition-colors duration-700 ease-out"
     >
-      <MdOutlineArrowUpward className="relative z-10 transition-all duration-700 ease-out rotate-90 pointer-events-none text-light-sm md:rotate-45 text-7xl group-hover:rotate-90" />
+      <MdOutlineArrowUpward className="relative z-10 text-5xl transition-all duration-700 ease-out rotate-90 pointer-events-none text-light-sm md:rotate-45 group-hover:rotate-90" />
 
       <div className="absolute inset-0 z-0 border-[2px] rounded-full pointer-events-none outline outline-4 outline-primary-sm-darker border-sm-ligh bg-primary-sm-darker group-hover:scale-100" />
 
@@ -46,9 +47,9 @@ const CallToActionButton = () => {
           <textPath
             href="#circlePath"
             fill="black"
-            className="text-lg font-light tracking-widest uppercase transition-opacity duration-700 ease-out opacity-80 font-lemonMilk fill-light-sm group-hover:opacity-100"
+            className="text-lg font-medium tracking-wide uppercase transition-opacity duration-200 ease-out opacity-100 sm:opacity-70 fill-ui-fg-on-color group-hover:opacity-100"
           >
-             RESERVA&nbsp;&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;&nbsp;RESERVA&nbsp;&nbsp;&nbsp;•&nbsp;•&nbsp;•&nbsp;&nbsp;&nbsp;
+             RESERVAR MESA&nbsp;&nbsp;&#x229B;&nbsp;&nbsp;RESERVA MESA&nbsp;&nbsp;&#x229B;&nbsp;&nbsp;
           </textPath>
         </text>
       </motion.svg>
