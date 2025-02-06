@@ -71,7 +71,7 @@ export default async function Nav() {
               href="/"
               data-testid="nav-reservation-link"
             >
-              <Button variant="primary" className="uppercase rounded-none">Reserva</Button>
+              <Button variant="primary" className="uppercase rounded-none">Reservar</Button>
             </LocalizedClientLink>
             <Link href="https://www.instagram.com/santamonica.es" target="_blank">
               <Instagram size={30} />

@@ -8,7 +8,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 const Hero = () => {
   return (
-    <div className="min-h-[600px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
+    <div className="min-h-[650px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
       <Image
         src={backgroundFadeIn.src}
         alt="Santa Mónica Burger"
@@ -25,7 +25,7 @@ const Hero = () => {
               <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
           </h1>
         </div>
-        <div className="absolute z-10 opacity-0 bottom-10 right-10 delay-800 animate-fade-in-bottom">
+        <div className="absolute z-10 opacity-0 bottom-16 right-10 delay-800 animate-fade-in-bottom">
           <LocalizedClientLink href="/menu">
             <CallToActionButton />
           </LocalizedClientLink>

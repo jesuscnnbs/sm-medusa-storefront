@@ -1,5 +1,5 @@
 "use client"
-import { useRef } from "react";
+import { useRef, PropsWithChildren } from "react";
 import {
   motion,
   useScroll,
@@ -11,8 +11,7 @@ import {
 } from "framer-motion";
 import { wrap } from "@motionone/utils";
 
-interface ParallaxProps {
-  children: string;
+interface ParallaxProps extends PropsWithChildren {
   baseVelocity: number;
 }
 
@@ -48,7 +47,7 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxProps) {
   });
   return (
     <div className="flex m-0 overflow-hidden flex-nowrap whitespace-nowrap">
-      <motion.div className="flex leading-[1.2] uppercase flex-nowrap whitespace-nowrap parallax-text font-lemonMilk font-bold tracking-tighter text-primary-sm" style={{ x }}>
+      <motion.div className="flex leading-[1.2] uppercase flex-nowrap whitespace-nowrap parallax-text font-lemonMilk font-bold tracking-tighter text-secondary-sm" style={{ x }}>
         <span className="block mr-3">{children}</span>
         <span className="block mr-3">{children}</span>
         <span className="block mr-3">{children}</span>

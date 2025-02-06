@@ -62,7 +62,11 @@ module.exports = {
         "secondary-sm-lighter": "var(--secondary-sm-lighter)",
         "secondary-sm-darker": "var(--secondary-sm-darker)",
         "light-sm": "var(--light-sm)",
-        "dark-sm": "var(--dark-sm)"
+        "light-sm-lighter": "var(--light-sm-lighter)",
+        "light-sm-darker": "var(--light-sm-darker)",
+        "dark-sm": "var(--dark-sm)",
+        "dark-sm-lighter": "var(--dark-sm-lighter)",
+        "dark-sm-darker": "var(--dark-sm-darker)"
       },
       borderRadius: {
         none: "0px",
