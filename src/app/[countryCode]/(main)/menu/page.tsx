@@ -7,13 +7,15 @@ export default async function MenuPage(props: {
   return (
     <>
       {/** Section Tittle */}
-      <section className="flex flex-col items-center justify-center px-10 pt-20 pb-20 bg-secondary-sm">
-        <h1 className="santa-monica">
-          <PageTitle text="Menú" />
-        </h1>
-      </section>
-      <section className="pb-10 bg-secondary-sm">
-        <MenuComponent />
+      <section className="pt-20 pb-20 bg-secondary-sm bg-doodle">
+        <div className="flex flex-col items-center justify-center px-10 pb-10">
+          <h1 className="santa-monica">
+            <PageTitle text="Menú" />
+          </h1>
+        </div>
+        <div className="pb-10">
+          <MenuComponent />
+        </div>
       </section>
     </>
   )

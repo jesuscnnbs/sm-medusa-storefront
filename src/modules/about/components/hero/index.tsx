@@ -8,11 +8,14 @@ import {
 } from "framer-motion";
 import { FiMapPin } from "react-icons/fi";
 import { useRef } from "react";
-import bgImage from "../../../../../public/parallax1.jpeg"
+import bgImage from "../../../../../public/sm-crew.jpeg"
 import parallax1 from "../../../../../public/parallax1.jpeg"
 import parallax2 from "../../../../../public/parallax2.jpeg"
-import parallax3 from "../../../../../public/yarlin.jpg"
-import parallax4 from "../../../../../public/nala.jpeg"
+import parallax3 from "../../../../../public/nala.jpeg"
+import parallax4 from "../../../../../public/yarlin.jpg"
+import parallax5 from "../../../../../public/sm-yaidilier.jpeg"
+import parallax6 from "../../../../../public/dani.jpeg"
+import parallax7 from "../../../../../public/sm-cabo-gata.jpeg"
 
 export const SmoothScrollHero = () => {
   return (
@@ -34,7 +37,7 @@ export const SmoothScrollHero = () => {
 };
 
 
-const SECTION_HEIGHT = 1500;
+const SECTION_HEIGHT = 3000;
 
 const Hero = () => {
   return (
@@ -43,9 +46,7 @@ const Hero = () => {
       className="relative w-full"
     >
       <CenterImage />
-
       <ParallaxImages />
-
     </div>
   );
 };
@@ -112,9 +113,30 @@ const ParallaxImages = () => {
       <ParallaxImg
         src={parallax4.src}
         alt="Orbiting satellite"
-        start={0}
-        end={-500}
+        start={100}
+        end={-100}
         className="w-5/12 ml-24"
+      />
+      <ParallaxImg
+        src={parallax5.src}
+        alt="Orbiting satellite"
+        start={0}
+        end={200}
+        className="w-1/3"
+      />
+      <ParallaxImg
+        src={parallax6.src}
+        alt="Dani comiendo"
+        start={0}
+        end={-100}s
+        className="w-1/3 ml-auto"
+      />
+      <ParallaxImg
+        src={parallax7.src}
+        alt="Orbiting satellite"
+        start={200}
+        end={-300}
+        className="w-7/12 ml-32"
       />
     </div>
   );
@@ -155,9 +177,9 @@ const Schedule = () => {
         initial={{ y: 48, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ ease: "easeInOut", duration: 0.75 }}
-        className="mb-20 text-4xl font-black uppercase text-zinc-50"
+        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
       >
-        Launch Schedule
+        2020
       </motion.h1>
       <ScheduleItem title="NG-21" date="Dec 9th" location="Florida" />
       <ScheduleItem title="Starlink" date="Dec 20th" location="Texas" />

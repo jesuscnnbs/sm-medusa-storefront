@@ -1,9 +1,11 @@
 import React from "react"
 import { Metadata } from "next"
 import Hero from "@modules/home/components/hero"
-import ParallaxText from "@modules/common/components/parallax-text"
+import BestSellers from "@modules/home/components/best-sellers"
+import Story from "@modules/home/components/story"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
+import PetFriendly from "@modules/home/components/pet-friendly"
 
 export const metadata: Metadata = {
   title: "Santa Mónica",
@@ -30,10 +32,11 @@ export default async function Home(props: {
   return (
     <React.Fragment>
       <Hero />
-      <section className="py-20 bg-ui-bg-base">
-        <ParallaxText baseVelocity={-1}>Burguers · Tequeños ·</ParallaxText>
-        <ParallaxText baseVelocity={1}>California · Venezuela ·</ParallaxText>
-      </section>
+      <BestSellers />
+      <Story />
+      <PetFriendly />
     </React.Fragment>
   )
 }
+
+
