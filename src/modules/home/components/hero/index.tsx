@@ -4,11 +4,11 @@ import Image from "next/image"
 import PageTitle from "@modules/common/components/page-title"
 import backgroundFadeIn from "../../../../../public/burger3.jpeg"
 import CallToActionButton from "@modules/common/components/call-to-action-button"
-import Link from "next/link"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const Hero = () => {
   return (
-    <div className="min-h-[600px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
+    <div className="min-h-[650px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
       <Image
         src={backgroundFadeIn.src}
         alt="Santa Mónica Burger"
@@ -22,13 +22,13 @@ const Hero = () => {
         <div className="flex flex-col items-start gap-2">
           <h1 className="santa-monica">
             <PageTitle text="Santa" />
-            <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
+              <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
           </h1>
         </div>
-        <div className="z-10 opacity-0 delay-800 animate-fade-in-bottom">
-          <Link href="https://restaurante.covermanager.com/santa-monica/">
+        <div className="absolute z-10 opacity-0 bottom-16 right-10 delay-800 animate-fade-in-bottom">
+          <LocalizedClientLink href="/menu">
             <CallToActionButton />
-          </Link>
+          </LocalizedClientLink>
         </div>
       </div>
     </div>

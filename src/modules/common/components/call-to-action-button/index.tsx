@@ -1,88 +1,58 @@
 "use client"
-import React, { PropsWithChildren, useRef } from "react";
 import {
   motion,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
 } from "framer-motion";
-import { FiArrowRight } from "react-icons/fi";
+import { MdOutlineArrowUpward } from "react-icons/md";
 
-const SPRING_OPTIONS = {
-  mass: 1.5,
-  stiffness: 500,
-  damping: 100,
-};
 
 const CallToActionButton = () => {
-  const ref = useRef<HTMLButtonElement>(null);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const xSpring = useSpring(x, SPRING_OPTIONS);
-  const ySpring = useSpring(y, SPRING_OPTIONS);
-
-  const transform = useMotionTemplate`translateX(${xSpring}px) translateY(${ySpring}px)`;
-
-  const handleMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!ref.current) return;
-
-    const { height, width } = ref.current.getBoundingClientRect();
-    const { offsetX, offsetY } = e.nativeEvent;
-
-    const xPct = offsetX / width;
-    const yPct = 1 - offsetY / height;
-
-    const newY = 12 + yPct * 12;
-    const newX = xPct * 12;
-
-    x.set(newX);
-    y.set(-newY);
-  };
-
-  const handleReset = () => {
-    x.set(0);
-    y.set(0);
-  };
 
   return (
-      <div className="w-full h-16 mx-auto bg-[rgba(0,0,0,0.2)] drop-shadow-[0px_10px_2px_rgba(0,0,0,0.3)] max-w-96">
-        <motion.button
-          ref={ref}
-          style={{
-            transform,
-          }}
-          onMouseMove={handleMove}
-          onMouseLeave={handleReset}
-          onMouseDown={handleReset}
-          className="flex items-center justify-between w-full h-full gap-4 px-6 text-lg font-semibold uppercase text-light-sm bg-primary-sm-lighter group"
-        >
-          <Copy>Reserva</Copy>
-          <Arrow />
-        </motion.button>
-      </div>
+    <motion.button
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      className="group drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)] relative grid h-[150px] w-[150px] place-content-center rounded-full transition-colors duration-700 ease-out"
+    >
+      <MdOutlineArrowUpward className="relative z-10 text-5xl transition-all duration-700 ease-out rotate-90 pointer-events-none text-dark-sm group-hover:rotate-0" />
+
+      <div className="absolute inset-0 z-0 border-[2px] transition-transform duration-700 rounded-full pointer-events-none bg-ui-bg-base group-hover:scale-105" />
+
+      <motion.svg
+        initial={{ rotate: 0 }}
+        animate={{ rotate: 360 }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          repeatType: "loop",
+          ease: "linear",
+        }}
+        style={{
+          top: "50%",
+          left: "50%",
+          x: "-50%",
+          y: "-50%",
+        }}
+        width="240"
+        height="240"
+        className="absolute z-10 pointer-events-none"
+      >
+        <path
+          id="circlePath"
+          d="M 168 120 A 48 48 90 1 1 72 120 A 48 48 90 1 1 168 120"
+          fill="none"
+        />
+        <text>
+          <textPath
+            href="#circlePath"
+            fill="black"
+            className="text-[1.4rem] uppercase transition-opacity duration-200 ease-out opacity-100 font-lemonMilk fill-dark-sm"
+          >
+             RESERVAR&nbsp;♒︎&nbsp;
+             RESERVAR&nbsp;♒︎&nbsp;
+          </textPath>
+        </text>
+      </motion.svg>
+    </motion.button>
   );
 };
-
-const Copy = ({ children }: PropsWithChildren) => {
-  return (
-    <span className="relative overflow-hidden">
-      <span className="inline-block transition-transform duration-300 group-hover:-translate-y-full">
-        {children}
-      </span>
-      <span className="absolute top-0 left-0 block transition-transform duration-300 translate-y-full group-hover:translate-y-0">
-        {children}
-      </span>
-    </span>
-  );
-};
-
-const Arrow = () => (
-  <div className="flex w-6 h-6 overflow-hidden text-2xl pointer-events-none">
-    <FiArrowRight className="transition-transform duration-300 -translate-x-full shrink-0 group-hover:translate-x-0" />
-    <FiArrowRight className="transition-transform duration-300 -translate-x-full shrink-0 group-hover:translate-x-0" />
-  </div>
-);
 
 export default CallToActionButton;

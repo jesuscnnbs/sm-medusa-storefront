@@ -21,7 +21,7 @@ const Menu = () => {
     <div className="max-w-2xl px-6 py-12 mx-auto bg-ui-bg-base">
       {menu.map((category, index) => {
         return (
-          <div className="mb-16">
+          <div className="mb-16" key={index}>
             <Heading
               level="h2"
               key={index}
