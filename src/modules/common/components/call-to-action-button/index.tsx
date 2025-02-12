@@ -1,4 +1,5 @@
 "use client"
+import React from "react";
 import {
   motion,
 } from "framer-motion";
@@ -6,15 +7,19 @@ import { MdOutlineArrowUpward } from "react-icons/md";
 
 
 const CallToActionButton = () => {
+  const textContent = React.useMemo(
+    () => " RESERVAR ✹ RESERVAR ✹ ",
+    []
+  );
 
   return (
     <motion.button
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="group drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)] relative grid h-[150px] w-[150px] place-content-center rounded-full transition-colors duration-700 ease-out"
+      className="group relative grid h-[150px] w-[150px] place-content-center rounded-full transition-colors duration-700 ease-out"
     >
       <MdOutlineArrowUpward className="relative z-10 text-5xl transition-transform duration-700 ease-out rotate-90 pointer-events-none text-dark-sm group-hover:rotate-0" />
 
-      <div className="absolute inset-0 z-0 border-[2px] transition-transform duration-700 rounded-full pointer-events-none bg-ui-bg-base group-hover:scale-105" />
+      <div className="absolute inset-0 z-0 border-[2px] rounded-full pointer-events-none bg-ui-bg-base" />
 
       <motion.svg
         initial={{ rotate: 0 }}
@@ -30,6 +35,7 @@ const CallToActionButton = () => {
           left: "50%",
           x: "-50%",
           y: "-50%",
+          willChange: "transform",
         }}
         width="240"
         height="240"
@@ -46,8 +52,7 @@ const CallToActionButton = () => {
             fill="black"
             className="text-[1.4rem] uppercase transition-opacity duration-200 ease-out opacity-100 font-lemonMilk fill-dark-sm"
           >
-             RESERVAR&nbsp;✹&nbsp;
-             RESERVAR&nbsp;✹&nbsp;
+             {textContent}
           </textPath>
         </text>
       </motion.svg>
@@ -55,4 +60,4 @@ const CallToActionButton = () => {
   );
 };
 
-export default CallToActionButton;
+export default React.memo(CallToActionButton);
