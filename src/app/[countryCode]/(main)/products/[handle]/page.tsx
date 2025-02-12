@@ -6,9 +6,12 @@ import { getRegion, listRegions } from "@lib/data/regions"
 import { getProductByHandle } from "@lib/data/products"
 import { sdk } from "@lib/config"
 
+export const dynamic = "force-dynamic" // TODO Remove
+
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
 }
+
 
 export async function generateStaticParams() {
   try {
