@@ -12,7 +12,7 @@ const CallToActionButton = () => {
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
       className="group drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)] relative grid h-[150px] w-[150px] place-content-center rounded-full transition-colors duration-700 ease-out"
     >
-      <MdOutlineArrowUpward className="relative z-10 text-5xl transition-all duration-700 ease-out rotate-90 pointer-events-none text-dark-sm group-hover:rotate-0" />
+      <MdOutlineArrowUpward className="relative z-10 text-5xl transition-transform duration-700 ease-out rotate-90 pointer-events-none text-dark-sm group-hover:rotate-0" />
 
       <div className="absolute inset-0 z-0 border-[2px] transition-transform duration-700 rounded-full pointer-events-none bg-ui-bg-base group-hover:scale-105" />
 
@@ -46,8 +46,8 @@ const CallToActionButton = () => {
             fill="black"
             className="text-[1.4rem] uppercase transition-opacity duration-200 ease-out opacity-100 font-lemonMilk fill-dark-sm"
           >
-             RESERVAR&nbsp;♒︎&nbsp;
-             RESERVAR&nbsp;♒︎&nbsp;
+             RESERVAR&nbsp;✹&nbsp;
+             RESERVAR&nbsp;✹&nbsp;
           </textPath>
         </text>
       </motion.svg>

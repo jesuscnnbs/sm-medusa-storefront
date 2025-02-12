@@ -5,37 +5,38 @@ import Image from "next/image"
 import { menu } from "./menu"
 import Modal from "@modules/common/components/modal"
 import img from "../../../public/emmy.jpg"
+import { InformationCircleSolid } from "@medusajs/icons"
 
 const Menu = () => {
   const [itemSelected, setItemSelected] = React.useState<any>(null)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
+
   const handleOpen = (item: any) => {
     setItemSelected(item)
     setModalOpen(true)
   }
   const handleClose = () => {
     setModalOpen(false)
-    setTimeout(()=>setItemSelected(null), 201)
+    setTimeout(() => setItemSelected(null), 201)
   }
   return (
     <div className="max-w-2xl px-6 py-12 mx-auto bg-ui-bg-base">
       {menu.map((category, index) => {
         return (
           <div className="mb-16" key={index}>
-            <Heading
-              level="h2"
+            <h2
               key={index}
-              className="text-2xl uppercase font-lemonMilk text-secondary-sm-darker"
+              className="text-3xl uppercase font-lemonMilk text-secondary-sm-darker"
             >
               {category.title}
-            </Heading>
-            <div className="w-full cursor-pointer">
+            </h2>
+            <div className="w-full">
               {category.items &&
                 category.items.map((item, i) => {
                   return (
                     <div
                       key={i}
-                      className="flex mt-2 md:mt-4"
+                      className="flex justify-between p-4 mt-2 border rounded-full cursor-pointer small:p-2 small:border-none border-secondary-sm"
                       onClick={() => handleOpen(item)}
                     >
                       {/**<Image
@@ -50,9 +51,10 @@ const Menu = () => {
                       >
                         {item["name"]}
                       </Heading>
-                      <div className="w-full mx-2 border-b-2 border-dotted border-ui-fg-subtle opacity-40"></div>
+                      <div className="hidden w-full mx-2 border-b-2 border-dotted small:block border-ui-fg-subtle opacity-40"></div>
                       <Text className="font-bold line-clamp-1 min-w-fit text-secondary-sm-darker">
                         14.95 €
+                        <InformationCircleSolid className="inline-block ml-2 small:hidden" />
                       </Text>
                     </div>
                   )
@@ -61,13 +63,18 @@ const Menu = () => {
           </div>
         )
       })}
-      <Modal isOpen={modalOpen} close={handleClose}>
+      <Modal isOpen={modalOpen} close={handleClose} size="large">
         {itemSelected && (
-          <>
-          <Image src={img} alt={itemSelected["name"]} width={200} height={200} />
-          <Heading level="h3">{itemSelected["name"]}</Heading>
-          <Text>{itemSelected["description"]}</Text>
-          </>
+          <React.Fragment>
+            <Image
+              src={img}
+              alt={itemSelected["name"]}
+              width={200}
+              height={200}
+            />
+            <Heading level="h3">{itemSelected["name"]}</Heading>
+            <Text>{itemSelected["description"]}</Text>
+          </React.Fragment>
         )}
       </Modal>
     </div>
