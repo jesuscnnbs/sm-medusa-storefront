@@ -39,7 +39,7 @@ function Story() {
       </div>
       <div className="flex justify-center mt-10">
         <LocalizedClientLink href="/about" data-testid="about-link">
-          <Button variant="secondary" className="uppercase rounded-none">
+          <Button variant="secondary" className="uppercase rounded-none text-light-sm-lighter">
             Saber más de Santa Mónica
           </Button>
         </LocalizedClientLink>

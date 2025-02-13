@@ -1,5 +1,5 @@
 "use client"
-import { useRef, PropsWithChildren } from "react";
+import React, { useRef, PropsWithChildren, useMemo } from "react";
 import {
   motion,
   useScroll,
@@ -28,13 +28,10 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxProps) {
   });
   const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
   const directionFactor = useRef<number>(1);
+
   useAnimationFrame((t, delta) => {
     let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
-    /**
-     * This is what changes the direction of the scroll once we
-     * switch scrolling directions.
-     */
     if (velocityFactor.get() < 0) {
       directionFactor.current = -1;
     } else if (velocityFactor.get() > 0) {
@@ -45,20 +42,21 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxProps) {
 
     baseX.set(baseX.get() + moveBy);
   });
+
+  const repeatedContent = useMemo(() => Array(8).fill(children), [children]);
+
   return (
     <div className="flex m-0 overflow-hidden flex-nowrap whitespace-nowrap">
-      <motion.div className="flex leading-[1.2] uppercase flex-nowrap whitespace-nowrap parallax-text font-lemonMilk font-bold tracking-tighter text-secondary-sm" style={{ x }}>
-        <span className="block mr-3">{children}</span>
-        <span className="block mr-3">{children}</span>
-        <span className="block mr-3">{children}</span>
-        <span className="block mr-3">{children}</span>
-        <span className="block mr-3">{children}</span>
-        <span className="block mr-3">{children}</span>
-        <span className="block mr-3">{children}</span>
-        <span className="block mr-3">{children}</span>
+      <motion.div 
+        className="flex leading-[1.2] uppercase flex-nowrap whitespace-nowrap parallax-text font-lemonMilk font-bold tracking-tighter text-secondary-sm" 
+        style={{ x, willChange: 'transform' }}
+      >
+        {repeatedContent.map((content, index) => (
+          <span key={index} className="block mr-3">{content}</span>
+        ))}
       </motion.div>
     </div>
   );
 }
 
-export default ParallaxText
+export default React.memo(ParallaxText);

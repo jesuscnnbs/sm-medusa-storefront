@@ -31,7 +31,7 @@ const BURGERS = [
   },
 ]
 
-const RANDOM_CLASS = ["rotate-2", "-rotate-2", "-rotate-1", "rotate-1"]
+const ROTATE_CLASS = ["rotate-2", "-rotate-1", "-rotate-1", "rotate-1"]
 
 const BestSellers: FunctionComponent<BestSellersProps> = () => {
   return (
@@ -40,12 +40,11 @@ const BestSellers: FunctionComponent<BestSellersProps> = () => {
       <div className="max-w-5xl mx-auto mt-20">
         <div className="grid gap-6 small:grid-cols-2">
           {BURGERS.map((burger, index) => {
-            const randomClass = Math.floor(Math.random() * RANDOM_CLASS.length - 1)
             return (
-              <div key={index} className={`${RANDOM_CLASS[randomClass]} rota flex flex-col max-w-full gap-4 p-4 mx-auto rounded-none shadow-lg bg-ui-bg-base`}>
+              <div key={index} className={`${ROTATE_CLASS[index]} flex flex-col max-w-full gap-4 p-4 mx-auto rounded-none shadow-lg bg-ui-bg-base`}>
                 <Image
                   src={burger.src}
-                  alt="Burger Emmy"
+                  alt={burger.name}
                   loading="lazy"
                   width="300"
                   height="300"
@@ -64,7 +63,7 @@ const BestSellers: FunctionComponent<BestSellersProps> = () => {
       </div>
       <div className="flex justify-center mt-20">
         <LocalizedClientLink href="/menu" data-testid="menu-link">
-          <Button variant="secondary" className="uppercase rounded-none">Ver más</Button>
+          <Button variant="secondary" className="uppercase rounded-none text-light-sm-lighter">Ver más</Button>
         </LocalizedClientLink>
       </div>
     </section>
