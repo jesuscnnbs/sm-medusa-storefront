@@ -1,7 +1,7 @@
 import PageTitle from "@modules/common/components/page-title"
 import MenuComponent from "@modules/menu"
 
-export default async function MenuPage(props: {
+export default function MenuPage(props: {
   params: Promise<{ countryCode: string }>
 }) {
   return (
