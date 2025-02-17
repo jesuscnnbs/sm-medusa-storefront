@@ -68,7 +68,7 @@ export default async function Nav() {
 
            <div className="flex items-center justify-end flex-1 h-full gap-x-6 basis-0">
             <LocalizedClientLink
-              href="/"
+              href="/reserve"
               data-testid="nav-reservation-link"
             >
               <Button variant="primary" className="uppercase rounded-none">Reservar</Button>

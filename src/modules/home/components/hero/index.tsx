@@ -22,11 +22,11 @@ const Hero = () => {
         <div className="flex flex-col items-start gap-2">
           <h1 className="santa-monica">
             <PageTitle text="Santa" />
-              <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
+            <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
           </h1>
         </div>
         <div className="absolute z-10 opacity-0 bottom-16 right-10 delay-800 animate-fade-in-bottom">
-          <LocalizedClientLink href="/menu">
+          <LocalizedClientLink href="/reserve">
             <CallToActionButton />
           </LocalizedClientLink>
         </div>
