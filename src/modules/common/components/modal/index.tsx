@@ -22,18 +22,6 @@ const Modal = ({
   children,
   'data-testid': dataTestId
 }: ModalProps) => {
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    // Clean effect
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOpen]);
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-[75]" onClose={close}>
