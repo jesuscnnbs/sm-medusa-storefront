@@ -11,7 +11,7 @@ function Story() {
       <ParallaxTitle
         textPrimary="Santa Mónica"
         textSecondary="La historia"
-        className="-mt-2 -rotate-1"
+        className="-rotate-1"
       />
       <div className="max-w-5xl px-4 mx-auto">
         <Image

@@ -36,7 +36,7 @@ const ROTATE_CLASS = ["rotate-2", "-rotate-1", "-rotate-1", "rotate-1"]
 const BestSellers: FunctionComponent<BestSellersProps> = () => {
   return (
     <section className="relative py-20 bg-ui-bg-base-pressed bg-doodle">
-      <ParallaxTitle textPrimary="NUESTRAS" textSecondary="HAMBURGUESAS" className="rotate-2"/>
+      <ParallaxTitle textPrimary="NUESTRAS" textSecondary="HAMBURGUESAS" className="rotate-1"/>
       <div className="max-w-5xl mx-auto mt-20">
         <div className="grid gap-6 small:grid-cols-2">
           {BURGERS.map((burger, index) => {
