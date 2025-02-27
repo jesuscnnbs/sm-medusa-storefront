@@ -25,8 +25,9 @@ const SideMenuItems = {
 
 const HomeIconLink = () => {
   return (
-    <LocalizedClientLink href="/" data-testid="nav-home-link">
+    <LocalizedClientLink href="/" data-testid="nav-home-link" className="flex items-center">
       <SantaMonicaIcon size={40} />
+      <span className="mt-[2px] hidden mx-2 text-[22px] font-medium uppercase align-middle small:block text-secondary-sm font-lemonMilk">Santa<br/><span className="text-[17px]">Mónica</span></span>
     </LocalizedClientLink>
   )
 }
@@ -73,9 +74,6 @@ export default async function Nav() {
             >
               <Button variant="primary" className="uppercase rounded-none">Reservar</Button>
             </LocalizedClientLink>
-            <Link href="https://www.instagram.com/santamonica.es" target="_blank">
-              <Instagram size={30} />
-            </Link>
           {/** TODO Shopping Cart
             <Suspense
               fallback={
