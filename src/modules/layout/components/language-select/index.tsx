@@ -21,6 +21,9 @@ const LanguageSelect = () => {
   const currentLanguage = pathname.split('/')[1] || 'en'
 
   const handleLanguageChange = (languageCode: string) => {
+    if (languageCode === currentLanguage) {
+      return
+    }
     const segments = pathname.split('/')
     if (segments[1]) {
       segments[1] = languageCode

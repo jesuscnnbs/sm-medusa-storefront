@@ -11,7 +11,7 @@ import { Fragment, useEffect, useMemo, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
-import { useParams, usePathname } from "next/navigation"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import { updateRegion } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 
@@ -32,8 +32,15 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
     | undefined
   >(undefined)
 
-  const { countryCode } = useParams()
-  const currentPath = usePathname().split(`/${countryCode}`)[1]
+  const { countryCode, locale } = useParams()
+  const router = useRouter()
+  const currentPath = usePathname()
+
+  const extractRemainingPath = () => {
+    const segments = currentPath.split('/')
+    // Remove empty strings and first 3 segments (empty, locale, countryCode)
+    return '/' + segments.slice(3).filter(Boolean).join('/')
+  }
 
   const { state, close } = toggleState
 
@@ -58,7 +65,20 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   }, [options, countryCode])
 
   const handleChange = (option: CountryOption) => {
-    updateRegion(option.country, currentPath)
+    if (option.country === countryCode) {
+      // No change needed if selected country is the same
+      close()
+      return
+    }
+
+    // Get the remaining path to preserve
+    const remainingPath = extractRemainingPath()
+    
+    // Construct the new path with the current locale and new country code
+    const newPath = `/${locale}/${option.country}${remainingPath}`
+    
+    // Use router to navigate to the new path, maintaining locale and updating country
+    router.push(newPath)
     close()
   }
 
@@ -73,11 +93,11 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             : undefined
         }
       >
-        <ListboxButton className="py-1 w-full">
-          <div className="txt-compact-small flex items-start gap-x-2">
+        <ListboxButton className="w-full py-1">
+          <div className="flex items-start txt-compact-small gap-x-2">
             <span>Shipping to:</span>
             {current && (
-              <span className="txt-compact-small flex items-center gap-x-2">
+              <span className="flex items-center txt-compact-small gap-x-2">
                 {/* @ts-ignore */}
                 <ReactCountryFlag
                   svg
@@ -109,7 +129,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
                   <ListboxOption
                     key={index}
                     value={o}
-                    className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
+                    className="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-200 gap-x-2"
                   >
                     {/* @ts-ignore */}
                     <ReactCountryFlag

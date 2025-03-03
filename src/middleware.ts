@@ -126,16 +126,16 @@ export async function middleware(request: NextRequest) {
   const regionMap = await getRegionMap(cacheId)
 
   const countryCode = regionMap && (await getCountryCode(request, regionMap))
-
-  const urlHasCountryCode = countryCode && segments[2]?.includes(countryCode)
+  const currentCountryCode = segments[2]?.toLowerCase()
+  const urlHasValidCountryCode = currentCountryCode && regionMap.has(currentCountryCode)
 
   // if one of the country codes is in the url and the cache id is set, return next
-  if (urlHasCountryCode && cacheIdCookie) {
+  if (urlHasValidCountryCode && cacheIdCookie) {
     return NextResponse.next()
   }
 
   // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
-  if (urlHasCountryCode && !cacheIdCookie) {
+  if (urlHasValidCountryCode && !cacheIdCookie) {
     response.cookies.set("_medusa_cache_id", cacheId, {
       maxAge: 60 * 60 * 24,
     })
@@ -152,7 +152,7 @@ export async function middleware(request: NextRequest) {
   const queryString = request.nextUrl.search || ''
 
   // If no country code is set, we redirect to the relevant region.
-  if ((!urlHasCountryCode || !locale) && countryCode) {
+  if ((!urlHasValidCountryCode || !locale) && countryCode) {
     redirectUrl = `${request.nextUrl.origin}/${locale}/${countryCode}/${redirectPath}${queryString}`
     return NextResponse.redirect(redirectUrl.replace(/\/+/g, '/'), 307)
   }
