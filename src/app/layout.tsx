@@ -2,7 +2,7 @@ import { getBaseURL } from "@lib/util/env"
 import localFont from "next/font/local"
 import { Metadata } from "next"
 import "styles/globals.css"
-import noise from "../../public/black-noise.png"
+
 
 const lemonMilkRegular = localFont({
   src: "../fonts/LemonMilkRegular.otf",
@@ -22,20 +22,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="es" data-mode="light">
+    <html lang="es" data-mode="dark">
       <body className={`${lemonMilkRegular.variable} ${lemonMilkMedium.variable} antialiased`}>
-      
-        <main className="relative">
-        <div
-          style={{
-            backgroundImage:
-              `url(${noise.src})`,
-          }}
-          className="pointer-events-none fixed h-full w-full opacity-5 z-[999999]"
-        >
-        </div>
           {props.children}
-        </main>
       </body>
     </html>
   )

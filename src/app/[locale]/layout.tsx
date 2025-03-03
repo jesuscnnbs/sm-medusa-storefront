@@ -1,0 +1,39 @@
+import {NextIntlClientProvider} from 'next-intl';
+import {getMessages} from 'next-intl/server';
+import {notFound} from 'next/navigation';
+import {routing} from '../../i18n/routing';
+import noise from "../../../public/black-noise.png"
+
+export default async function LocaleLayout({
+  children,
+  params
+}: {
+  children: React.ReactNode;
+  params: Promise<{locale: string}>;
+}) {
+  // Ensure that the incoming `locale` is valid
+  const {locale} = await params;
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+ 
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages();
+ 
+  return (
+      <NextIntlClientProvider messages={messages}>
+        <main className="relative">
+          <div
+            style={{
+              backgroundImage:
+                `url(${noise.src})`,
+            }}
+            className="pointer-events-none fixed h-full w-full opacity-5 z-[999999]"
+          >
+          </div>
+          {children}
+        </main>
+    </NextIntlClientProvider>
+  );
+}

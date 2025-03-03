@@ -1,5 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { NextRequest, NextResponse } from "next/server"
+import createMiddleware from 'next-intl/middleware';
+import {routing} from './i18n/routing';
 
 const BACKEND_URL = process.env.MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
@@ -9,6 +11,8 @@ const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
   regionMapUpdated: Date.now(),
 }
+
+const intlMiddleware = createMiddleware(routing);
 
 async function getRegionMap(cacheId: string) {
   const { regionMap, regionMapUpdated } = regionMapCache
@@ -108,6 +112,13 @@ export async function middleware(request: NextRequest) {
 
   let response = NextResponse.redirect(redirectUrl, 307)
 
+  const segments = request.nextUrl.pathname.split('/')
+  let locale = segments[1]
+
+  if (!locale || !routing.locales.includes(locale as any)) {
+    locale = routing.defaultLocale
+  }
+
   let cacheIdCookie = request.cookies.get("_medusa_cache_id")
 
   let cacheId = cacheIdCookie?.value || crypto.randomUUID()
@@ -116,8 +127,7 @@ export async function middleware(request: NextRequest) {
 
   const countryCode = regionMap && (await getCountryCode(request, regionMap))
 
-  const urlHasCountryCode =
-    countryCode && request.nextUrl.pathname.split("/")[1].includes(countryCode)
+  const urlHasCountryCode = countryCode && segments[2]?.includes(countryCode)
 
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasCountryCode && cacheIdCookie) {
@@ -138,18 +148,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  const redirectPath =
-    request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
-
-  const queryString = request.nextUrl.search ? request.nextUrl.search : ""
+  const redirectPath = segments.slice(3).join('/') || ''
+  const queryString = request.nextUrl.search || ''
 
   // If no country code is set, we redirect to the relevant region.
-  if (!urlHasCountryCode && countryCode) {
-    redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
-    response = NextResponse.redirect(`${redirectUrl}`, 307)
+  if ((!urlHasCountryCode || !locale) && countryCode) {
+    redirectUrl = `${request.nextUrl.origin}/${locale}/${countryCode}/${redirectPath}${queryString}`
+    return NextResponse.redirect(redirectUrl.replace(/\/+/g, '/'), 307)
   }
 
-  return response
+  return intlMiddleware(request)
 }
 
 export const config = {

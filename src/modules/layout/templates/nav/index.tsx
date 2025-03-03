@@ -8,7 +8,7 @@ import SideMenu from "@modules/layout/components/side-menu"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 import Link from "next/link"
 import Instagram from "@modules/common/icons/instagram"
-
+import LanguageSelect from "@modules/layout/components/language-select";
 
 export const MenuItems = {
   Home: "/",
@@ -68,6 +68,7 @@ export default async function Nav() {
           </div>
 
            <div className="flex items-center justify-end flex-1 h-full gap-x-6 basis-0">
+            <LanguageSelect />
             <LocalizedClientLink
               href="/reserve"
               data-testid="nav-reservation-link"
