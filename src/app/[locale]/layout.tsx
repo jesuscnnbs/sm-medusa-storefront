@@ -29,7 +29,7 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }
-
+  console.log("Layout - Countrycode - locale: ",locale)
   setRequestLocale(locale)
   // Providing all messages to the client
   // side is the easiest way to get started
@@ -37,7 +37,7 @@ export default async function LocaleLayout({
     return (
     <html lang={locale} data-mode="light">
       <body className={`${lemonMilkRegular.variable} ${lemonMilkMedium.variable} antialiased`}>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={locale}>
           <main className="relative">
             <div
               style={{

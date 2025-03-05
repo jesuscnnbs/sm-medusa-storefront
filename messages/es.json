@@ -16,5 +16,8 @@
       "ParallaxOne": "Santa Mónica",
       "ParallaxTwo": "La historia"
     }
+  },
+  "About": {
+    "title": "Historia"
   }
 }

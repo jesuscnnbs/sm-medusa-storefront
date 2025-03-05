@@ -11,7 +11,11 @@ interface Props {
 
 const CallToActionButton = ({text}: Props) => {
   const textContent = React.useMemo(
-    () => `${text} ✹ ${text} ✹ `,
+    () => (
+      text === "Reservar" ?
+      `${text} ✹ ${text} ✹ `:
+      `${text} ✹ ✹ ${text} ✹ ✹`
+    ),
     []
   );
 

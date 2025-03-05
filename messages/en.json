@@ -5,7 +5,7 @@
     "menu": "Menu",
     "store": "Store",
     "reserve": "Reserve",
-    "callToActionButton": ".Reserve."
+    "callToActionButton": "Reserve"
   },
   "Home": {
     "BestSellers": {
@@ -16,5 +16,8 @@
       "ParallaxOne": "Santa Monica",
       "ParallaxTwo": "About"
     }
+  },
+  "About": {
+    "title": "History"
   }
 }
