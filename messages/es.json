@@ -1,9 +1,20 @@
 {
-  "nav": {
+  "Common": {
     "home": "Inicio",
-    "about": "Sobre Nosotros",
+    "about": "Historia",
     "menu": "Menú",
     "store": "Tienda",
-    "reserve": "Reservar"
+    "reserve": "Reservar",
+    "callToActionButton": "Reservar"
+  },
+  "Home": {
+    "BestSellers": {
+      "ParallaxOne": "Nuestras",
+      "ParallaxTwo": "Hamburguesas"
+    },
+    "Story": {
+      "ParallaxOne": "Santa Mónica",
+      "ParallaxTwo": "La historia"
+    }
   }
 }

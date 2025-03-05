@@ -1,9 +1,20 @@
 {
-  "nav": {
+  "Common": {
     "home": "Home",
     "about": "About",
     "menu": "Menu",
     "store": "Store",
-    "reserve": "Reserve"
+    "reserve": "Reserve",
+    "callToActionButton": ".Reserve."
+  },
+  "Home": {
+    "BestSellers": {
+      "ParallaxOne": "Top",
+      "ParallaxTwo": "Burguers"
+    },
+    "Story": {
+      "ParallaxOne": "Santa Monica",
+      "ParallaxTwo": "About"
+    }
   }
 }

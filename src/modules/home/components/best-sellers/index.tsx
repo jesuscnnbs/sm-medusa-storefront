@@ -5,12 +5,14 @@ import emmy from "../../../../../public/emmy.jpg"
 import acapulco from "../../../../../public/acapulco.jpeg"
 import creamzy from "../../../../../public/creamzy.jpg"
 import chicken from "../../../../../public/chicken_crispy.jpg"
-import picture from "../../../../../public/test.svg"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Button } from "@medusajs/ui"
 import ParallaxTitle from "@modules/common/components/parallax-title"
+import { Translations } from "types/global"
 
-interface BestSellersProps {}
+interface BestSellersProps {
+  translations: Translations
+}
 
 const BURGERS = [
   {
@@ -33,10 +35,10 @@ const BURGERS = [
 
 const ROTATE_CLASS = ["rotate-2", "-rotate-1", "-rotate-1", "rotate-1"]
 
-const BestSellers: FunctionComponent<BestSellersProps> = () => {
+const BestSellers: FunctionComponent<BestSellersProps> = ({translations}) => {
   return (
     <section className="relative py-20 bg-ui-bg-base-pressed bg-doodle">
-      <ParallaxTitle textPrimary="NUESTRAS" textSecondary="HAMBURGUESAS" className="rotate-1"/>
+      <ParallaxTitle textPrimary={translations.parallaxOne} textSecondary={translations.parallaxTwo} className="rotate-1"/>
       <div className="max-w-5xl mx-auto mt-20">
         <div className="grid gap-6 small:grid-cols-2">
           {BURGERS.map((burger, index) => {

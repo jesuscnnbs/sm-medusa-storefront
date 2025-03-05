@@ -1,6 +1,5 @@
 const checkEnvVariables = require("./check-env-variables");
 const createNextIntlPlugin = require("next-intl/plugin");
-const withNextIntl = createNextIntlPlugin();
 
 checkEnvVariables()
 
@@ -37,4 +36,5 @@ const nextConfig = {
   },
 }
 
+const withNextIntl = createNextIntlPlugin();
 module.exports = withNextIntl(nextConfig);

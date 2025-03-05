@@ -5,10 +5,13 @@ import {
 } from "framer-motion";
 import { MdOutlineArrowUpward } from "react-icons/md";
 
+interface Props {
+  text: string
+}
 
-const CallToActionButton = () => {
+const CallToActionButton = ({text}: Props) => {
   const textContent = React.useMemo(
-    () => " RESERVAR ✹ RESERVAR ✹ ",
+    () => `${text} ✹ ${text} ✹ `,
     []
   );
 
