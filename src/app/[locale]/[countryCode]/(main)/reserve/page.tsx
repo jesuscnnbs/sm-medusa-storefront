@@ -3,7 +3,7 @@ import React from "react"
 import Image from "next/image"
 import Iframe from 'react-iframe'
 import PageTitle from "@modules/common/components/page-title"
-import backgroundFadeIn from "../../../../../public/girl-drink.jpeg"
+import backgroundFadeIn from "../../../../../../public/girl-drink.jpeg"
 
 export default function Reserve() {
   return (
@@ -11,7 +11,7 @@ export default function Reserve() {
       <section className="relative py-40 bg-secondary-sm-darker">
       <Image
         src={backgroundFadeIn.src}
-        alt="Faro"
+        alt="Background Image"
         loading="lazy"
         fill={true}
         objectFit="cover"
@@ -23,6 +23,7 @@ export default function Reserve() {
           <PageTitle text="Reservar" />
         </h1>
       </div>
+      {/* TODO: Add a loading state and change the url locale*/} 
       <Iframe url="https://www.covermanager.com/reserve/module_restaurant/restaurante-santamonica-gourmet/spanish"
         width="100%"
         height="900px"

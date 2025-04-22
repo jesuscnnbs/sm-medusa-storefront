@@ -6,6 +6,7 @@ import Story from "@modules/home/components/story"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import PetFriendly from "@modules/home/components/pet-friendly"
+import {getTranslations} from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: "Santa Mónica",
@@ -16,6 +17,10 @@ export const metadata: Metadata = {
 export default async function Home(props: {
   params: Promise<{ countryCode: string }>
 }) {
+  const [t, tHome] = await Promise.all([
+    getTranslations('Common'),
+    getTranslations('Home')
+  ])
   const params = await props.params
 
   const { countryCode } = params
@@ -28,12 +33,17 @@ export default async function Home(props: {
   if (!collections || !region) {
     return null
   }
-
   return (
     <React.Fragment>
-      <Hero />
-      <BestSellers />
-      <Story />
+      <Hero translation={t('callToActionButton')}/>
+      <BestSellers translations={{
+        parallaxOne: tHome('BestSellers.ParallaxOne'),
+        parallaxTwo: tHome('BestSellers.ParallaxTwo'),
+      }}/>
+      <Story translations={{
+        parallaxOne: tHome('Story.ParallaxOne'),
+        parallaxTwo: tHome('Story.ParallaxTwo'),
+      }}/>
       <PetFriendly />
     </React.Fragment>
   )

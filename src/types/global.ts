@@ -14,3 +14,12 @@ export type VariantPrice = {
   price_type: string
   percentage_diff: string
 }
+
+export type MultiNamespaceTranslations = {
+  [namespace: string]: Translations
+}
+
+
+export type Translations = {
+  [key: string]: string
+}

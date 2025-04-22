@@ -4,13 +4,19 @@ import { Button } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ParallaxTitle from "@modules/common/components/parallax-title"
 import picture from "../../../../../public/sm-burgers-home.jpg"
+import { Translations } from "types/global"
 
-function Story() {
+interface StoryProps {
+  translations: Translations
+}
+
+
+function Story({translations}: StoryProps) {
   return (
     <section className="pb-20 bg-light-sm">
       <ParallaxTitle
-        textPrimary="Santa Mónica"
-        textSecondary="La historia"
+        textPrimary={translations.parallaxOne}
+        textSecondary={translations.parallaxTwo}
         className="-rotate-1"
       />
       <div className="max-w-5xl px-4 mx-auto">
