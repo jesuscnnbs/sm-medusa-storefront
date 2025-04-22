@@ -82,6 +82,11 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
     close()
   }
 
+   // If there is only one country for one region, we don't need to show the select
+   if(regions.length === 1 && regions[0].countries && regions[0].countries.length === 1) {
+    return null
+  }
+
   return (
     <div>
       <Listbox
