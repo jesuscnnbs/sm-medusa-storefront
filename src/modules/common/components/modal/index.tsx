@@ -22,18 +22,6 @@ const Modal = ({
   children,
   'data-testid': dataTestId
 }: ModalProps) => {
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    // Clean effect
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOpen]);
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-[75]" onClose={close}>
@@ -46,7 +34,7 @@ const Modal = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 h-screen bg-opacity-75 backdrop-blur-md" />
+          <div className="fixed inset-0 h-screen bg-opacity-80 backdrop-blur-md" />
         </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-hidden">

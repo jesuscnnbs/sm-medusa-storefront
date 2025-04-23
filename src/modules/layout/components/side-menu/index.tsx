@@ -1,7 +1,12 @@
 "use client"
 
-import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react"
-import { ArrowRightMini, XMark, BarsThree } from "@medusajs/icons"
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  Transition,
+} from "@headlessui/react"
+import { ArrowRightMini, XMark } from "@medusajs/icons"
 import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -9,7 +14,13 @@ import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 
-const SideMenu = ({ regions, menuItems }: { regions: HttpTypes.StoreRegion[] | null, menuItems: {[key:string]: string} }) => {
+const SideMenu = ({
+  regions,
+  menuItems,
+}: {
+  regions: HttpTypes.StoreRegion[] | null
+  menuItems: { [key: string]: string }
+}) => {
   const toggleState = useToggleState()
 
   return (
@@ -23,7 +34,20 @@ const SideMenu = ({ regions, menuItems }: { regions: HttpTypes.StoreRegion[] | n
                   data-testid="nav-menu-button"
                   className="relative flex items-center h-full transition-colors duration-200 ease-out focus:outline-none hover:text-ui-fg-base"
                 >
-                 <BarsThree />
+                  <div className="p-2 rounded-full hover:bg-zinc-200">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
                 </PopoverButton>
               </div>
 
@@ -42,8 +66,8 @@ const SideMenu = ({ regions, menuItems }: { regions: HttpTypes.StoreRegion[] | n
                     data-testid="nav-menu-popup"
                     className="flex flex-col justify-between h-full p-6 overflow-hidden bg-light-sm"
                   >
-                    <div className="absolute opacity-25 pointer-events-none top-2 left-2 -rotate-12 ">
-                      <SantaMonicaIcon size={700} />
+                    <div className="absolute pointer-events-none right-2 opacity-15 bottom-2">
+                      <SantaMonicaIcon size={750} />
                     </div>
                     <div className="flex justify-end" id="xmark">
                       <button data-testid="close-menu-button" onClick={close}>
