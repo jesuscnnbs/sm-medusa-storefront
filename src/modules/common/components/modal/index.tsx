@@ -34,7 +34,7 @@ const Modal = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 h-screen bg-opacity-75 backdrop-blur-md" />
+          <div className="fixed inset-0 h-screen bg-opacity-80 backdrop-blur-md" />
         </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-hidden">

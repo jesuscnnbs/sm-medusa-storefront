@@ -23,3 +23,20 @@ export type MultiNamespaceTranslations = {
 export type Translations = {
   [key: string]: string
 }
+
+export type MenuItem = {
+  id: string;
+  isNotActive: boolean;
+  title: string;
+  description: string;
+  image: string;
+  category: MenuCategoryType;
+  category_id: string;
+};
+
+export type MenuCategoryType = {
+  id: string;
+  title: string;
+  description: string;
+  items: MenuItem[];
+};
