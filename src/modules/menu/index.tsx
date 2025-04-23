@@ -6,8 +6,13 @@ import { menu } from "./menu"
 import Modal from "@modules/common/components/modal"
 import img from "../../../public/emmy.jpg"
 import { InformationCircleSolid } from "@medusajs/icons"
+import { MenuCategoryType } from "types/global"
 
-const Menu = () => {
+interface Props {
+  menuItems: MenuCategoryType[]
+}
+
+const Menu = ({menuItems}: Props) => {
   const [itemSelected, setItemSelected] = React.useState<any>(null)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
 
@@ -21,7 +26,7 @@ const Menu = () => {
   }
   return (
     <div className="max-w-2xl px-6 py-12 mx-auto bg-ui-bg-base">
-      {menu.map((category, index) => {
+      {menuItems.map((category, index) => {
         return (
           <div className="mb-16" key={index}>
             <h2
@@ -49,7 +54,7 @@ const Menu = () => {
                         level="h3"
                         className="uppercase flex-0 line-clamp-1 text-md min-w-40 sm:min-w-fit text-ui-fg-subtle"
                       >
-                        {item["name"]}
+                        {item["title"]}
                       </Heading>
                       <div className="hidden w-full mx-2 border-b-2 border-dotted small:block border-ui-fg-subtle opacity-40"></div>
                       <Text className="font-bold line-clamp-1 min-w-fit text-secondary-sm-darker">
@@ -68,11 +73,11 @@ const Menu = () => {
           <React.Fragment>
             <Image
               src={img}
-              alt={itemSelected["name"]}
+              alt={itemSelected["title"]}
               width={200}
               height={200}
             />
-            <Heading level="h3">{itemSelected["name"]}</Heading>
+            <Heading level="h3">{itemSelected["title"]}</Heading>
             <Text>{itemSelected["description"]}</Text>
           </React.Fragment>
         )}

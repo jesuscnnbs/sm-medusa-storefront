@@ -8,7 +8,7 @@ import SideMenu from "@modules/layout/components/side-menu"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 import Link from "next/link"
 import Instagram from "@modules/common/icons/instagram"
-
+import LanguageSelect from "@modules/layout/components/language-select";
 
 export const MenuItems = {
   Home: "/",
@@ -25,8 +25,9 @@ const SideMenuItems = {
 
 const HomeIconLink = () => {
   return (
-    <LocalizedClientLink href="/" data-testid="nav-home-link">
+    <LocalizedClientLink href="/" data-testid="nav-home-link" className="flex items-center">
       <SantaMonicaIcon size={40} />
+      <span className="mt-[2px] hidden mx-2 text-[22px] font-medium uppercase align-middle small:block text-secondary-sm font-lemonMilk">Santa<br/><span className="text-[17px]">Mónica</span></span>
     </LocalizedClientLink>
   )
 }
@@ -67,15 +68,13 @@ export default async function Nav() {
           </div>
 
            <div className="flex items-center justify-end flex-1 h-full gap-x-6 basis-0">
+            <LanguageSelect />
             <LocalizedClientLink
               href="/reserve"
               data-testid="nav-reservation-link"
             >
               <Button variant="primary" className="uppercase rounded-none">Reservar</Button>
             </LocalizedClientLink>
-            <Link href="https://www.instagram.com/santamonica.es" target="_blank">
-              <Instagram size={30} />
-            </Link>
           {/** TODO Shopping Cart
             <Suspense
               fallback={

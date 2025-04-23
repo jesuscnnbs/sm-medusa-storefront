@@ -1,9 +1,12 @@
 import PageTitle from "@modules/common/components/page-title"
 import MenuComponent from "@modules/menu"
+import { listMenuItems } from "@lib/data/menu"
 
-export default function MenuPage(props: {
+export default async function MenuPage(props: {
   params: Promise<{ countryCode: string }>
 }) {
+  const menuItems = await listMenuItems()
+  
   return (
     <>
       {/** Section Tittle */}
@@ -14,7 +17,7 @@ export default function MenuPage(props: {
           </h1>
         </div>
         <div className="pb-10">
-          <MenuComponent />
+          <MenuComponent menuItems={menuItems}/>
         </div>
       </section>
     </>
