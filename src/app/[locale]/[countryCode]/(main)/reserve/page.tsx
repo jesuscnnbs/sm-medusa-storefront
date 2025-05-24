@@ -28,7 +28,7 @@ export default function Reserve() {
         width="100%"
         height="900px"
         id=""
-        className="max-w-[740px] min-w-[290px] mx-auto rounded-lg bg-light-sm-lighter"
+        className="max-w-[740px] min-w-[290px] mx-auto bg-light-sm-lighter"
         display="block"
         position="relative"
       />
