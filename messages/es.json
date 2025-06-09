@@ -5,7 +5,8 @@
     "menu": "Menú",
     "store": "Tienda",
     "reserve": "Reservar",
-    "callToActionButton": "Reservar"
+    "callToActionButton": "Reservar",
+    "soon": "Próximamente"
   },
   "Home": {
     "BestSellers": {
@@ -18,6 +19,10 @@
     }
   },
   "About": {
-    "title": "Historia"
+    "title": "Historia",
+    "2022": "Este año, Santa Mónica comienza su aventura en el mundo de las hamburguesas. Con una pasión por la comida y un compromiso con la calidad, nuestro equipo se embarca en un viaje para crear las mejores hamburguesas de la ciudad.",
+    "2023": "En 2023, Santa Mónica se establece como un nombre reconocido en la escena gastronómica local. Con un menú que combina sabores clásicos y modernos, nuestros clientes disfrutan de una experiencia culinaria única.",
+    "2024": "En 2024, Santa Mónica continúa innovando y expandiendo su menú. Con nuevas recetas y colaboraciones con chefs locales, seguimos comprometidos a ofrecer lo mejor en hamburguesas.",
+    "2025": "En 2025, Santa Mónica celebra su tercer aniversario. Agradecemos a nuestros clientes por su apoyo continuo y esperamos seguir sirviendo las mejores hamburguesas de la ciudad durante muchos años más. <3"
   }
 }

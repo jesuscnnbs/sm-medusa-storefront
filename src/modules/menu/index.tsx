@@ -4,7 +4,6 @@ import { Heading, Text } from "@medusajs/ui"
 import Image from "next/image"
 import { menu } from "./menu"
 import Modal from "@modules/common/components/modal"
-import img from "../../../public/emmy.jpg"
 import { InformationCircleSolid } from "@medusajs/icons"
 import { MenuCategoryType } from "types/global"
 
@@ -15,7 +14,7 @@ interface Props {
 const Menu = ({menuItems}: Props) => {
   const [itemSelected, setItemSelected] = React.useState<any>(null)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
-
+  console.info("Menu Items", menuItems)
   const handleOpen = (item: any) => {
     setItemSelected(item)
     setModalOpen(true)
@@ -72,7 +71,7 @@ const Menu = ({menuItems}: Props) => {
         {itemSelected && (
           <React.Fragment>
             <Image
-              src={img}
+              src={itemSelected.image}
               alt={itemSelected["title"]}
               width={200}
               height={200}
