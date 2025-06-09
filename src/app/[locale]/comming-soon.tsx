@@ -1,7 +1,9 @@
+"use client"
 import React from 'react'
 import { Caveat } from 'next/font/google'
-import {getTranslations} from 'next-intl/server';
+import {useTranslations} from 'next-intl';
 import clsx from 'clsx'
+import PageTitle from '@modules/common/components/page-title';
 
 
 const caveat = Caveat({
@@ -10,17 +12,16 @@ const caveat = Caveat({
 })
 
 
-export default async function CommingSoon() {
-  const t = await getTranslations('Common')
+export default function CommingSoon() {
+  const t = useTranslations('Common')
   return (
-    <div className="flex items-center justify-center min-h-screen bg-ui-bg-base">
+    <div className="flex items-center justify-center min-h-screen bg-ui-bg-base ">
       <h1
-        className={clsx(
-          'text-4xl md:text-7xl font-bold text-secondary-sm',
-          caveat.className
-        )}
       >
-        {t('soon')}
+        <PageTitle text={t('soon')} classNames={clsx(
+          'text-5xl md:text-8xl font-bold text-secondary-sm-darker tracking-tighter drop-shadow-[0px_7px_2px_rgba(0,0,0,0.2)] lg:drop-shadow-[0px_14px_2px_rgba(0,0,0,0.2)]',
+          caveat.className
+        )} />
       </h1>
     </div>
   )

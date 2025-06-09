@@ -8,7 +8,7 @@ interface Props {
 export default function PageTitle({text, initialDelay=0, classNames=""}: Props) {
   return (
     <span className={classNames}>
-      <div className="relative block text-start font-lemonMilk">
+      <div className="relative block text-start">
         {text.split("").map((letter, index) => {
           const delayMs = index*50+initialDelay
           return (

@@ -45,15 +45,12 @@ export default async function Nav() {
             <div className="h-full">
               <SideMenu regions={regions} menuItems={SideMenuItems} />
             </div>
-            <div className="hidden small:flex">
+            <div className="flex">
               {HomeIconLink()}
             </div>
           </div>
 
           <div className="flex items-center h-full">
-            <div className="small:hidden">
-              {HomeIconLink()}
-            </div>
             <div className="items-center hidden h-full small:flex gap-x-6">
               {Object.entries(MenuItems).map(([_name, item], index) => {
                 return (

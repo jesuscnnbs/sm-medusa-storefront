@@ -3,9 +3,11 @@ import React from "react"
 import Image from "next/image"
 import Iframe from 'react-iframe'
 import PageTitle from "@modules/common/components/page-title"
+import {useTranslations} from 'next-intl';
 import backgroundFadeIn from "../../../../../../public/girl-drink.jpeg"
 
 export default function Reserve() {
+  const t = useTranslations('Common')
   return (
     <React.Fragment>
       <section className="relative py-40 bg-secondary-sm-darker">
@@ -19,8 +21,8 @@ export default function Reserve() {
         onLoadingComplete={(image) => image.classList.replace("opacity-0", "opacity-30")}
       />
       <div className="flex flex-col items-center justify-center px-2 pb-10">
-        <h1 className="santa-monica monica">
-          <PageTitle text="Reservar" />
+        <h1 className="santa-monica monica font-lemonMilk">
+          <PageTitle text={t("reserve")} />
         </h1>
       </div>
       {/* TODO: Add a loading state and change the url locale*/} 
