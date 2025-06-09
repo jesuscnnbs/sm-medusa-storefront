@@ -6,8 +6,8 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { FiMapPin } from "react-icons/fi";
 import { useRef } from "react";
+import {useTranslations} from 'next-intl';
 import bgImage from "../../../../../public/sm-crew.jpeg"
 import parallax1 from "../../../../../public/parallax1.jpeg"
 import parallax2 from "../../../../../public/parallax2.jpeg"
@@ -168,6 +168,7 @@ const ParallaxImg = ({ className, alt, src, start, end }: any) => {
 };
 
 const Schedule = () => {
+  const t = useTranslations('About')
   return (
     <section
       id="launch-schedule"
@@ -179,34 +180,51 @@ const Schedule = () => {
         transition={{ ease: "easeInOut", duration: 0.75 }}
         className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
       >
-        2020
+        2022
       </motion.h1>
-      <ScheduleItem title="NG-21" date="Dec 9th" location="Florida" />
-      <ScheduleItem title="Starlink" date="Dec 20th" location="Texas" />
-      <ScheduleItem title="Starlink" date="Jan 13th" location="Florida" />
-      <ScheduleItem title="Turksat 6A" date="Feb 22nd" location="Florida" />
-      <ScheduleItem title="NROL-186" date="Mar 1st" location="California" />
-      <ScheduleItem title="GOES-U" date="Mar 8th" location="California" />
-      <ScheduleItem title="ASTRA 1P" date="Apr 8th" location="Texas" />
+      <ScheduleItem text={t("2022")} />
+      <motion.h1
+        initial={{ y: 48, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ ease: "easeInOut", duration: 0.75 }}
+        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
+      >
+        2023
+      </motion.h1>
+      <ScheduleItem text={t("2023")} />
+      <motion.h1
+        initial={{ y: 48, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ ease: "easeInOut", duration: 0.75 }}
+        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
+      >
+        2024
+      </motion.h1>
+      <ScheduleItem text={t("2024")} />
+      <motion.h1
+        initial={{ y: 48, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ ease: "easeInOut", duration: 0.75 }}
+        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
+      >
+        2025
+      </motion.h1>
+      <ScheduleItem text={t("2025")} />
     </section>
   );
 };
 
-const ScheduleItem = ({ title, date, location }: any) => {
+const ScheduleItem = ({ title, text }: any) => {
   return (
     <motion.div
       initial={{ y: 48, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.75 }}
-      className="flex items-center justify-between px-3 border-b mb-9 border-zinc-800 pb-9"
+      className="flex items-center justify-between px-3 mb-32 border-b-8 border-primary-sm pb-9"
     >
       <div>
-        <p className="mb-1.5 text-xl text-zinc-50">{title}</p>
-        <p className="text-sm uppercase text-zinc-500">{date}</p>
-      </div>
-      <div className="flex items-center gap-1.5 text-end text-sm uppercase text-zinc-500">
-        <p>{location}</p>
-        <FiMapPin />
+        {title && <p className="mb-1.5 text-xl text-zinc-50">{title}</p>}
+        <p className="text-lg text-zinc-50">{text}</p>
       </div>
     </motion.div>
   );

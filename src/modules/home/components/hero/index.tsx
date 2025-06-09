@@ -20,7 +20,7 @@ const Hero = ({translation}: {translation: string}) => {
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4 gap-7">
         <div className="flex flex-col items-start gap-2">
-          <h1 className="santa-monica">
+          <h1 className="santa-monica font-lemonMilk">
             <PageTitle text="Santa" />
             <PageTitle text="Mónica" classNames="monica" initialDelay={250}/>
           </h1>

@@ -19,7 +19,7 @@ const SideMenu = ({
   menuItems,
 }: {
   regions: HttpTypes.StoreRegion[] | null
-  menuItems: { [key: string]: string }
+  menuItems: { [key: string]: {href: string; name: string} }
 }) => {
   const toggleState = useToggleState()
 
@@ -75,16 +75,16 @@ const SideMenu = ({
                       </button>
                     </div>
                     <ul className="flex flex-col items-start justify-start gap-6 font-lemonMilk">
-                      {Object.entries(menuItems).map(([name, href]) => {
+                      {Object.entries(menuItems).map(([_name, item]) => {
                         return (
-                          <li key={name}>
+                          <li key={item.name}>
                             <LocalizedClientLink
-                              href={href}
+                              href={item.href}
                               className="text-3xl leading-10 hover:text-ui-fg-disabled"
                               onClick={close}
-                              data-testid={`${name.toLowerCase()}-link`}
+                              data-testid={`${item.name.toLowerCase()}-link`}
                             >
-                              {name}
+                              {item.name}
                             </LocalizedClientLink>
                           </li>
                         )

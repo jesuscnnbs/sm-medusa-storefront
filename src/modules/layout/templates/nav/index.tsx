@@ -9,19 +9,7 @@ import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 import Link from "next/link"
 import Instagram from "@modules/common/icons/instagram"
 import LanguageSelect from "@modules/layout/components/language-select";
-
-export const MenuItems = {
-  Home: "/",
-  About: "/about",
-  Menu: "/menu",
-  Store: "/store",
-}
-
-const SideMenuItems = {
-  ...MenuItems,
-  Account: "/account",
-  Cart: "/cart",
-}
+import { getTranslations } from "next-intl/server"
 
 const HomeIconLink = () => {
   return (
@@ -33,7 +21,22 @@ const HomeIconLink = () => {
 }
 
 export default async function Nav() {
+  const t = await getTranslations('Common')
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
+
+  const MenuItems = {
+    Home: {href: "/", name: t("home")},
+    About: {href: "/about", name: t("about")},
+    Menu: {href: "/menu", name: t("menu")},
+    //Store: "/store",
+  }
+
+  const SideMenuItems = {
+    ...MenuItems,
+    //Account: "/account",
+    //Cart: "/cart",
+  }
+
   return (
     <div className="sticky inset-x-0 top-0 z-30 shadow-2xl group">
       <header className="relative h-16 mx-auto duration-200 border-b bg-ui-bg-base border-ui-tag-neutral-border">
@@ -42,25 +45,22 @@ export default async function Nav() {
             <div className="h-full">
               <SideMenu regions={regions} menuItems={SideMenuItems} />
             </div>
-            <div className="hidden small:flex">
+            <div className="flex">
               {HomeIconLink()}
             </div>
           </div>
 
           <div className="flex items-center h-full">
-            <div className="small:hidden">
-              {HomeIconLink()}
-            </div>
             <div className="items-center hidden h-full small:flex gap-x-6">
-              {Object.entries(MenuItems).map(([name, href], index) => {
+              {Object.entries(MenuItems).map(([_name, item], index) => {
                 return (
                   <LocalizedClientLink
-                    href={href}
+                    href={item.href}
                     className="font-sans text-sm font-medium uppercase text-dark-sm hover:text-primary-sm"
-                    data-testid={`nav-${name}-link`}
+                    data-testid={`nav-${item.name}-link`}
                     key={index}
                   >
-                    {name}
+                    {item.name}
                   </LocalizedClientLink>
                 )
               })}
