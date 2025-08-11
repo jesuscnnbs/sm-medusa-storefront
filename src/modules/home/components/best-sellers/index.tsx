@@ -65,7 +65,7 @@ const BestSellers: FunctionComponent<BestSellersProps> = ({translations}) => {
       </div>
       <div className="flex justify-center mt-20">
         <LocalizedClientLink href="/menu" data-testid="menu-link">
-          <Button variant="secondary" className="uppercase rounded-none text-light-sm-lighter">Ver más</Button>
+          <Button variant="secondary" className="uppercase rounded-none text-light-sm-lighter">{translations.seeMore}</Button>
         </LocalizedClientLink>
       </div>
     </section>

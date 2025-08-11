@@ -33,12 +33,18 @@ export default async function Home() {
       <BestSellers translations={{
         parallaxOne: tHome('BestSellers.ParallaxOne'),
         parallaxTwo: tHome('BestSellers.ParallaxTwo'),
+        seeMore: tHome('BestSellers.seeMore'),
       }}/>
       <Story translations={{
         parallaxOne: tHome('Story.ParallaxOne'),
         parallaxTwo: tHome('Story.ParallaxTwo'),
+        description: tHome('Story.description'),
+        learnMore: tHome('Story.learnMore'),
       }}/>
-      <PetFriendly />
+      <PetFriendly translations={{
+        textPrimary: tHome('PetFriendly.textPrimary'),
+        textSecondary: tHome('PetFriendly.textSecondary'),
+      }} />
     </React.Fragment>
   )
 }

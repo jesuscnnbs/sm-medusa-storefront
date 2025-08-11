@@ -11,11 +11,18 @@
   "Home": {
     "BestSellers": {
       "ParallaxOne": "Top",
-      "ParallaxTwo": "Burguers"
+      "ParallaxTwo": "Burgers",
+      "seeMore": "See more"
     },
     "Story": {
       "ParallaxOne": "Santa Monica",
-      "ParallaxTwo": "About"
+      "ParallaxTwo": "About",
+      "description": "In July 2021, Venezuelan entrepreneurs decided to bring their love for good food to Almería, giving life to Santa Monica. With a lighthouse as an emblem, this place not only seeks to be a gastronomic reference point, but also a space where world flavors merge with local ingredients. The lighthouse, present in its logo, symbolizes the light that guides burger lovers towards a unique experience, full of flavor and warmth.",
+      "learnMore": "Learn more about Santa Monica"
+    },
+    "PetFriendly": {
+      "textPrimary": "FRIENDLY 🐾",
+      "textSecondary": "PET"
     }
   },
   "About": {
