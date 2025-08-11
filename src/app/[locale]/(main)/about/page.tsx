@@ -9,9 +9,7 @@ export const metadata: Metadata = {
     "Comida americana con sabor venezolano. Hamburguesas gourmet, carne de la mejor calidad, pollo crujiente, opciones vegetarianas, postres, tequeños y mucho más. ¡Pide a domicilio o recoge en local!",
 }
 
-export default async function Menu(props: {
-  params: Promise<{ countryCode: string }>
-}) {
+export default async function Menu() {
   const t = await getTranslations('About')
   return (
     <>

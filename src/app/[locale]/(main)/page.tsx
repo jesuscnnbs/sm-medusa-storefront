@@ -14,23 +14,17 @@ export const metadata: Metadata = {
     "Comida americana con sabor venezolano. Hamburguesas gourmet, carne de la mejor calidad, pollo crujiente, opciones vegetarianas, postres, tequeños y mucho más. ¡Pide a domicilio o recoge en local!",
 }
 
-export default async function Home(props: {
-  params: Promise<{ countryCode: string }>
-}) {
+export default async function Home() {
   const [t, tHome] = await Promise.all([
     getTranslations('Common'),
     getTranslations('Home')
   ])
-  const params = await props.params
-
-  const { countryCode } = params
 
   const { collections } = await listCollections({
     fields: "*products",
   })
-  const region = await getRegion(countryCode)
 
-  if (!collections || !region) {
+  if (!collections) {
     return null
   }
   return (

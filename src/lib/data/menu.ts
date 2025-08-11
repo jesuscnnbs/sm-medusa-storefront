@@ -1,24 +1,12 @@
 "use server"
 
-import { sdk } from "@lib/config"
-import medusaError from "@lib/util/medusa-error"
 import { MenuItem, MenuCategoryType } from "../../types/global"
 
 export const listMenuItems = async (query?: Record<string, any>) => {
-  const limit = query?.limit || Infinity
-  return sdk.client.fetch<{ menuItems: MenuItem[] }>('/menu',
-    {
-      method: "GET",
-      query: {
-        limit,
-        ...query,
-      },
-    }
-  ).then(({menuItems}) => {
-    console.log("menuItems", menuItems)
-    return transformToCategoryStructure(menuItems)
-  })
-  .catch(medusaError)
+  // TODO: Replace with your actual backend API call
+  // For now, return empty array
+  const menuItems: MenuItem[] = []
+  return transformToCategoryStructure(menuItems)
 }
 
 function transformToCategoryStructure(items: MenuItem[]): MenuCategoryType[] {

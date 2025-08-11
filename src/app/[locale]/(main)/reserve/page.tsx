@@ -4,7 +4,6 @@ import Image from "next/image"
 import Iframe from 'react-iframe'
 import PageTitle from "@modules/common/components/page-title"
 import {useTranslations} from 'next-intl';
-import backgroundFadeIn from "../../../../../../public/girl-drink.jpeg"
 
 export default function Reserve() {
   const t = useTranslations('Common')
@@ -12,7 +11,7 @@ export default function Reserve() {
     <React.Fragment>
       <section className="relative py-40 bg-secondary-sm-darker">
       <Image
-        src={backgroundFadeIn.src}
+        src="/girl-drink.jpeg"
         alt="Background Image"
         loading="lazy"
         fill={true}
