@@ -5,7 +5,8 @@
 export const listCategories = async () => {
   // TODO: Replace with your actual backend API call
   console.log('Listing categories')
-  return { product_categories: [] }
+  // Return empty array for now to prevent build errors
+  return []
 }
 
 export const getCategoryByHandle = async (handle: string[]) => {

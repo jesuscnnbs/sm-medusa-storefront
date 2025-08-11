@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
-    "@medusajs/ui": "latest",
     "@medusajs/icons": "latest",
+    "@medusajs/ui": "latest",
     "@meilisearch/instant-meilisearch": "^0.7.1",
     "@motionone/utils": "^10.18.0",
     "@paypal/paypal-js": "^5.0.6",

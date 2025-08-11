@@ -5,6 +5,7 @@
 export const listRegions = async () => {
   // TODO: Replace with your actual backend API call
   console.log(`Listing regions`)
+  // Return empty array to prevent build errors
   return []
 }
 
