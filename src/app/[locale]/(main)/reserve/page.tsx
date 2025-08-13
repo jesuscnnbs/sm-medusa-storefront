@@ -6,18 +6,24 @@ import PageTitle from "@modules/common/components/page-title"
 import {useTranslations} from 'next-intl';
 
 export default function Reserve() {
+  const imageRef = React.useRef<HTMLImageElement>(null)
   const t = useTranslations('Common')
   return (
     <React.Fragment>
       <section className="relative py-40 bg-secondary-sm-darker">
       <Image
+        ref={imageRef}
         src="/girl-drink.jpeg"
         alt="Background Image"
         loading="lazy"
         fill={true}
         objectFit="cover"
         className="transition-opacity duration-1000 opacity-0 blur-[2px]"
-        onLoadingComplete={(image) => image.classList.replace("opacity-0", "opacity-30")}
+        onLoad={() => {
+          if (imageRef.current) {
+            imageRef.current.classList.replace("opacity-0", "opacity-30")
+          }
+        }}
       />
       <div className="flex flex-col items-center justify-center px-2 pb-10">
         <h1 className="santa-monica monica font-lemonMilk">
