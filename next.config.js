@@ -8,6 +8,7 @@ checkEnvVariables()
  */
 const nextConfig = {
   reactStrictMode: true,
+  trailingSlash: false,
   eslint: {
     ignoreDuringBuilds: true,
   },

@@ -73,7 +73,7 @@ export default async function Nav() {
               href="/reserve"
               data-testid="nav-reservation-link"
             >
-              <Button variant="primary" className="uppercase rounded-none">Reservar</Button>
+              <Button variant="primary" className="uppercase rounded-none">{t("callToActionButton")}</Button>
             </LocalizedClientLink>
           {/** TODO Shopping Cart
             <Suspense
