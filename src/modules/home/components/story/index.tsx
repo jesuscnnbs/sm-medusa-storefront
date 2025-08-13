@@ -1,4 +1,5 @@
 "use client"
+import { useRef } from "react"
 import Image from "next/image"
 import { Button } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -12,6 +13,8 @@ interface StoryProps {
 
 
 function Story({translations}: StoryProps) {
+  const imageRef = useRef<HTMLImageElement>(null)
+  
   return (
     <section className="pb-20 bg-light-sm">
       <ParallaxTitle
@@ -21,6 +24,7 @@ function Story({translations}: StoryProps) {
       />
       <div className="max-w-5xl px-4 mx-auto">
         <Image
+          ref={imageRef}
           src={picture.src}
           alt="Santa Mónica"
           loading="lazy"
@@ -29,9 +33,11 @@ function Story({translations}: StoryProps) {
           sizes="100vw"
           style={{ width: "100%", height: "auto" }}
           className="-mt-5 transition-opacity duration-500 rounded-none opacity-0"
-          onLoadingComplete={(image) =>
-            image.classList.replace("opacity-0", "opacity-100")
-          }
+          onLoad={() => {
+            if (imageRef.current) {
+              imageRef.current.classList.replace("opacity-0", "opacity-100")
+            }
+          }}
         />
         <p className="mt-10 text-lg text-dark-sm">
           {translations.description}

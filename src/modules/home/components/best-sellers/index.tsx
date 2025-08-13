@@ -1,5 +1,5 @@
 "use client"
-import { FunctionComponent } from "react"
+import { FunctionComponent, useRef } from "react"
 import Image from "next/image"
 import emmy from "../../../../../public/emmy.jpg"
 import acapulco from "../../../../../public/acapulco.jpeg"
@@ -42,24 +42,33 @@ const BestSellers: FunctionComponent<BestSellersProps> = ({translations}) => {
       <div className="max-w-5xl mx-auto mt-20">
         <div className="grid gap-6 small:grid-cols-2">
           {BURGERS.map((burger, index) => {
-            return (
-              <div key={index} className={`${ROTATE_CLASS[index]} flex flex-col max-w-full gap-4 p-4 mx-auto rounded-none shadow-lg bg-ui-bg-base`}>
-                <Image
-                  src={burger.src}
-                  alt={burger.name}
-                  loading="lazy"
-                  width="300"
-                  height="300"
-                  className="transition-opacity duration-500 rounded-none opacity-0"
-                  onLoadingComplete={(image) =>
-                    image.classList.replace("opacity-0", "opacity-100")
-                  }
-                />
-                <h3 className="font-lemonMilk text-secondary-sm-darker">
-                  {burger.name}
-                </h3>
-              </div>
-            )
+            const BurgerCard = () => {
+              const imageRef = useRef<HTMLImageElement>(null)
+              
+              return (
+                <div className={`${ROTATE_CLASS[index]} flex flex-col max-w-full gap-4 p-4 mx-auto rounded-none shadow-lg bg-ui-bg-base`}>
+                  <Image
+                    ref={imageRef}
+                    src={burger.src}
+                    alt={burger.name}
+                    loading="lazy"
+                    width="300"
+                    height="300"
+                    className="transition-opacity duration-500 rounded-none opacity-0"
+                    onLoad={() => {
+                      if (imageRef.current) {
+                        imageRef.current.classList.replace("opacity-0", "opacity-100")
+                      }
+                    }}
+                  />
+                  <h3 className="font-lemonMilk text-secondary-sm-darker">
+                    {burger.name}
+                  </h3>
+                </div>
+              )
+            }
+            
+            return <BurgerCard key={index} />
           })}
         </div>
       </div>
