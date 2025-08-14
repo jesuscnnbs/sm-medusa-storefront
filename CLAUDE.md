@@ -18,13 +18,18 @@ This is a Santa Monica Burgers restaurant website built with Next.js 15. It's a 
 ## Development Commands
 
 **Primary Development:**
-- `npm run dev` or `yarn dev` - Start development server on port 8000 with turbopack
-- `npm run build` or `yarn build` - Build for production
-- `npm run start` or `yarn start` - Start production server on port 8000
-- `npm run lint` or `yarn lint` - Run ESLint
+- `npm run dev` - Start development server on port 8000 with turbopack
+- `npm run build` - Build for production
+- `npm run start` - Start production server on port 8000
+- `npm run lint` - Run ESLint
 - `npm run analyze` - Analyze bundle size
 
-**Important:** This project uses Yarn as the package manager (configured with `packageManager: "yarn@3.2.3"`).
+**Database Commands:**
+- `npm run db:test` - Test database connection
+- `npm run db:push` - Push schema to database
+- `npm run db:studio` - Open Drizzle Studio
+
+**Important:** This project uses npm as the package manager.
 
 ## Architecture
 
