@@ -13,9 +13,10 @@ export const metadata: Metadata = {
 export default async function MenuPage({ 
   params 
 }: { 
-  params: { locale: 'en' | 'es' } 
+  params: Promise<{ locale: 'en' | 'es' }> 
 }) {
-  const menuItems = await listMenuItems(params.locale)
+  const { locale } = await params
+  const menuItems = await listMenuItems(locale)
   
   return (
     <>

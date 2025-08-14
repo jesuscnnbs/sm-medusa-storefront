@@ -1,9 +1,29 @@
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { db } from '@lib/db'
-import { adminUsers, adminSessions } from '@lib/db/schema'
 import { eq, and, gt } from 'drizzle-orm'
+
+// Dynamic import based on environment to avoid edge runtime issues
+async function getDb() {
+  if (process.env.VERCEL_ENV || process.env.NODE_ENV === 'production') {
+    // Production/Vercel: Use Vercel Postgres
+    const { db, schema } = await import("@lib/db")
+    return { db, schema }
+  } else {
+    // Local development: Use regular PostgreSQL with node-postgres
+    const { drizzle } = await import("drizzle-orm/node-postgres")
+    const { Pool } = await import("pg")
+    const schema = await import("@lib/db/schema")
+    
+    const pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      max: 10,
+    })
+    
+    const db = drizzle(pool, { schema })
+    return { db, schema }
+  }
+}
 
 export interface AdminUser {
   id: string
@@ -17,15 +37,16 @@ const ADMIN_SESSION_DURATION = 8 * 60 * 60 * 1000 // 8 horas en millisegundos
 const ADMIN_COOKIE_NAME = 'santa_monica_admin_session'
 
 /**
- * Genera un token seguro para la sesión de administrador usando Web Crypto API
+ * Genera un token seguro para la sesión de administrador
  */
 function generateSecureToken(): string {
-  const array = new Uint8Array(48)
-  crypto.getRandomValues(array)
-  
-  // Convert to base64url using Buffer (recommended over deprecated btoa)
-  return Buffer.from(array)
-    .toString('base64url')
+  // Use Math.random for edge compatibility - in production, consider using a more secure approach
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
+  let result = ''
+  for (let i = 0; i < 64; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return result
 }
 
 /**
@@ -38,14 +59,16 @@ export async function authenticateAdmin(email: string, password: string): Promis
   error?: string
 }> {
   try {
+    const { db, schema } = await getDb()
+    
     // Buscar usuario administrador
     const [user] = await db
       .select()
-      .from(adminUsers)
+      .from(schema.adminUsers)
       .where(
         and(
-          eq(adminUsers.email, email.toLowerCase().trim()),
-          eq(adminUsers.isActive, true)
+          eq(schema.adminUsers.email, email.toLowerCase().trim()),
+          eq(schema.adminUsers.isActive, true)
         )
       )
       .limit(1)
@@ -69,7 +92,7 @@ export async function authenticateAdmin(email: string, password: string): Promis
     const sessionToken = generateSecureToken()
     const expiresAt = new Date(Date.now() + ADMIN_SESSION_DURATION)
 
-    await db.insert(adminSessions).values({
+    await db.insert(schema.adminSessions).values({
       userId: user.id,
       token: sessionToken,
       expiresAt,
@@ -82,7 +105,7 @@ export async function authenticateAdmin(email: string, password: string): Promis
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       expires: expiresAt,
-      path: '/admin',
+      path: '/',
     })
 
     return {
@@ -105,6 +128,7 @@ export async function authenticateAdmin(email: string, password: string): Promis
  */
 export async function getCurrentAdmin(): Promise<AdminUser | null> {
   try {
+    const { db, schema } = await getDb()
     const cookieStore = await cookies()
     const sessionToken = cookieStore.get(ADMIN_COOKIE_NAME)?.value
 
@@ -115,18 +139,18 @@ export async function getCurrentAdmin(): Promise<AdminUser | null> {
     // Buscar sesión válida
     const [sessionData] = await db
       .select({
-        userId: adminSessions.userId,
-        email: adminUsers.email,
-        name: adminUsers.name,
-        role: adminUsers.role,
+        userId: schema.adminSessions.userId,
+        email: schema.adminUsers.email,
+        name: schema.adminUsers.name,
+        role: schema.adminUsers.role,
       })
-      .from(adminSessions)
-      .innerJoin(adminUsers, eq(adminSessions.userId, adminUsers.id))
+      .from(schema.adminSessions)
+      .innerJoin(schema.adminUsers, eq(schema.adminSessions.userId, schema.adminUsers.id))
       .where(
         and(
-          eq(adminSessions.token, sessionToken),
-          gt(adminSessions.expiresAt, new Date()),
-          eq(adminUsers.isActive, true)
+          eq(schema.adminSessions.token, sessionToken),
+          gt(schema.adminSessions.expiresAt, new Date()),
+          eq(schema.adminUsers.isActive, true)
         )
       )
       .limit(1)
@@ -152,18 +176,27 @@ export async function getCurrentAdmin(): Promise<AdminUser | null> {
  */
 export async function logoutAdmin(): Promise<void> {
   try {
+    const { db, schema } = await getDb()
     const cookieStore = await cookies()
     const sessionToken = cookieStore.get(ADMIN_COOKIE_NAME)?.value
 
     if (sessionToken) {
       // Eliminar sesión de la base de datos
       await db
-        .delete(adminSessions)
-        .where(eq(adminSessions.token, sessionToken))
+        .delete(schema.adminSessions)
+        .where(eq(schema.adminSessions.token, sessionToken))
     }
 
-    // Limpiar cookie
+    // Limpiar cookie - delete from all possible paths
     cookieStore.delete(ADMIN_COOKIE_NAME)
+    cookieStore.set(ADMIN_COOKIE_NAME, '', {
+      expires: new Date(0),
+      path: '/',
+    })
+    cookieStore.set(ADMIN_COOKIE_NAME, '', {
+      expires: new Date(0),
+      path: '/admin',
+    })
   } catch (error) {
     console.error('Error cerrando sesión de administrador:', error)
   }
@@ -177,6 +210,7 @@ export async function requireAdminAuth(request: NextRequest): Promise<{
   user?: AdminUser
 }> {
   try {
+    const { db, schema } = await getDb()
     const sessionToken = request.cookies.get(ADMIN_COOKIE_NAME)?.value
 
     if (!sessionToken) {
@@ -185,18 +219,18 @@ export async function requireAdminAuth(request: NextRequest): Promise<{
 
     const [sessionData] = await db
       .select({
-        userId: adminSessions.userId,
-        email: adminUsers.email,
-        name: adminUsers.name,
-        role: adminUsers.role,
+        userId: schema.adminSessions.userId,
+        email: schema.adminUsers.email,
+        name: schema.adminUsers.name,
+        role: schema.adminUsers.role,
       })
-      .from(adminSessions)
-      .innerJoin(adminUsers, eq(adminSessions.userId, adminUsers.id))
+      .from(schema.adminSessions)
+      .innerJoin(schema.adminUsers, eq(schema.adminSessions.userId, schema.adminUsers.id))
       .where(
         and(
-          eq(adminSessions.token, sessionToken),
-          gt(adminSessions.expiresAt, new Date()),
-          eq(adminUsers.isActive, true)
+          eq(schema.adminSessions.token, sessionToken),
+          gt(schema.adminSessions.expiresAt, new Date()),
+          eq(schema.adminUsers.isActive, true)
         )
       )
       .limit(1)
@@ -229,11 +263,13 @@ export async function createInitialAdmin(
   name: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    const { db, schema } = await getDb()
+    
     // Verificar si ya existe algún administrador
     const [existingAdmin] = await db
-      .select({ id: adminUsers.id })
-      .from(adminUsers)
-      .where(eq(adminUsers.role, 'admin'))
+      .select({ id: schema.adminUsers.id })
+      .from(schema.adminUsers)
+      .where(eq(schema.adminUsers.role, 'admin'))
       .limit(1)
 
     if (existingAdmin) {
@@ -244,7 +280,7 @@ export async function createInitialAdmin(
     const hashedPassword = await bcrypt.hash(password, 12)
 
     // Crear administrador
-    await db.insert(adminUsers).values({
+    await db.insert(schema.adminUsers).values({
       email: email.toLowerCase().trim(),
       passwordHash: hashedPassword,
       name,

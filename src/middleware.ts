@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
-import { requireAdminAuth } from '@lib/auth/admin';
 import { routing } from './i18n/routing';
 
 // Middleware de internacionalización
@@ -11,49 +10,48 @@ const handleI18nRouting = createMiddleware({
   localePrefix: 'always'
 });
 
-// Rutas que requieren autenticación de administrador
-const adminRoutes = ['/admin'];
+// Admin routes are now under locale structure: /[locale]/admin
 const adminApiRoutes = ['/api/admin'];
+const ADMIN_COOKIE_NAME = 'santa_monica_admin_session'
+
+// Simple cookie-based auth check for middleware (edge-compatible)
+function hasValidAdminCookie(request: NextRequest): boolean {
+  const adminCookie = request.cookies.get(ADMIN_COOKIE_NAME);
+  return !!adminCookie?.value;
+}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Verificar rutas de administrador
-  const isAdminRoute = adminRoutes.some(route => 
-    pathname.startsWith(route) || pathname.includes(`/admin`)
-  );
-  
+  // Check for admin API routes (these don't use locale)
   const isAdminApiRoute = adminApiRoutes.some(route => 
     pathname.startsWith(route)
   );
 
-  // Manejar rutas de administrador
-  if (isAdminRoute || isAdminApiRoute) {
-    const { isAuthorized } = await requireAdminAuth(request);
-    
-    if (!isAuthorized) {
-      // Redirigir a login de admin para rutas de admin
-      if (isAdminRoute && !pathname.endsWith('/login')) {
-        const loginUrl = new URL('/admin/login', request.url);
-        return NextResponse.redirect(loginUrl);
-      }
-      
-      // Retornar 401 para APIs de admin
-      if (isAdminApiRoute) {
-        return NextResponse.json(
-          { error: 'No autorizado' }, 
-          { status: 401 }
-        );
-      }
+  if (isAdminApiRoute) {
+    if (!hasValidAdminCookie(request)) {
+      return NextResponse.json(
+        { error: 'No autorizado' }, 
+        { status: 401 }
+      );
     }
-  }
-
-  // Para rutas de administrador autenticadas, no aplicar i18n
-  if ((isAdminRoute || isAdminApiRoute) && pathname.startsWith('/admin')) {
     return NextResponse.next();
   }
 
-  // Aplicar middleware de internacionalización para el resto de rutas
+  // Check for locale-based admin routes: /[locale]/admin
+  const localeAdminMatch = pathname.match(/^\/([a-z]{2})\/admin/);
+  
+  if (localeAdminMatch) {
+    const locale = localeAdminMatch[1];
+    
+    // Only redirect if trying to access protected admin routes (not login page)
+    if (!pathname.endsWith('/admin/login') && !hasValidAdminCookie(request)) {
+      const loginUrl = new URL(`/${locale}/admin/login`, request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  // Apply i18n middleware to all routes (including admin routes for proper locale handling)
   return handleI18nRouting(request);
 }
 
