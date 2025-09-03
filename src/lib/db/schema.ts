@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid, integer, boolean, json, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, text, timestamp, uuid, integer, boolean, json, varchar, unique } from 'drizzle-orm/pg-core'
 
 // Admin Users table
 export const adminUsers = pgTable('admin_users', {
@@ -18,8 +18,23 @@ export const adminSessions = pgTable('admin_sessions', {
   userId: uuid('user_id').references(() => adminUsers.id, { onDelete: 'cascade' }).notNull(),
   token: varchar('token', { length: 255 }).notNull().unique(),
   expiresAt: timestamp('expires_at').notNull(),
+  ipAddress: varchar('ip_address', { length: 45 }), // Support IPv6
+  userAgent: text('user_agent'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
+  lastAccessAt: timestamp('last_access_at').defaultNow().notNull(),
 })
+
+// Rate limiting table for security
+export const rateLimiting = pgTable('rate_limiting', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  identifier: varchar('identifier', { length: 255 }).notNull(), // IP address or email
+  action: varchar('action', { length: 50 }).notNull(), // 'admin_login', etc.
+  attempts: integer('attempts').default(1).notNull(),
+  lastAttempt: timestamp('last_attempt').defaultNow().notNull(),
+  lockedUntil: timestamp('locked_until'),
+}, (table) => ({
+  uniqueIdentifierAction: unique('rate_limiting_identifier_action_unique').on(table.identifier, table.action)
+}))
 
 // Menu Profiles table - allows multiple menu configurations
 export const menuProfiles = pgTable('menu_profiles', {

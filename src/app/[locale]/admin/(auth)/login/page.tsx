@@ -16,6 +16,7 @@ export default async function AdminLoginPage({
   // Await params in Next.js 15
   const { locale } = await params
   
+  // Temporarily comment out this check to avoid redirect loop
   // Check if user is already logged in
   const currentAdmin = await getCurrentAdmin()
   

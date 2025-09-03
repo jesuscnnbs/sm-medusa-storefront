@@ -1,7 +1,7 @@
 "use server"
 
 import { MenuItem, MenuCategoryType } from "../../types/global"
-import { eq, and } from "drizzle-orm"
+import { eq, and, count } from "drizzle-orm"
 
 // Dynamic import based on environment to avoid edge runtime issues with pg
 async function getDb() {
@@ -22,6 +22,40 @@ async function getDb() {
     
     const db = drizzle(pool, { schema })
     return { db, schema }
+  }
+}
+
+export const getDashboardStats = async () => {
+  try {
+    const { db, schema } = await getDb()
+    
+    // Fetch counts for various entities
+    const [menuItemsResult, categoriesResult, activeCategoriesResult, menuProfilesResult] = await Promise.all([
+      db.select({ count: count() }).from(schema.menuItems),
+      db.select({ count: count() }).from(schema.menuCategories),
+      db.select({ count: count() }).from(schema.menuCategories).where(eq(schema.menuCategories.isActive, true)),
+      db.select({ count: count() }).from(schema.menuProfiles),
+    ])
+
+    const menuItemsCount = menuItemsResult[0]?.count || 0
+    const categoriesCount = categoriesResult[0]?.count || 0
+    const activeCategoriesCount = activeCategoriesResult[0]?.count || 0
+    const menuProfilesCount = menuProfilesResult[0]?.count || 0
+    
+    return {
+      menuItemsCount,
+      categoriesCount,
+      activeCategoriesCount,
+      menuProfilesCount,
+    }
+  } catch (e) {
+    console.error("Error fetching dashboard stats:", e)
+    return {
+      menuItemsCount: 0,
+      categoriesCount: 0,
+      activeCategoriesCount: 0,
+      menuProfilesCount: 0,
+    }
   }
 }
 
@@ -147,4 +181,54 @@ function transformToCategoryStructure(items: any[], locale: 'en' | 'es' = 'es'):
     const bSortOrder = bFirstItem?.categorySortOrder || 0;
     return aSortOrder - bSortOrder;
   });
+}
+
+export const listMenuCategories = async () => {
+  try {
+    const { db, schema } = await getDb()
+    
+    const categories = await db
+      .select({
+        id: schema.menuCategories.id,
+        name: schema.menuCategories.name,
+        nameEn: schema.menuCategories.nameEn,
+        description: schema.menuCategories.description,
+        descriptionEn: schema.menuCategories.descriptionEn,
+        image: schema.menuCategories.image,
+        sortOrder: schema.menuCategories.sortOrder,
+        isActive: schema.menuCategories.isActive,
+        createdAt: schema.menuCategories.createdAt,
+        updatedAt: schema.menuCategories.updatedAt
+      })
+      .from(schema.menuCategories)
+      .orderBy(schema.menuCategories.sortOrder, schema.menuCategories.name)
+
+    return categories
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    return []
+  }
+}
+
+export const listMenuProfiles = async () => {
+  try {
+    const { db, schema } = await getDb()
+    
+    const profiles = await db
+      .select({
+        id: schema.menuProfiles.id,
+        name: schema.menuProfiles.name,
+        description: schema.menuProfiles.description,
+        isActive: schema.menuProfiles.isActive,
+        createdAt: schema.menuProfiles.createdAt,
+        updatedAt: schema.menuProfiles.updatedAt
+      })
+      .from(schema.menuProfiles)
+      .orderBy(schema.menuProfiles.name)
+
+    return profiles
+  } catch (error) {
+    console.error('Error fetching menu profiles:', error)
+    return []
+  }
 }

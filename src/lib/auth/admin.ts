@@ -2,6 +2,8 @@ import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { eq, and, gt } from 'drizzle-orm'
+import { checkRateLimit, resetRateLimit } from './rate-limiting'
+import { getClientIP, getUserAgent, validateSessionBinding } from './security-utils'
 
 // Dynamic import based on environment to avoid edge runtime issues
 async function getDb() {
@@ -37,29 +39,59 @@ const ADMIN_SESSION_DURATION = 8 * 60 * 60 * 1000 // 8 horas en millisegundos
 const ADMIN_COOKIE_NAME = 'santa_monica_admin_session'
 
 /**
- * Genera un token seguro para la sesión de administrador
+ * Genera un token seguro para la sesión de administrador usando Web Crypto API
+ * Compatible con edge runtime
  */
 function generateSecureToken(): string {
-  // Use Math.random for edge compatibility - in production, consider using a more secure approach
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
-  let result = ''
-  for (let i = 0; i < 64; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return result
+  // Use Web Crypto API for secure random generation (edge compatible)
+  const array = new Uint8Array(32)
+  crypto.getRandomValues(array)
+  
+  // Convert to base64url for URL-safe token
+  const base64 = btoa(String.fromCharCode(...array))
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
 }
 
 /**
  * Autentica a un administrador con email y contraseña
  * Incluye protección contra ataques de fuerza bruta
  */
-export async function authenticateAdmin(email: string, password: string): Promise<{
+export async function authenticateAdmin(
+  email: string, 
+  password: string,
+  request?: NextRequest
+): Promise<{
   success: boolean
   user?: AdminUser
   error?: string
+  rateLimitHit?: boolean
 }> {
   try {
     const { db, schema } = await getDb()
+    
+    // Get client IP for rate limiting
+    const clientIP = request ? getClientIP(request) : '127.0.0.1'
+    const userAgent = request ? getUserAgent(request) : 'Unknown'
+    
+    // Check rate limiting by IP
+    const ipRateLimit = await checkRateLimit(clientIP, 'admin_login')
+    if (!ipRateLimit.allowed) {
+      return { 
+        success: false, 
+        error: `Too many login attempts. Try again after ${ipRateLimit.lockoutTime?.toLocaleTimeString()}`,
+        rateLimitHit: true
+      }
+    }
+    
+    // Check rate limiting by email
+    const emailRateLimit = await checkRateLimit(email.toLowerCase(), 'admin_login')
+    if (!emailRateLimit.allowed) {
+      return { 
+        success: false, 
+        error: `Too many login attempts for this account. Try again after ${emailRateLimit.lockoutTime?.toLocaleTimeString()}`,
+        rateLimitHit: true
+      }
+    }
     
     // Buscar usuario administrador
     const [user] = await db
@@ -96,7 +128,14 @@ export async function authenticateAdmin(email: string, password: string): Promis
       userId: user.id,
       token: sessionToken,
       expiresAt,
+      ipAddress: clientIP,
+      userAgent: userAgent,
+      lastAccessAt: new Date(),
     })
+
+    // Reset rate limiting on successful login
+    await resetRateLimit(clientIP, 'admin_login')
+    await resetRateLimit(email.toLowerCase(), 'admin_login')
 
     // Configurar cookie segura
     const cookieStore = await cookies()
@@ -126,7 +165,7 @@ export async function authenticateAdmin(email: string, password: string): Promis
 /**
  * Verifica la sesión actual del administrador
  */
-export async function getCurrentAdmin(): Promise<AdminUser | null> {
+export async function getCurrentAdmin(request?: NextRequest): Promise<AdminUser | null> {
   try {
     const { db, schema } = await getDb()
     const cookieStore = await cookies()
@@ -136,6 +175,10 @@ export async function getCurrentAdmin(): Promise<AdminUser | null> {
       return null
     }
 
+    // Get current client info for session validation
+    const currentIP = request ? getClientIP(request) : null
+    const currentUA = request ? getUserAgent(request) : null
+
     // Buscar sesión válida
     const [sessionData] = await db
       .select({
@@ -143,6 +186,9 @@ export async function getCurrentAdmin(): Promise<AdminUser | null> {
         email: schema.adminUsers.email,
         name: schema.adminUsers.name,
         role: schema.adminUsers.role,
+        ipAddress: schema.adminSessions.ipAddress,
+        userAgent: schema.adminSessions.userAgent,
+        sessionId: schema.adminSessions.id,
       })
       .from(schema.adminSessions)
       .innerJoin(schema.adminUsers, eq(schema.adminSessions.userId, schema.adminUsers.id))
@@ -157,6 +203,34 @@ export async function getCurrentAdmin(): Promise<AdminUser | null> {
 
     if (!sessionData || (sessionData.role !== 'admin' && sessionData.role !== 'super_admin')) {
       return null
+    }
+
+    // Validate session binding if request is provided
+    if (currentIP && currentUA) {
+      const isValidBinding = validateSessionBinding(
+        sessionData.ipAddress,
+        sessionData.userAgent,
+        currentIP,
+        currentUA
+      )
+
+      if (!isValidBinding) {
+        // Invalid session binding - possible session hijacking
+        console.warn(`Session binding validation failed for user ${sessionData.email}`)
+        
+        // Delete compromised session
+        await db
+          .delete(schema.adminSessions)
+          .where(eq(schema.adminSessions.id, sessionData.sessionId))
+        
+        return null
+      }
+
+      // Update last access time
+      await db
+        .update(schema.adminSessions)
+        .set({ lastAccessAt: new Date() })
+        .where(eq(schema.adminSessions.id, sessionData.sessionId))
     }
 
     return {

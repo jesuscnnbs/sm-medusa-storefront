@@ -20,6 +20,38 @@ function hasValidAdminCookie(request: NextRequest): boolean {
   return !!adminCookie?.value;
 }
 
+// Security headers helper
+function addSecurityHeaders(response: NextResponse, request: NextRequest): NextResponse {
+  // Prevent clickjacking
+  response.headers.set('X-Frame-Options', 'DENY')
+  
+  // Prevent MIME type sniffing
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  
+  // Referrer policy
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  
+  // XSS protection (legacy but still useful)
+  response.headers.set('X-XSS-Protection', '1; mode=block')
+  
+  // Content Security Policy for admin routes
+  if (request.nextUrl.pathname.includes('/admin')) {
+    response.headers.set('Content-Security-Policy', 
+      "default-src 'self'; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+      "style-src 'self' 'unsafe-inline'; " +
+      "img-src 'self' data: https:; " +
+      "connect-src 'self'; " +
+      "font-src 'self'; " +
+      "object-src 'none'; " +
+      "base-uri 'self'; " +
+      "form-action 'self';"
+    )
+  }
+  
+  return response
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -30,12 +62,13 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminApiRoute) {
     if (!hasValidAdminCookie(request)) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: 'No autorizado' }, 
         { status: 401 }
       );
+      return addSecurityHeaders(response, request);
     }
-    return NextResponse.next();
+    return addSecurityHeaders(NextResponse.next(), request);
   }
 
   // Check for locale-based admin routes: /[locale]/admin
@@ -44,15 +77,25 @@ export async function middleware(request: NextRequest) {
   if (localeAdminMatch) {
     const locale = localeAdminMatch[1];
     
-    // Only redirect if trying to access protected admin routes (not login page)
-    if (!pathname.endsWith('/admin/login') && !hasValidAdminCookie(request)) {
-      const loginUrl = new URL(`/${locale}/admin/login`, request.url);
-      return NextResponse.redirect(loginUrl);
+    // For login page, bypass i18n middleware and return NextResponse.next()
+    if (pathname.endsWith('/admin/login')) {
+      return addSecurityHeaders(NextResponse.next(), request);
     }
+    
+    // Only redirect if trying to access protected admin routes (not login page)
+    if (!hasValidAdminCookie(request)) {
+      const loginUrl = new URL(`/${locale}/admin/login`, request.url);
+      const response = NextResponse.redirect(loginUrl);
+      return addSecurityHeaders(response, request);
+    }
+    
+    // For authenticated admin routes, also bypass i18n since we've already handled locale
+    return addSecurityHeaders(NextResponse.next(), request);
   }
 
-  // Apply i18n middleware to all routes (including admin routes for proper locale handling)
-  return handleI18nRouting(request);
+  // Apply i18n middleware to all other routes
+  const i18nResponse = handleI18nRouting(request);
+  return addSecurityHeaders(i18nResponse, request);
 }
 
 export const config = {

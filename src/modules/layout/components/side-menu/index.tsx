@@ -6,19 +6,15 @@ import {
   PopoverPanel,
   Transition,
 } from "@headlessui/react"
-import { ArrowRightMini, XMark } from "@medusajs/icons"
+import { XMark } from "@medusajs/icons"
 import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CountrySelect from "../country-select"
-import { HttpTypes } from "@medusajs/types"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 
 const SideMenu = ({
-  regions,
   menuItems,
 }: {
-  regions: HttpTypes.StoreRegion[] | null
   menuItems: { [key: string]: {href: string; name: string} }
 }) => {
   const toggleState = useToggleState()
