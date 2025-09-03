@@ -27,6 +27,63 @@ Combine Medusa's modules for your commerce backend with the newest Next.js 15 fe
   </a>
 </p>
 
+### Security Mesaures implemented
+
+- [x] Rate limiting for admin login
+- [x] Secure session management with IP/User-Agent binding
+- [x] Secure token generation using Web Crypto API
+- [x] Session cleanup functionality
+- [x] Database schema with proper constraints
+
+Additional Security for Vercel:
+
+  Environment Variables to Add:
+  # Security
+  NEXTAUTH_SECRET="your-random-secret-here"
+  ADMIN_SESSION_SECRET="another-random-secret"
+  NODE_ENV="production"
+
+  # Optional: Rate limiting config
+  RATE_LIMIT_WINDOW_MS="900000"  # 15 minutes
+  RATE_LIMIT_MAX_ATTEMPTS="5"
+
+  Vercel Security Headers (add to vercel.json):
+  ```json
+  {
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "X-XSS-Protection",
+            "value": "1; mode=block"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000; includeSubDomains"
+          }
+        ]
+      }
+    ]
+  }
+  ```
+
+  Additional Recommendations:
+  1. Database Connection: Use connection pooling (already configured with
+  @vercel/postgres)
+  2. Admin Access: Consider adding 2FA for admin accounts
+  3. Monitoring: Set up logging for security events
+  4. Backup: Enable automatic database backups in Vercel
+  5. Domain Security: Add your domain to Vercel's domain allowlist
+
 ### Prerequisites
 
 To use the [Next.js Starter Template](https://medusajs.com/nextjs-commerce/), you should have a Medusa server running locally on port 9000.
@@ -251,42 +308,146 @@ Contains global TypeScript type defintions.
 
 ### `middleware.ts`
 
-Next.js Middleware, which is basically an Edge function that runs before (almost) every request. In our case it enforces a `countryCode` in the url. So when a user visits any url on your storefront without a `countryCode` param, it will redirect the user to the url for the most relevant region.
+Next.js Middleware handles internationalization and security. It enforces a `locale` in the URL and includes security features like rate limiting and session validation.
 
-The region will be decided as follows:
+## API Documentation
 
-- When deployed on Vercel and you’re active in the user’s current country, it will use the country code from the `x-vercel-ip-country` header.
-- Else, if you have defined a `NEXT_PUBLIC_DEFAULT_REGION` environment variable, it will redirect to that.
-- Else, it will redirect the user to the first region it finds on your Medusa server.
+This section documents the available APIs and Server Actions for the Santa Monica Burgers restaurant application.
 
-If you want to use the `countryCode` param in your code, there’s two ways to do that:
+### Admin Authentication APIs
 
-1. On the server in any `page.tsx` - the `countryCode` is in the `params` object:
-    
-    ```tsx
-    export default async function Page({
-      params: { countryCode },
-    }: {
-      params: { countryCode: string }
-    }) {
-      const region = await getRegion(countryCode)
-    
-    // rest of code
+#### Server Actions
+- **`adminLogin(prevState, formData)`** - Authenticates admin users
+  - **Parameters**: FormData with email and password
+  - **Returns**: Error message on failure, redirects to `/es/admin/dashboard` on success
+  - **Security**: Rate limited, IP tracking
+
+- **`adminLogout(formData?)`** - Logs out admin users
+  - **Parameters**: Optional FormData
+  - **Returns**: Redirects to `/es/admin/login`
+  - **Security**: Clears session, invalidates tokens
+
+- **`getAdminUser()`** - Gets current authenticated admin
+  - **Returns**: Admin user object or null
+  - **Security**: Session validation, IP binding check
+
+### Menu Management APIs
+
+#### Database Statistics
+- **`getDashboardStats()`** - Get dashboard statistics
+  - **Returns**: Object with menu counts
+    ```typescript
+    {
+      menuItemsCount: number,
+      categoriesCount: number, 
+      activeCategoriesCount: number,
+      menuProfilesCount: number
+    }
     ```
-    
-2. From client components, with the `useParam` hook:
-    
-    ```tsx
-    import { useParams } from "next/navigation"
-    
-    const Component = () => {
-    	const { countryCode } = useParams()
-    	
-    	// rest of code
-    ```
-    
 
-The middleware also sets a cookie based on the onboarding status of a user. This is related to the Medusa Admin onboarding flow, and may be safely removed in your production storefront.
+#### Menu Items
+- **`listMenuItems(locale?, query?)`** - Get menu items by locale
+  - **Parameters**: 
+    - `locale`: 'en' | 'es' (default: 'es')
+    - `query`: Optional filter parameters
+  - **Returns**: Array of `MenuCategoryType[]`
+  - **Features**: Internationalization, category grouping, sorting
+
+#### Categories
+- **`listMenuCategories()`** - Get all menu categories
+  - **Returns**: Array of category objects with bilingual support
+  - **Fields**: id, name, nameEn, description, descriptionEn, image, sortOrder, isActive
+
+#### Menu Profiles
+- **`listMenuProfiles()`** - Get all menu profiles/configurations
+  - **Returns**: Array of menu profile objects
+  - **Use Case**: Multiple menu configurations (seasonal, special events)
+
+### Database API Routes
+
+#### Health Check
+- **`GET /api/test-db`** - Test database connectivity
+  - **Returns**: JSON response with connection status
+  - **Response Format**:
+    ```typescript
+    {
+      success: boolean,
+      message: string,
+      error?: string
+    }
+    ```
+
+### Database Schema
+
+The application uses PostgreSQL with Drizzle ORM. Key tables include:
+
+#### Admin Tables
+- **`admin_users`** - Admin user accounts with roles and status
+- **`admin_sessions`** - Secure session management with IP/User-Agent binding
+- **`rate_limiting`** - Rate limiting tracking for security
+
+#### Menu Tables
+- **`menu_profiles`** - Menu configurations (default, seasonal, special)
+- **`menu_categories`** - Menu categories with bilingual support
+- **`menu_items`** - Menu items with pricing, ingredients, allergens
+- **`site_settings`** - Dynamic site configuration
+
+### Security Features
+
+#### Authentication
+- Secure session management with IP and User-Agent binding
+- Cryptographically secure token generation
+- Automatic session cleanup and expiration
+
+#### Rate Limiting
+- IP-based and email-based login attempt limiting  
+- Configurable time windows and attempt limits
+- Automatic lockout functionality
+
+#### Data Protection
+- Input validation and sanitization
+- SQL injection prevention via Drizzle ORM
+- Secure password hashing with bcrypt
+
+### Environment Configuration
+
+#### Required Variables
+```bash
+# Database
+POSTGRES_URL="your-database-url"
+DATABASE_URL="your-database-url"
+
+# Security (recommended for production)
+NEXTAUTH_SECRET="your-random-secret"
+ADMIN_SESSION_SECRET="another-random-secret"
+NODE_ENV="production"
+```
+
+#### Optional Variables
+```bash
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS="900000"  # 15 minutes
+RATE_LIMIT_MAX_ATTEMPTS="5"
+
+# Payments (when ready)
+NEXT_PUBLIC_STRIPE_KEY="your-stripe-key"
+NEXT_PUBLIC_PAYPAL_CLIENT_ID="your-paypal-id"
+```
+
+### Development Commands
+
+```bash
+# Database operations
+npm run db:test      # Test database connection
+npm run db:push      # Push schema changes
+npm run db:studio    # Open Drizzle Studio
+npm run db:seed      # Seed database with sample data
+
+# Development
+npm run dev          # Start dev server on port 8000
+npm run build        # Build for production
+npm run lint         # Run ESLint
+```
 
 # Resources
 

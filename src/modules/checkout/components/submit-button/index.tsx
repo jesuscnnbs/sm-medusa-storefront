@@ -1,32 +1,41 @@
-"use client"
-
-import { Button } from "@medusajs/ui"
 import React from "react"
-import { useFormStatus } from "react-dom"
+import { Button } from "@medusajs/ui"
 
-export function SubmitButton({
+type SubmitButtonProps = {
+  children: React.ReactNode
+  variant?: "primary" | "secondary"
+  size?: "small" | "base" | "large"
+  isLoading?: boolean
+  disabled?: boolean
+  className?: string
+  type?: "button" | "submit" | "reset"
+  onClick?: () => void
+}
+
+const SubmitButton = ({
   children,
   variant = "primary",
-  className,
-  "data-testid": dataTestId,
-}: {
-  children: React.ReactNode
-  variant?: "primary" | "secondary" | "transparent" | "danger" | null
-  className?: string
-  "data-testid"?: string
-}) {
-  const { pending } = useFormStatus()
-
+  size = "base",
+  isLoading = false,
+  disabled = false,
+  className = "",
+  type = "submit",
+  onClick,
+}: SubmitButtonProps) => {
   return (
     <Button
-      size="large"
+      type={type}
+      variant={variant}
+      size={size}
+      isLoading={isLoading}
+      disabled={disabled}
       className={className}
-      type="submit"
-      isLoading={pending}
-      variant={variant || "primary"}
-      data-testid={dataTestId}
+      onClick={onClick}
     >
       {children}
     </Button>
   )
 }
+
+export default SubmitButton
+export { SubmitButton }

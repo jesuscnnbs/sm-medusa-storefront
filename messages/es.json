@@ -11,11 +11,18 @@
   "Home": {
     "BestSellers": {
       "ParallaxOne": "Nuestras",
-      "ParallaxTwo": "Hamburguesas"
+      "ParallaxTwo": "Hamburguesas",
+      "seeMore": "Ver más"
     },
     "Story": {
       "ParallaxOne": "Santa Mónica",
-      "ParallaxTwo": "La historia"
+      "ParallaxTwo": "La historia",
+      "description": "En julio de 2021, unos emprendedores venezolanos decidieron llevar su amor por la buena comida a Almería, dando vida a Santa Mónica. Con un faro como emblema, este lugar no solo busca ser un punto de referencia gastronómico, sino también un espacio donde los sabores del mundo se fusionan con ingredientes locales. El faro, presente en su logo, simboliza la luz que guía a los amantes de las hamburguesas hacia una experiencia única, llena de sabor y calidez.",
+      "learnMore": "Saber más de Santa Mónica"
+    },
+    "PetFriendly": {
+      "textPrimary": "FRIENDLY 🐾",
+      "textSecondary": "PET"
     }
   },
   "About": {

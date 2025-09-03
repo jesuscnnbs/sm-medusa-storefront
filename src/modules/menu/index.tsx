@@ -57,7 +57,7 @@ const Menu = ({menuItems}: Props) => {
                       </Heading>
                       <div className="hidden w-full mx-2 border-b-2 border-dotted small:block border-ui-fg-subtle opacity-40"></div>
                       <Text className="font-bold line-clamp-1 min-w-fit text-secondary-sm-darker">
-                        14.95 €
+                        {(item.price / 100).toFixed(2)} €
                         <InformationCircleSolid className="inline-block ml-2 small:hidden" />
                       </Text>
                     </div>
@@ -70,14 +70,48 @@ const Menu = ({menuItems}: Props) => {
       <Modal isOpen={modalOpen} close={handleClose} size="large">
         {itemSelected && (
           <React.Fragment>
-            <Image
-              src={itemSelected.image}
-              alt={itemSelected["title"]}
-              width={200}
-              height={200}
-            />
-            <Heading level="h3">{itemSelected["title"]}</Heading>
-            <Text>{itemSelected["description"]}</Text>
+            <div className="p-6">
+              {itemSelected.image && (
+                <div className="mb-4 text-center">
+                  <Image
+                    src={itemSelected.image}
+                    alt={itemSelected.title}
+                    width={300}
+                    height={300}
+                    className="rounded-lg mx-auto"
+                  />
+                </div>
+              )}
+              <div className="flex justify-between items-start mb-3">
+                <Heading level="h3" className="text-xl font-bold">
+                  {itemSelected.title}
+                </Heading>
+                <Text className="text-lg font-bold text-secondary-sm-darker">
+                  {(itemSelected.price / 100).toFixed(2)} €
+                </Text>
+              </div>
+              <Text className="mb-4 text-gray-600">
+                {itemSelected.description}
+              </Text>
+              
+              {itemSelected.ingredients && itemSelected.ingredients.length > 0 && (
+                <div className="mb-3">
+                  <Text className="font-semibold mb-2">Ingredientes:</Text>
+                  <Text className="text-sm text-gray-600">
+                    {itemSelected.ingredients.join(', ')}
+                  </Text>
+                </div>
+              )}
+              
+              {itemSelected.allergens && itemSelected.allergens.length > 0 && (
+                <div className="mb-3">
+                  <Text className="font-semibold mb-2 text-orange-600">Alérgenos:</Text>
+                  <Text className="text-sm text-orange-600">
+                    {itemSelected.allergens.join(', ')}
+                  </Text>
+                </div>
+              )}
+            </div>
           </React.Fragment>
         )}
       </Modal>

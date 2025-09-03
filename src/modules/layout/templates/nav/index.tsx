@@ -1,13 +1,11 @@
 import { Button } from "@medusajs/ui"
 import { listRegions } from "@lib/data/regions"
-import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 //import CartButton from "@modules/layout/components/cart-button"
 //import { Suspense } from "react"
 import SideMenu from "@modules/layout/components/side-menu"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
-import Link from "next/link"
-import Instagram from "@modules/common/icons/instagram"
+//import Instagram from "@modules/common/icons/instagram"
 import LanguageSelect from "@modules/layout/components/language-select";
 import { getTranslations } from "next-intl/server"
 
@@ -22,7 +20,7 @@ const HomeIconLink = () => {
 
 export default async function Nav() {
   const t = await getTranslations('Common')
-  const regions = await listRegions().then((regions: StoreRegion[]) => regions)
+  //const regions = await listRegions().then((regions: StoreRegion[]) => regions)
 
   const MenuItems = {
     Home: {href: "/", name: t("home")},
@@ -43,7 +41,7 @@ export default async function Nav() {
         <nav className="flex items-center justify-between w-full h-full content-container txt-xsmall-plus text-ui-fg-subtle text-small-regular">
           <div className="flex items-center flex-1 h-full gap-8 basis-0">
             <div className="h-full">
-              <SideMenu regions={regions} menuItems={SideMenuItems} />
+              <SideMenu menuItems={SideMenuItems} />
             </div>
             <div className="flex">
               {HomeIconLink()}
@@ -73,7 +71,7 @@ export default async function Nav() {
               href="/reserve"
               data-testid="nav-reservation-link"
             >
-              <Button variant="primary" className="uppercase rounded-none">Reservar</Button>
+              <Button variant="primary" className="uppercase rounded-none">{t("callToActionButton")}</Button>
             </LocalizedClientLink>
           {/** TODO Shopping Cart
             <Suspense
