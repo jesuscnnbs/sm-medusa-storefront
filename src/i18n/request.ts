@@ -1,21 +1,18 @@
 import {getRequestConfig} from 'next-intl/server';
 import {routing} from './routing';
+import {headers} from 'next/headers';
  
-export default getRequestConfig(async ({ locale, requestLocale}) => {
-  console.log("🔍 Raw Locale Received: ", locale);
-  console.log("🔍 Request Locale Received: ", requestLocale);
+export default getRequestConfig(async () => {
+  // For Next.js 15, we need to await headers and extract locale manually
+  const headersList = await headers();
+  let locale = headersList.get('x-next-intl-locale') || routing.defaultLocale;
+  
+  console.log("🌐 Requested Locale: ", locale);
   console.log("🌐 Available Locales: ", routing.locales);
 
-  // Try multiple ways to get the locale
-  const fallbackLocale =
-    locale ||
-    await requestLocale || 
-    routing.defaultLocale;
-
-  console.log("🕵️ Fallback Locale: ", fallbackLocale);
-
-  const validLocale = routing.locales.includes(fallbackLocale as any) 
-    ? fallbackLocale 
+  // Validate that the incoming locale is supported
+  const validLocale = routing.locales.includes(locale as any) 
+    ? locale 
     : routing.defaultLocale;
 
   console.log("✅ Resolved Locale: ", validLocale);
@@ -28,11 +25,13 @@ export default getRequestConfig(async ({ locale, requestLocale}) => {
       messages
     };
   } catch (error) {
-    console.error("❌ Failed to load messages:", error);
+    console.error("❌ Failed to load messages for locale:", validLocale, error);
     
+    // Fallback to default locale if message loading fails
+    const fallbackMessages = (await import(`../../messages/${routing.defaultLocale}.json`)).default;
     return {
       locale: routing.defaultLocale,
-      messages: (await import(`../../messages/${routing.defaultLocale}.json`)).default
+      messages: fallbackMessages
     };
   }
 });

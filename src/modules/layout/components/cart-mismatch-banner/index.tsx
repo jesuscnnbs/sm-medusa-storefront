@@ -1,6 +1,5 @@
 "use client"
 
-import { transferCart } from "@lib/data/customer"
 import { ExclamationCircleSolid } from "@medusajs/icons"
 import { StoreCart, StoreCustomer } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
@@ -31,8 +30,8 @@ function CartMismatchBanner(props: {
   }
 
   return (
-    <div className="flex items-center justify-center small:p-4 p-2 text-center bg-orange-300 small:gap-2 gap-1 text-sm mt-2 text-orange-800">
-      <div className="flex flex-col small:flex-row small:gap-2 gap-1 items-center">
+    <div className="flex items-center justify-center gap-1 p-2 mt-2 text-sm text-center text-orange-800 bg-orange-300 small:p-4 small:gap-2">
+      <div className="flex flex-col items-center gap-1 small:flex-row small:gap-2">
         <span className="flex items-center gap-1">
           <ExclamationCircleSolid className="inline" />
           Something went wrong when we tried to transfer your cart
@@ -42,7 +41,7 @@ function CartMismatchBanner(props: {
 
         <Button
           variant="transparent"
-          className="hover:bg-transparent active:bg-transparent focus:bg-transparent disabled:text-orange-500 text-orange-950 p-0 bg-transparent"
+          className="p-0 bg-transparent hover:bg-transparent active:bg-transparent focus:bg-transparent disabled:text-orange-500 text-orange-950"
           size="base"
           disabled={isPending}
           onClick={handleSubmit}

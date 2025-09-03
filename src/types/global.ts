@@ -30,6 +30,10 @@ export type MenuItem = {
   title: string;
   description: string;
   image: string;
+  price: number; // Price in cents
+  ingredients?: string[];
+  allergens?: string[];
+  isPopular?: boolean;
   category: MenuCategoryType;
   category_id: string;
 };

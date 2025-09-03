@@ -1,164 +1,111 @@
-import { HttpTypes } from "@medusajs/types"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
-import {routing} from './i18n/routing';
+import { routing } from './i18n/routing';
 
-const BACKEND_URL = process.env.MEDUSA_BACKEND_URL
-const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
-const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "eu"
+// Middleware de internacionalización
+const handleI18nRouting = createMiddleware({
+  locales: routing.locales,
+  defaultLocale: routing.defaultLocale,
+  localePrefix: 'always'
+});
 
-const regionMapCache = {
-  regionMap: new Map<string, HttpTypes.StoreRegion>(),
-  regionMapUpdated: Date.now(),
+// Admin routes are now under locale structure: /[locale]/admin
+const adminApiRoutes = ['/api/admin'];
+const ADMIN_COOKIE_NAME = 'santa_monica_admin_session'
+
+// Simple cookie-based auth check for middleware (edge-compatible)
+function hasValidAdminCookie(request: NextRequest): boolean {
+  const adminCookie = request.cookies.get(ADMIN_COOKIE_NAME);
+  return !!adminCookie?.value;
 }
 
-async function getRegionMap(cacheId: string) {
-  const { regionMap, regionMapUpdated } = regionMapCache
-
-  if (!BACKEND_URL) {
-    throw new Error(
-      "Middleware.ts: Error fetching regions. Did you set up regions in your Medusa Admin and define a MEDUSA_BACKEND_URL environment variable? Note that the variable is no longer named NEXT_PUBLIC_MEDUSA_BACKEND_URL."
+// Security headers helper
+function addSecurityHeaders(response: NextResponse, request: NextRequest): NextResponse {
+  // Prevent clickjacking
+  response.headers.set('X-Frame-Options', 'DENY')
+  
+  // Prevent MIME type sniffing
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  
+  // Referrer policy
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  
+  // XSS protection (legacy but still useful)
+  response.headers.set('X-XSS-Protection', '1; mode=block')
+  
+  // Content Security Policy for admin routes
+  if (request.nextUrl.pathname.includes('/admin')) {
+    response.headers.set('Content-Security-Policy', 
+      "default-src 'self'; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+      "style-src 'self' 'unsafe-inline'; " +
+      "img-src 'self' data: https:; " +
+      "connect-src 'self'; " +
+      "font-src 'self'; " +
+      "object-src 'none'; " +
+      "base-uri 'self'; " +
+      "form-action 'self';"
     )
   }
-
-  if (
-    !regionMap.keys().next().value ||
-    regionMapUpdated < Date.now() - 3600 * 1000
-  ) {
-    // Fetch regions from Medusa. We can't use the JS client here because middleware is running on Edge and the client needs a Node environment.
-    const { regions } = await fetch(`${BACKEND_URL}/store/regions`, {
-      headers: {
-        "x-publishable-api-key": PUBLISHABLE_API_KEY!,
-      },
-      next: {
-        revalidate: 3600,
-        tags: [`regions-${cacheId}`],
-      },
-      cache: "force-cache",
-    }).then(async (response) => {
-      const json = await response.json()
-
-      if (!response.ok) {
-        throw new Error(json.message)
-      }
-
-      return json
-    })
-
-    if (!regions?.length) {
-      throw new Error(
-        "No regions found. Please set up regions in your Medusa Admin."
-      )
-    }
-
-    // Create a map of country codes to regions.
-    regions.forEach((region: HttpTypes.StoreRegion) => {
-      region.countries?.forEach((c) => {
-        regionMapCache.regionMap.set(c.iso_2 ?? "", region)
-      })
-    })
-
-    regionMapCache.regionMapUpdated = Date.now()
-  }
-
-  return regionMapCache.regionMap
-}
-
-/**
- * Fetches regions from Medusa and sets the region cookie.
- * @param request
- * @param response
- */
-async function getCountryCode(
-  request: NextRequest,
-  regionMap: Map<string, HttpTypes.StoreRegion | number>
-) {
-  try {
-    let countryCode
-
-    const vercelCountryCode = request.headers
-      .get("x-vercel-ip-country")
-      ?.toLowerCase()
-
-    const urlCountryCode = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
-
-    if (urlCountryCode && regionMap.has(urlCountryCode)) {
-      countryCode = urlCountryCode
-    } else if (vercelCountryCode && regionMap.has(vercelCountryCode)) {
-      countryCode = vercelCountryCode
-    } else if (regionMap.has(DEFAULT_REGION)) {
-      countryCode = DEFAULT_REGION
-    } else if (regionMap.keys().next().value) {
-      countryCode = regionMap.keys().next().value
-    }
-
-    return countryCode
-  } catch (error) {
-    if (process.env.NODE_ENV === "development") {
-      console.error(
-        "Middleware.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a MEDUSA_BACKEND_URL environment variable? Note that the variable is no longer named NEXT_PUBLIC_MEDUSA_BACKEND_URL."
-      )
-    }
-  }
-}
-
-/**
- * Middleware to handle region selection and onboarding status.
- */
-export async function middleware(request: NextRequest) {
-  const segments = request.nextUrl.pathname.split('/')
-
-  // locale validation
-  let locale = segments[1]
-  if (!locale || !routing.locales.includes(locale as any)) {
-    locale = routing.defaultLocale
-  }
   
-  let redirectUrl = request.nextUrl.href
-  let response = NextResponse.redirect(redirectUrl, 307)
+  return response
+}
 
-  let cacheIdCookie = request.cookies.get("_medusa_cache_id")
-  let cacheId = cacheIdCookie?.value || crypto.randomUUID()
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  const regionMap = await getRegionMap(cacheId)
-  const countryCode = regionMap && (await getCountryCode(request, regionMap))
-  const currentCountryCode = segments[2]?.toLowerCase()
-  const urlHasValidCountryCode = currentCountryCode && regionMap.has(currentCountryCode)
+  // Check for admin API routes (these don't use locale)
+  const isAdminApiRoute = adminApiRoutes.some(route => 
+    pathname.startsWith(route)
+  );
 
-  // Early returns for specific cases
-  if (request.nextUrl.pathname.includes(".")) {
-    return NextResponse.next()
+  if (isAdminApiRoute) {
+    if (!hasValidAdminCookie(request)) {
+      const response = NextResponse.json(
+        { error: 'No autorizado' }, 
+        { status: 401 }
+      );
+      return addSecurityHeaders(response, request);
+    }
+    return addSecurityHeaders(NextResponse.next(), request);
   }
 
-
-  // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
-  // Handle country code and cache logic
-  if (urlHasValidCountryCode && !cacheIdCookie) {
-    response.cookies.set("_medusa_cache_id", cacheId, {
-      maxAge: 60 * 60 * 24,
-    });
-    return response;
+  // Check for locale-based admin routes: /[locale]/admin
+  const localeAdminMatch = pathname.match(/^\/([a-z]{2})\/admin/);
+  
+  if (localeAdminMatch) {
+    const locale = localeAdminMatch[1];
+    
+    // For login page, bypass i18n middleware and return NextResponse.next()
+    if (pathname.endsWith('/admin/login')) {
+      return addSecurityHeaders(NextResponse.next(), request);
+    }
+    
+    // Only redirect if trying to access protected admin routes (not login page)
+    if (!hasValidAdminCookie(request)) {
+      const loginUrl = new URL(`/${locale}/admin/login`, request.url);
+      const response = NextResponse.redirect(loginUrl);
+      return addSecurityHeaders(response, request);
+    }
+    
+    // For authenticated admin routes, also bypass i18n since we've already handled locale
+    return addSecurityHeaders(NextResponse.next(), request);
   }
 
-  // Redirect logic for country code
-  const redirectPath = segments.slice(3).join('/') || '';
-  const queryString = request.nextUrl.search || '';
-
-  // If no country code is set, we redirect to the relevant region.
-  if ((!urlHasValidCountryCode || !locale) && countryCode) {
-    redirectUrl = `${request.nextUrl.origin}/${locale}/${countryCode}/${redirectPath}${queryString}`;
-    return NextResponse.redirect(redirectUrl.replace(/\/+/g, '/'), 307);
-  }
-
-  const intlMiddleware = createMiddleware({
-    locales: routing.locales,
-    defaultLocale: routing.defaultLocale,
-    localePrefix: 'always'
-  });
-
-  return intlMiddleware(request);
+  // Apply i18n middleware to all other routes
+  const i18nResponse = handleI18nRouting(request);
+  return addSecurityHeaders(i18nResponse, request);
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|.*\\..*).*)']
+  matcher: [
+    /*
+     * Coincidir con todas las rutas excepto:
+     * - api routes que no sean de admin
+     * - archivos estáticos (_next/static)
+     * - archivos de imagen, favicon, etc.
+     */
+    '/((?!api(?!/admin)|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };

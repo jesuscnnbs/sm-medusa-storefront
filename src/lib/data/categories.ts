@@ -1,48 +1,16 @@
-import { sdk } from "@lib/config"
-import { HttpTypes } from "@medusajs/types"
-import { cache } from "react"
-import { getCacheOptions } from "./cookies"
+"use server"
 
-export const listCategories = async (query?: Record<string, any>) => {
-  const next = {
-    ...(await getCacheOptions("categories")),
-  }
+// Simplified categories data functions without Medusa
 
-  const limit = query?.limit || 100
-
-  return sdk.client
-    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
-      "/store/product-categories",
-      {
-        query: {
-          fields:
-            "*category_children, *products, *parent_category, *parent_category.parent_category",
-          limit,
-          ...query,
-        },
-        next,
-      }
-    )
-    .then(({ product_categories }) => product_categories)
+export const listCategories = async () => {
+  // TODO: Replace with your actual backend API call
+  console.log('Listing categories')
+  // Return empty array for now to prevent build errors
+  return []
 }
 
-export const getCategoryByHandle = async (categoryHandle: string[]) => {
-  const handle = `${categoryHandle.join("/")}`
-
-  const next = {
-    ...(await getCacheOptions("categories")),
-  }
-
-  return sdk.client
-    .fetch<HttpTypes.StoreProductCategoryListResponse>(
-      `/store/product-categories`,
-      {
-        query: {
-          fields: "*category_children, *products",
-          handle,
-        },
-        next,
-      }
-    )
-    .then(({ product_categories }) => product_categories[0])
+export const getCategoryByHandle = async (handle: string[]) => {
+  // TODO: Replace with your actual backend API call
+  console.log(`Getting category by handle: ${handle.join('/')}`)
+  return null
 }

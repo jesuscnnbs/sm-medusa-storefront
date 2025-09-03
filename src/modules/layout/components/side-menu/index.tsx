@@ -6,19 +6,15 @@ import {
   PopoverPanel,
   Transition,
 } from "@headlessui/react"
-import { ArrowRightMini, XMark } from "@medusajs/icons"
+import { XMark } from "@medusajs/icons"
 import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CountrySelect from "../country-select"
-import { HttpTypes } from "@medusajs/types"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 
 const SideMenu = ({
-  regions,
   menuItems,
 }: {
-  regions: HttpTypes.StoreRegion[] | null
   menuItems: { [key: string]: {href: string; name: string} }
 }) => {
   const toggleState = useToggleState()
@@ -96,18 +92,6 @@ const SideMenu = ({
                         onMouseEnter={toggleState.open}
                         onMouseLeave={toggleState.close}
                       >
-                        {regions && (
-                          <CountrySelect
-                            toggleState={toggleState}
-                            regions={regions}
-                          />
-                        )}
-                        <ArrowRightMini
-                          className={clx(
-                            "transition-transform duration-150",
-                            toggleState.state ? "-rotate-90" : ""
-                          )}
-                        />
                       </div>
                       <Text className="flex justify-between txt-compact-small">
                         © {new Date().getFullYear()} Santa Mónica. All rights

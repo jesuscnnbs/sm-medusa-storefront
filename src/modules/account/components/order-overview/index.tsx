@@ -1,44 +1,26 @@
-"use client"
+import React from "react"
+import { Container, Heading } from "@medusajs/ui"
 
-import { Button } from "@medusajs/ui"
+type OrderOverviewProps = {
+  orders?: any[]
+}
 
-import OrderCard from "../order-card"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { HttpTypes } from "@medusajs/types"
-
-const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
-  if (orders?.length) {
+const OrderOverview = ({ orders = [] }: OrderOverviewProps) => {
+  if (!orders.length) {
     return (
-      <div className="flex flex-col gap-y-8 w-full">
-        {orders.map((o) => (
-          <div
-            key={o.id}
-            className="border-b border-gray-200 pb-6 last:pb-0 last:border-none"
-          >
-            <OrderCard order={o} />
-          </div>
-        ))}
-      </div>
+      <Container className="text-center py-8">
+        <Heading level="h2" className="mb-4">No orders found</Heading>
+        <p className="text-ui-fg-subtle">You haven't placed any orders yet.</p>
+      </Container>
     )
   }
 
   return (
-    <div
-      className="w-full flex flex-col items-center gap-y-4"
-      data-testid="no-orders-container"
-    >
-      <h2 className="text-large-semi">Nothing to see here</h2>
-      <p className="text-base-regular">
-        You don&apos;t have any orders yet, let us change that {":)"}
-      </p>
-      <div className="mt-4">
-        <LocalizedClientLink href="/" passHref>
-          <Button data-testid="continue-shopping-button">
-            Continue shopping
-          </Button>
-        </LocalizedClientLink>
-      </div>
-    </div>
+    <Container>
+      <Heading level="h2" className="mb-4">Your Orders</Heading>
+      {/* TODO: Implement order list when backend is ready */}
+      <p className="text-ui-fg-subtle">Orders will be displayed here when connected to your backend.</p>
+    </Container>
   )
 }
 

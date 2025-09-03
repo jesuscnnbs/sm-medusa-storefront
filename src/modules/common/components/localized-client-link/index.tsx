@@ -20,10 +20,9 @@ const LocalizedClientLink = ({
   passHref?: true
   [x: string]: any
 }) => {
-  const { countryCode } = useParams()
 
   return (
-    <Link href={`/${countryCode}${href}`} {...props}>
+    <Link href={href} {...props}>
       {children}
     </Link>
   )
