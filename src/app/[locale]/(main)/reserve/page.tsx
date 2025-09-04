@@ -3,13 +3,14 @@ import React from "react"
 import Image from "next/image"
 import Iframe from 'react-iframe'
 import PageTitle from "@modules/common/components/page-title"
+import SmoothScroll from "@modules/common/components/smooth-scroll"
 import {useTranslations} from 'next-intl';
 
 export default function Reserve() {
   const imageRef = React.useRef<HTMLImageElement>(null)
   const t = useTranslations('Common')
   return (
-    <React.Fragment>
+    <SmoothScroll>
       <section className="relative py-40 bg-secondary-sm-darker">
       <Image
         ref={imageRef}
@@ -40,6 +41,6 @@ export default function Reserve() {
         position="relative"
       />
     </section>
-    </React.Fragment>
+    </SmoothScroll>
   )
 }
