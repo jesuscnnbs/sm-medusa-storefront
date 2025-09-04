@@ -6,6 +6,7 @@ import Story from "@modules/home/components/story"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import PetFriendly from "@modules/home/components/pet-friendly"
+import SmoothScroll from "@modules/common/components/smooth-scroll"
 import {getTranslations} from 'next-intl/server';
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default async function Home() {
     return null
   }
   return (
-    <React.Fragment>
+    <SmoothScroll>
       <Hero translation={t('callToActionButton')}/>
       <BestSellers translations={{
         parallaxOne: tHome('BestSellers.ParallaxOne'),
@@ -45,7 +46,7 @@ export default async function Home() {
         textPrimary: tHome('PetFriendly.textPrimary'),
         textSecondary: tHome('PetFriendly.textSecondary'),
       }} />
-    </React.Fragment>
+    </SmoothScroll>
   )
 }
 
