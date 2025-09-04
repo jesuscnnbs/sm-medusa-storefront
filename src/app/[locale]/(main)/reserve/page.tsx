@@ -3,14 +3,15 @@ import React from "react"
 import Image from "next/image"
 import Iframe from 'react-iframe'
 import PageTitle from "@modules/common/components/page-title"
+import SmoothScroll from "@modules/common/components/smooth-scroll"
 import {useTranslations} from 'next-intl';
 
 export default function Reserve() {
   const imageRef = React.useRef<HTMLImageElement>(null)
   const t = useTranslations('Common')
   return (
-    <React.Fragment>
-      <section className="relative py-40 bg-secondary-sm-darker">
+    <SmoothScroll>
+      <section className="relative pt-40 bg-secondary-sm-darker">
       <Image
         ref={imageRef}
         src="/girl-drink.jpeg"
@@ -33,13 +34,13 @@ export default function Reserve() {
       {/* TODO: Add a loading state and change the url locale*/} 
       <Iframe url="https://www.covermanager.com/reserve/module_restaurant/restaurante-santamonica-gourmet/spanish"
         width="100%"
-        height="900px"
+        height="2000px"
         id=""
-        className="max-w-[740px] min-w-[290px] mx-auto bg-light-sm-lighter"
+        className="max-w-[740px] min-w-[290px] mx-auto bg-transparent"
         display="block"
         position="relative"
       />
     </section>
-    </React.Fragment>
+    </SmoothScroll>
   )
 }
