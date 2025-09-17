@@ -1,4 +1,6 @@
+"use client"
 import { clx } from "@medusajs/ui"
+import { useEffect, useState } from "react"
 interface Props {
   text: string;
   initialDelay?: number;
@@ -6,6 +8,22 @@ interface Props {
 }
 
 export default function PageTitle({text, initialDelay=0, classNames=""}: Props) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <span className={classNames}>
+        <div className="relative block text-start opacity-0">
+          {text}
+        </div>
+      </span>
+    )
+  }
+
   return (
     <span className={classNames}>
       <div className="relative block text-start">
