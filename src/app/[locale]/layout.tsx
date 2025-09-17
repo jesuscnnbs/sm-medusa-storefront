@@ -5,6 +5,7 @@ import {routing} from '../../i18n/routing';
 import noise from "../../../public/black-noise.png"
 import localFont from "next/font/local"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const lemonMilkRegular = localFont({
   src: "../../fonts/LemonMilkRegular.otf",
@@ -51,6 +52,7 @@ export default async function LocaleLayout({
           </main>
         </NextIntlClientProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
