@@ -23,7 +23,7 @@ export default async function AdminMenuProfiles() {
             Categorías →
           </Link>
           <Link
-            href="/admin/items"
+            href="/admin/dish"
             className="inline-flex items-center px-4 py-2 text-sm font-medium transition-colors border border-secondary-sm text-secondary-sm hover:bg-secondary-sm hover:text-white"
           >
             Platos →

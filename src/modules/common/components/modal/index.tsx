@@ -50,22 +50,22 @@ const Modal = ({
             <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
+              enterFrom="opacity-0 scale-95 translate-y-4"
+              enterTo="opacity-100 scale-100 translate-y-0"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+              leaveFrom="opacity-100 scale-100 translate-y-0"
+              leaveTo="opacity-0 scale-95 translate-y-4"
             >
               <DialogPanel
                 data-testid={dataTestId}
                 className={clx(
-                  "flex flex-col justify-start w-full transform p-5 text-left align-middle transition-all max-h-[75vh] h-fit",
+                  "flex flex-col justify-start w-full transform p-5 text-left align-middle transition-all max-h-[75vh] h-fit will-change-transform",
                   {
                     "max-w-md": size === "small",
                     "max-w-xl": size === "medium",
                     "max-w-3xl": size === "large",
                     "bg-transparent shadow-none": search,
-                    "bg-ui-bg-base shadow-xl border rounded-none": !search,
+                    "bg-ui-bg-base shadow-xl border rounded-lg": !search,
                   }
                 )}
               >

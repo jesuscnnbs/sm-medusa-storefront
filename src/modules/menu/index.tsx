@@ -6,6 +6,7 @@ import { menu } from "./menu"
 import Modal from "@modules/common/components/modal"
 import { InformationCircleSolid } from "@medusajs/icons"
 import { MenuCategoryType } from "types/global"
+import { convertGoogleDriveUrl, isValidImageUrl } from "@lib/utils/image-utils"
 
 interface Props {
   menuItems: MenuCategoryType[]
@@ -14,14 +15,17 @@ interface Props {
 const Menu = ({menuItems}: Props) => {
   const [itemSelected, setItemSelected] = React.useState<any>(null)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
-  console.info("Menu Items", menuItems)
+
   const handleOpen = (item: any) => {
     setItemSelected(item)
     setModalOpen(true)
   }
   const handleClose = () => {
     setModalOpen(false)
-    setTimeout(() => setItemSelected(null), 201)
+    // Add small delay to prevent flicker
+    setTimeout(() => {
+      setItemSelected(null)
+    }, 200)
   }
   return (
     <div className="max-w-2xl px-6 py-12 mx-auto bg-ui-bg-base">
@@ -43,12 +47,6 @@ const Menu = ({menuItems}: Props) => {
                       className="flex justify-between p-4 mt-2 border rounded-full cursor-pointer small:p-2 small:border-none border-secondary-sm"
                       onClick={() => handleOpen(item)}
                     >
-                      {/**<Image
-                          src={img}
-                          alt={item["name"]}
-                          width={200}
-                          height={200}
-                        />*/}
                       <Heading
                         level="h3"
                         className="uppercase flex-0 line-clamp-1 text-md min-w-40 sm:min-w-fit text-ui-fg-subtle"
@@ -71,18 +69,21 @@ const Menu = ({menuItems}: Props) => {
         {itemSelected && (
           <React.Fragment>
             <div className="p-6">
-              {itemSelected.image && (
+              {itemSelected.image && isValidImageUrl(itemSelected.image) && (
                 <div className="mb-4 text-center">
-                  <Image
-                    src={itemSelected.image}
-                    alt={itemSelected.title}
-                    width={300}
-                    height={300}
-                    className="rounded-lg mx-auto"
-                  />
+                  <div className="relative mx-auto overflow-hidden rounded-lg w-80 h-60">
+                    <Image
+                      src={convertGoogleDriveUrl(itemSelected.image)}
+                      alt={itemSelected.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 320px"
+                      priority
+                    />
+                  </div>
                 </div>
               )}
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex items-start justify-between mb-3">
                 <Heading level="h3" className="text-xl font-bold">
                   {itemSelected.title}
                 </Heading>
@@ -96,7 +97,7 @@ const Menu = ({menuItems}: Props) => {
               
               {itemSelected.ingredients && itemSelected.ingredients.length > 0 && (
                 <div className="mb-3">
-                  <Text className="font-semibold mb-2">Ingredientes:</Text>
+                  <Text className="mb-2 font-semibold">Ingredientes:</Text>
                   <Text className="text-sm text-gray-600">
                     {itemSelected.ingredients.join(', ')}
                   </Text>
@@ -105,7 +106,7 @@ const Menu = ({menuItems}: Props) => {
               
               {itemSelected.allergens && itemSelected.allergens.length > 0 && (
                 <div className="mb-3">
-                  <Text className="font-semibold mb-2 text-orange-600">Alérgenos:</Text>
+                  <Text className="mb-2 font-semibold text-orange-600">Alérgenos:</Text>
                   <Text className="text-sm text-orange-600">
                     {itemSelected.allergens.join(', ')}
                   </Text>
