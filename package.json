@@ -19,7 +19,8 @@
     "db:push-prod": "NODE_ENV=production drizzle-kit push",
     "db:push-neon": "node scripts/push-to-neon.js",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "node scripts/seed.js"
+    "db:seed": "node scripts/seed.js",
+    "db:seed-neon": "node scripts/seed-neon.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
@@ -27,7 +28,7 @@
     "@medusajs/ui": "latest",
     "@meilisearch/instant-meilisearch": "^0.7.1",
     "@motionone/utils": "^10.18.0",
-    "@neondatabase/serverless": "^1.0.1",
+    "@neondatabase/serverless": "^1.0.2",
     "@paypal/paypal-js": "^5.0.6",
     "@paypal/react-paypal-js": "^7.8.1",
     "@radix-ui/react-accordion": "^1.2.1",
@@ -69,8 +70,8 @@
     "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
     "bcryptjs": "^3.0.2",
-    "drizzle-kit": "^0.31.4",
-    "eslint": "8.10.0",
+    "drizzle-kit": "^0.18.1",
+    "eslint": "^8.57.0",
     "eslint-config-next": "15.0.3",
     "postcss": "^8.4.8",
     "prettier": "^2.8.8",

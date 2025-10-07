@@ -99,7 +99,7 @@ const Menu = ({menuItems}: Props) => {
                 <div className="mb-3">
                   <Text className="mb-2 font-semibold">Ingredientes:</Text>
                   <Text className="text-sm text-gray-600">
-                    {itemSelected.ingredients.join(', ')}
+                    {itemSelected.ingredients}
                   </Text>
                 </div>
               )}
