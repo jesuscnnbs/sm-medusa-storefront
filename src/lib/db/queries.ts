@@ -99,6 +99,38 @@ export async function getAllMenuItems() {
     .orderBy(asc(schema.menuItems.sortOrder))
 }
 
+export async function getMenuItemById(id: string) {
+  const [item] = await db
+    .select({
+      id: schema.menuItems.id,
+      name: schema.menuItems.name,
+      nameEn: schema.menuItems.nameEn,
+      description: schema.menuItems.description,
+      descriptionEn: schema.menuItems.descriptionEn,
+      price: schema.menuItems.price,
+      image: schema.menuItems.image,
+      isAvailable: schema.menuItems.isAvailable,
+      isPopular: schema.menuItems.isPopular,
+      ingredients: schema.menuItems.ingredients,
+      allergens: schema.menuItems.allergens,
+      nutritionalInfo: schema.menuItems.nutritionalInfo,
+      sortOrder: schema.menuItems.sortOrder,
+      categoryId: schema.menuItems.categoryId,
+      createdAt: schema.menuItems.createdAt,
+      updatedAt: schema.menuItems.updatedAt,
+      category: {
+        id: schema.menuCategories.id,
+        name: schema.menuCategories.name,
+        nameEn: schema.menuCategories.nameEn,
+      }
+    })
+    .from(schema.menuItems)
+    .leftJoin(schema.menuCategories, eq(schema.menuItems.categoryId, schema.menuCategories.id))
+    .where(eq(schema.menuItems.id, id))
+    .limit(1)
+  return item
+}
+
 export async function getMenuItemsByCategory(categoryId: string) {
   return await db
     .select()

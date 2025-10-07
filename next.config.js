@@ -23,20 +23,16 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com",
+        hostname: "drive.google.com",
       },
       {
         protocol: "https",
-        hostname: "medusa-server-testing.s3.amazonaws.com",
+        hostname: "lh3.googleusercontent.com",
       },
       {
         protocol: "https",
-        hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
+        hostname: "drive.usercontent.google.com",
       },
-      {
-      protocol: "https",
-      hostname: "vsjuinswujbvevyklzxg.supabase.co",
-    },
     ],
   },
 }
