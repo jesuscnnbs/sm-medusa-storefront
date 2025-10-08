@@ -3,8 +3,6 @@ import { Metadata } from "next"
 import Hero from "@modules/home/components/hero"
 import BestSellers from "@modules/home/components/best-sellers"
 import Story from "@modules/home/components/story"
-import { listCollections } from "@lib/data/collections"
-import { getRegion } from "@lib/data/regions"
 import PetFriendly from "@modules/home/components/pet-friendly"
 import SmoothScroll from "@modules/common/components/smooth-scroll"
 import {getTranslations} from 'next-intl/server';
@@ -21,13 +19,6 @@ export default async function Home() {
     getTranslations('Home')
   ])
 
-  const { collections } = await listCollections({
-    fields: "*products",
-  })
-
-  if (!collections) {
-    return null
-  }
   return (
     <SmoothScroll>
       <Hero translation={t('callToActionButton')}/>
