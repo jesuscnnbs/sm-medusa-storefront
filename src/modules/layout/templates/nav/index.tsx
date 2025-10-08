@@ -1,5 +1,4 @@
 import { Button } from "@medusajs/ui"
-import { listRegions } from "@lib/data/regions"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 //import CartButton from "@modules/layout/components/cart-button"
 //import { Suspense } from "react"

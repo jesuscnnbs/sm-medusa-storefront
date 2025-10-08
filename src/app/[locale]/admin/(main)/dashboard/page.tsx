@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { getDashboardStats } from "@lib/data/menu"
+import { getDashboardStats } from "@lib/db/queries"
 import Stat from "@modules/admin/components/stat"
 
 export const metadata: Metadata = {

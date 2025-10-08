@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { listMenuCategories } from "@lib/data/menu"
+import { listMenuCategories } from "@lib/db/queries"
 
 export const metadata: Metadata = {
   title: "Categorías - Santa Monica Admin",

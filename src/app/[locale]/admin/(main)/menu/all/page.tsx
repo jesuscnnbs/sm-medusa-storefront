@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { listMenuProfiles } from "@lib/data/menu"
+import { getAllMenuProfiles } from "@lib/db/queries"
 import Link from "next/link"
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminMenuProfiles() {
-  const profiles = await listMenuProfiles()
+  const profiles = await getAllMenuProfiles()
   
   return (
     <>
@@ -89,12 +89,18 @@ export default async function AdminMenuProfiles() {
                     Creado: {new Date(profile.createdAt).toLocaleDateString('es-ES')}
                   </div>
                   <div className="grid grid-cols-2 gap-1">
-                    <button className="px-1 text-sm font-medium transition-colors text-primary-sm hover:text-primary-sm-darker">
-                      Editar →
-                    </button>
-                    <button className="px-1 text-sm font-medium transition-colors text-secondary-sm hover:text-secondary-sm-darker">
-                      Ver Menús →
-                    </button>
+                    <Link
+                      href={`/admin/menu/${profile.id}`}
+                      className="px-1 text-sm font-medium transition-colors text-primary-sm hover:text-primary-sm-darker"
+                    >
+                      Ver/Editar →
+                    </Link>
+                    <Link
+                      href="/admin/dish"
+                      className="px-1 text-sm font-medium transition-colors text-secondary-sm hover:text-secondary-sm-darker"
+                    >
+                      Ver Platos →
+                    </Link>
                   </div>
                 </div>
               </div>
