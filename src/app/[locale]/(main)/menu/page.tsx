@@ -1,7 +1,7 @@
 import PageTitle from "@modules/common/components/page-title"
 import MenuComponent from "@modules/menu"
 import SmoothScroll from "@modules/common/components/smooth-scroll"
-import { listMenuItems } from "@lib/data/menu"
+import { listMenuItems } from "@lib/db/queries"
 import CommingSoon from "../../comming-soon"
 import { Metadata } from "next/types"
 
