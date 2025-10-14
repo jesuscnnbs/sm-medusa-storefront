@@ -1,7 +1,7 @@
 "use server"
 
 import { eq, count } from 'drizzle-orm'
-import { db, schema } from './index'
+import { db, schema } from '../index'
 
 export async function getDashboardStats() {
   try {

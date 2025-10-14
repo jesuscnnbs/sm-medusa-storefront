@@ -1,8 +1,8 @@
 "use server"
 
 import { eq, desc } from 'drizzle-orm'
-import { db, schema } from './index'
-import type { NewAdminUser } from './index'
+import { db, schema } from '../index'
+import type { NewAdminUser } from '../index'
 
 export async function createAdminUser(data: NewAdminUser) {
   const [user] = await db.insert(schema.adminUsers).values(data).returning()

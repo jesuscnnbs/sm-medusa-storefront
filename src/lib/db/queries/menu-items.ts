@@ -1,9 +1,9 @@
 "use server"
 
 import { eq, asc, and } from 'drizzle-orm'
-import { db, schema } from './index'
-import type { NewMenuItem } from './index'
-import { MenuItem, MenuCategoryType } from "../../types/global"
+import { db, schema } from '../index'
+import type { NewMenuItem } from '../index'
+import { MenuItem, MenuCategoryType } from "../../../types/global"
 
 export async function createMenuItem(data: NewMenuItem) {
   const [item] = await db.insert(schema.menuItems).values(data).returning()

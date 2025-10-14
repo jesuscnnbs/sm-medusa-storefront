@@ -1,8 +1,13 @@
 "use server"
 
 import { eq, desc, asc } from 'drizzle-orm'
-import { db, schema } from './index'
-import type { NewMenuProfile } from './index'
+import { db, schema } from '../index'
+import type { NewMenuProfile } from '../index'
+
+export async function createMenuProfile(data: NewMenuProfile) {
+  const [profile] = await db.insert(schema.menuProfiles).values(data).returning()
+  return profile
+}
 
 export async function getAllMenuProfiles() {
   return await db

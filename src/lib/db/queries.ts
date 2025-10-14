@@ -40,6 +40,7 @@ export {
 
 // Menu Profiles
 export {
+  createMenuProfile,
   getAllMenuProfiles,
   getMenuProfileById,
   updateMenuProfile,

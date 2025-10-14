@@ -1,8 +1,8 @@
 "use server"
 
 import { eq, asc } from 'drizzle-orm'
-import { db, schema } from './index'
-import type { NewSiteSetting } from './index'
+import { db, schema } from '../index'
+import type { NewSiteSetting } from '../index'
 
 export async function createSiteSetting(data: NewSiteSetting) {
   const [setting] = await db.insert(schema.siteSettings).values(data).returning()
