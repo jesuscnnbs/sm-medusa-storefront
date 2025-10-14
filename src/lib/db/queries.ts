@@ -6,7 +6,7 @@ export {
   createAdminUser,
   getAdminUserByEmail,
   getAllAdminUsers
-} from './admin-users'
+} from './queries/admin-users'
 
 // Menu Categories  
 export {
@@ -15,7 +15,7 @@ export {
   updateMenuCategory,
   deleteMenuCategory,
   listMenuCategories
-} from './menu-categories'
+} from './queries/menu-categories'
 
 // Menu Items
 export {
@@ -26,7 +26,7 @@ export {
   updateMenuItem,
   deleteMenuItem,
   listMenuItems
-} from './menu-items'
+} from './queries/menu-items'
 
 // Site Settings
 export {
@@ -36,7 +36,7 @@ export {
   getPublicSiteSettings,
   updateSiteSetting,
   upsertSiteSetting
-} from './site-settings'
+} from './queries/site-settings'
 
 // Menu Profiles
 export {
@@ -44,9 +44,9 @@ export {
   getMenuProfileById,
   updateMenuProfile,
   toggleMenuProfileActive
-} from './menu-profiles'
+} from './queries/menu-profiles'
 
 // Dashboard
 export {
   getDashboardStats
-} from './dashboard'
+} from './queries/dashboard'
