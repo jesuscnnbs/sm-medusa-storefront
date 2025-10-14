@@ -5,6 +5,14 @@ import { db, schema } from '../index'
 import type { NewMenuProfile } from '../index'
 
 export async function createMenuProfile(data: NewMenuProfile) {
+  // If this menu should be active, deactivate all other menus first
+  if (data.isActive) {
+    await db
+      .update(schema.menuProfiles)
+      .set({ isActive: false, updatedAt: new Date() })
+      .where(eq(schema.menuProfiles.isActive, true))
+  }
+
   const [profile] = await db.insert(schema.menuProfiles).values(data).returning()
   return profile
 }
@@ -26,6 +34,14 @@ export async function getMenuProfileById(id: string) {
 }
 
 export async function updateMenuProfile(id: string, data: Partial<NewMenuProfile>) {
+  // If this menu should be active, deactivate all other menus first
+  if (data.isActive) {
+    await db
+      .update(schema.menuProfiles)
+      .set({ isActive: false, updatedAt: new Date() })
+      .where(eq(schema.menuProfiles.isActive, true))
+  }
+
   const [profile] = await db
     .update(schema.menuProfiles)
     .set({ ...data, updatedAt: new Date() })

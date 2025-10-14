@@ -2,6 +2,7 @@
 
 import { useState, useEffect, use } from "react"
 import { getMenuProfileById, toggleMenuProfileActive } from "@lib/db/queries"
+import MenuProfileForm from "@modules/admin/components/menu-profile-form"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -17,6 +18,7 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
   const [menuProfile, setMenuProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [toggling, setToggling] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
     loadMenuProfile()
@@ -55,6 +57,15 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
     }
   }
 
+  const handleEditSuccess = () => {
+    setIsEditing(false)
+    loadMenuProfile()
+  }
+
+  const handleEditCancel = () => {
+    setIsEditing(false)
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -65,6 +76,45 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
 
   if (!menuProfile) {
     return notFound()
+  }
+
+  // Convert date fields for form
+  const formattedMenuProfile = {
+    ...menuProfile,
+    validFrom: menuProfile.validFrom ? new Date(menuProfile.validFrom).toISOString().split('T')[0] : "",
+    validTo: menuProfile.validTo ? new Date(menuProfile.validTo).toISOString().split('T')[0] : "",
+  }
+
+  if (isEditing) {
+    return (
+      <>
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <Link
+                href="/admin/menu/all"
+                className="inline-flex items-center mb-4 text-sm font-medium transition-colors text-primary-sm hover:text-primary-sm-darker"
+              >
+                ← Volver a Menús
+              </Link>
+              <h1 className="mb-2 text-2xl font-bold text-dark-sm">
+                Editar Menú
+              </h1>
+              <p className="text-grey-sm">
+                Modifica la configuración de este perfil de menú
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <MenuProfileForm 
+          initialData={formattedMenuProfile}
+          mode="edit"
+          onSuccess={handleEditSuccess}
+          onCancel={handleEditCancel}
+        />
+      </>
+    )
   }
 
   return (
@@ -87,6 +137,12 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
           </div>
           
           <div className="flex gap-2">
+            <button
+              onClick={() => setIsEditing(true)}
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors bg-secondary-sm hover:bg-secondary-sm-darker"
+            >
+              Editar Menú
+            </button>
             <button
               onClick={handleToggleActive}
               disabled={toggling}

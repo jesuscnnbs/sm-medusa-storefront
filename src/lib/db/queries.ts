@@ -51,3 +51,12 @@ export {
 export {
   getDashboardStats
 } from './queries/dashboard'
+
+// Menu Profile Items (Many-to-Many associations)
+export {
+  addItemToMenuProfile,
+  removeItemFromMenuProfile,
+  getMenuProfileItems,
+  updateMenuProfileItemSortOrder,
+  setMenuProfileItems
+} from './queries/menu-profile-items'

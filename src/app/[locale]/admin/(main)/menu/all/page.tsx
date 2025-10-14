@@ -17,6 +17,12 @@ export default async function AdminMenuProfiles() {
         <p className="text-grey-sm">Gestiona los menús que has creado utilizando los elementos y las categorías definidos.</p>
         <div className="flex gap-2 mt-4">
           <Link
+            href="/admin/menu/create"
+            className="inline-flex items-center px-4 py-2 text-sm font-medium transition-colors border border-primary-sm bg-primary-sm text-white hover:bg-primary-sm-darker"
+          >
+            + Crear Menú
+          </Link>
+          <Link
             href="/admin/categories"
             className="inline-flex items-center px-4 py-2 text-sm font-medium transition-colors border border-secondary-sm text-secondary-sm hover:bg-secondary-sm hover:text-white"
           >

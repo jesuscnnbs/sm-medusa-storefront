@@ -74,7 +74,6 @@ export const menuItems = pgTable('menu_items', {
   description: text('description'),
   descriptionEn: text('description_en'), // English translation
   price: integer('price').notNull(), // Price in cents
-  menuProfileId: uuid('menu_profile_id').references(() => menuProfiles.id, { onDelete: 'cascade' }).notNull(),
   categoryId: uuid('category_id').references(() => menuCategories.id),
   image: text('image'), // Image URL
   isAvailable: boolean('is_available').default(true).notNull(),
@@ -91,6 +90,17 @@ export const menuItems = pgTable('menu_items', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
+
+// Junction table for many-to-many relationship between menu profiles and menu items
+export const menuProfileItems = pgTable('menu_profile_items', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  menuProfileId: uuid('menu_profile_id').references(() => menuProfiles.id, { onDelete: 'cascade' }).notNull(),
+  menuItemId: uuid('menu_item_id').references(() => menuItems.id, { onDelete: 'cascade' }).notNull(),
+  sortOrder: integer('sort_order').default(0).notNull(), // Order of item within this specific menu profile
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  uniqueMenuProfileItem: unique('menu_profile_items_profile_item_unique').on(table.menuProfileId, table.menuItemId)
+}))
 
 // Site Settings table for dynamic configuration
 export const siteSettings = pgTable('site_settings', {

@@ -1,6 +1,6 @@
 "use server"
 
-import { eq, asc, and } from 'drizzle-orm'
+import { eq, asc, and, or, isNull } from 'drizzle-orm'
 import { db, schema } from '../index'
 import type { NewMenuItem } from '../index'
 import { MenuItem, MenuCategoryType } from "../../../types/global"
@@ -96,46 +96,99 @@ export async function deleteMenuItem(id: string) {
   return item
 }
 
-export async function listMenuItems(locale: 'en' | 'es' = 'es', query?: Record<string, any>) {
+export async function listMenuItems(locale: 'en' | 'es' = 'es', menuProfileId?: string) {
   try {
-    const menuItems = await db
-      .select({
-        id: schema.menuItems.id,
-        name: schema.menuItems.name,
-        nameEn: schema.menuItems.nameEn,
-        description: schema.menuItems.description,
-        descriptionEn: schema.menuItems.descriptionEn,
-        price: schema.menuItems.price,
-        image: schema.menuItems.image,
-        ingredients: schema.menuItems.ingredients,
-        allergens: schema.menuItems.allergens,
-        isAvailable: schema.menuItems.isAvailable,
-        isPopular: schema.menuItems.isPopular,
-        sortOrder: schema.menuItems.sortOrder,
-        categoryId: schema.menuItems.categoryId,
-        categoryName: schema.menuCategories.name,
-        categoryNameEn: schema.menuCategories.nameEn,
-        categoryDescription: schema.menuCategories.description,
-        categoryDescriptionEn: schema.menuCategories.descriptionEn,
-        categorySortOrder: schema.menuCategories.sortOrder,
-      })
-      .from(schema.menuItems)
-      .leftJoin(
-        schema.menuCategories,
-        eq(schema.menuItems.categoryId, schema.menuCategories.id)
-      )
-      .leftJoin(
-        schema.menuProfiles,
-        eq(schema.menuItems.menuProfileId, schema.menuProfiles.id)
-      )
-      .where(
-        and(
-          eq(schema.menuItems.isAvailable, true),
-          eq(schema.menuCategories.isActive, true),
-          eq(schema.menuProfiles.isActive, true)
+    let menuItems
+    
+    if (menuProfileId) {
+      // Get items for a specific menu profile
+      menuItems = await db
+        .select({
+          id: schema.menuItems.id,
+          name: schema.menuItems.name,
+          nameEn: schema.menuItems.nameEn,
+          description: schema.menuItems.description,
+          descriptionEn: schema.menuItems.descriptionEn,
+          price: schema.menuItems.price,
+          image: schema.menuItems.image,
+          ingredients: schema.menuItems.ingredients,
+          allergens: schema.menuItems.allergens,
+          isAvailable: schema.menuItems.isAvailable,
+          isPopular: schema.menuItems.isPopular,
+          sortOrder: schema.menuProfileItems.sortOrder, // Use sort order from the association
+          categoryId: schema.menuItems.categoryId,
+          categoryName: schema.menuCategories.name,
+          categoryNameEn: schema.menuCategories.nameEn,
+          categoryDescription: schema.menuCategories.description,
+          categoryDescriptionEn: schema.menuCategories.descriptionEn,
+          categorySortOrder: schema.menuCategories.sortOrder,
+        })
+        .from(schema.menuProfileItems)
+        .innerJoin(schema.menuItems, eq(schema.menuProfileItems.menuItemId, schema.menuItems.id))
+        .leftJoin(schema.menuCategories, eq(schema.menuItems.categoryId, schema.menuCategories.id))
+        .innerJoin(schema.menuProfiles, eq(schema.menuProfileItems.menuProfileId, schema.menuProfiles.id))
+        .where(
+          and(
+            eq(schema.menuProfileItems.menuProfileId, menuProfileId),
+            eq(schema.menuItems.isAvailable, true),
+            or(
+              isNull(schema.menuItems.categoryId),
+              eq(schema.menuCategories.isActive, true)
+            ),
+            eq(schema.menuProfiles.isActive, true)
+          )
         )
-      )
-      .orderBy(schema.menuCategories.sortOrder, schema.menuItems.sortOrder)
+        .orderBy(schema.menuCategories.sortOrder, schema.menuProfileItems.sortOrder)
+    } else {
+      // First, try to get the active menu profile
+      const [activeProfile] = await db
+        .select({ id: schema.menuProfiles.id })
+        .from(schema.menuProfiles)
+        .where(eq(schema.menuProfiles.isActive, true))
+        .limit(1)
+
+      if (!activeProfile) {
+        // No active menu profile found, return empty array
+        return []
+      }
+
+      // Get items from the active menu profile
+      menuItems = await db
+        .select({
+          id: schema.menuItems.id,
+          name: schema.menuItems.name,
+          nameEn: schema.menuItems.nameEn,
+          description: schema.menuItems.description,
+          descriptionEn: schema.menuItems.descriptionEn,
+          price: schema.menuItems.price,
+          image: schema.menuItems.image,
+          ingredients: schema.menuItems.ingredients,
+          allergens: schema.menuItems.allergens,
+          isAvailable: schema.menuItems.isAvailable,
+          isPopular: schema.menuItems.isPopular,
+          sortOrder: schema.menuProfileItems.sortOrder,
+          categoryId: schema.menuItems.categoryId,
+          categoryName: schema.menuCategories.name,
+          categoryNameEn: schema.menuCategories.nameEn,
+          categoryDescription: schema.menuCategories.description,
+          categoryDescriptionEn: schema.menuCategories.descriptionEn,
+          categorySortOrder: schema.menuCategories.sortOrder,
+        })
+        .from(schema.menuProfileItems)
+        .innerJoin(schema.menuItems, eq(schema.menuProfileItems.menuItemId, schema.menuItems.id))
+        .leftJoin(schema.menuCategories, eq(schema.menuItems.categoryId, schema.menuCategories.id))
+        .where(
+          and(
+            eq(schema.menuProfileItems.menuProfileId, activeProfile.id),
+            eq(schema.menuItems.isAvailable, true),
+            or(
+              isNull(schema.menuItems.categoryId),
+              eq(schema.menuCategories.isActive, true)
+            )
+          )
+        )
+        .orderBy(schema.menuCategories.sortOrder, schema.menuProfileItems.sortOrder)
+    }
 
     return transformToCategoryStructure(menuItems, locale)
   } catch (error) {
