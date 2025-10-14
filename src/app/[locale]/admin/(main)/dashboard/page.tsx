@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* User Management */}
-      <div className="overflow-hidden shadow bg-light-sm-lighter">
+      <div className="overflow-hidden rounded-md shadow bg-light-sm-lighter">
         <div className="p-5">
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="px-5 py-3 bg-light-sm">
           <div className="text-sm">
-            <a href="#" className="font-medium transition-colors text-primary-sm hover:text-primary-sm-darker">
+            <a href="/admin/admin" className="font-medium transition-colors text-primary-sm hover:text-primary-sm-darker">
               Ver Usuarios →
             </a>
           </div>
@@ -128,7 +128,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="px-5 py-3 bg-light-sm">
           <div className="text-sm">
-            <a href="#" className="font-medium transition-colors text-dark-sm hover:text-dark-sm-darker">
+            <a href="/admin/settings" className="font-medium transition-colors text-dark-sm hover:text-dark-sm-darker">
               Ver ajustes →
             </a>
           </div>

@@ -7,15 +7,15 @@ import {
   Transition,
 } from "@headlessui/react"
 import { XMark } from "@medusajs/icons"
-import { Text, clx, useToggleState } from "@medusajs/ui"
+import { Text, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 
-const SideMenu = ({
+const AdminSideMenu = ({
   menuItems,
 }: {
-  menuItems: { [key: string]: {href: string; name: string} }
+  menuItems: { [key: string]: { href: string; name: string } }
 }) => {
   const toggleState = useToggleState()
 
@@ -27,7 +27,7 @@ const SideMenu = ({
             <>
               <div className="relative flex h-full">
                 <PopoverButton
-                  data-testid="nav-menu-button"
+                  data-testid="admin-nav-menu-button"
                   className="relative flex items-center h-full transition-colors duration-200 ease-out focus:outline-none hover:text-ui-fg-base"
                 >
                   <div className="p-2 rounded-full hover:bg-zinc-200">
@@ -59,14 +59,22 @@ const SideMenu = ({
               >
                 <PopoverPanel className="absolute inset-x-0 z-30 flex flex-col w-full h-screen pr-4 m-0 overflow-hidden text-sm sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min text-secondary-sm-darker backdrop-blur-2xl">
                   <div
-                    data-testid="nav-menu-popup"
+                    data-testid="admin-nav-menu-popup"
                     className="flex flex-col justify-between h-full p-6 overflow-hidden bg-light-sm"
                   >
                     <div className="absolute pointer-events-none right-2 opacity-15 bottom-2">
                       <SantaMonicaIcon size={750} />
                     </div>
-                    <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
+                    <div className="flex items-center justify-between" id="admin-header">
+                      <div>
+                        <h2 className="text-xl font-lemonMilk text-secondary-sm">
+                          Santa Mónica
+                        </h2>
+                        <p className="mt-1 text-sm text-grey-sm">
+                          Panel de administrador
+                        </p>
+                      </div>
+                      <button data-testid="close-admin-menu-button" onClick={close}>
                         <XMark />
                       </button>
                     </div>
@@ -76,10 +84,11 @@ const SideMenu = ({
                           <li key={item.name}>
                             <LocalizedClientLink
                               href={item.href}
-                              className="text-3xl leading-10 hover:text-ui-fg-disabled"
+                              className="flex items-center gap-3 text-3xl leading-10 hover:text-ui-fg-disabled"
                               onClick={close}
-                              data-testid={`${item.name.toLowerCase()}-link`}
+                              data-testid={`admin-${item.name.toLowerCase()}-link`}
                             >
+                              {getMenuIcon(item.name)}
                               {item.name}
                             </LocalizedClientLink>
                           </li>
@@ -87,11 +96,13 @@ const SideMenu = ({
                       })}
                     </ul>
                     <div className="flex flex-col gap-y-6">
-                      <div
-                        className="flex justify-between"
-                        onMouseEnter={toggleState.open}
-                        onMouseLeave={toggleState.close}
-                      >
+                      <div className="pt-4 border-t border-grey-sm-lighter">
+                        <Text className="text-xs text-grey-sm">
+                          Panel de administración
+                        </Text>
+                        <Text className="text-xs text-grey-sm-darker">
+                          Gestiona tu restaurante
+                        </Text>
                       </div>
                       <Text className="flex justify-between txt-compact-small">
                         © {new Date().getFullYear()} Santa Mónica. All rights
@@ -109,4 +120,40 @@ const SideMenu = ({
   )
 }
 
-export default SideMenu
+// Helper function to get icons for menu items
+const getMenuIcon = (itemName: string) => {
+  switch (itemName) {
+    case "Dashboard":
+      return (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      )
+    case "Menús":
+      return (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      )
+    case "Platos":
+      return (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      )
+    case "Categorías":
+      return (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      )
+    default:
+      return (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      )
+  }
+}
+
+export default AdminSideMenu
