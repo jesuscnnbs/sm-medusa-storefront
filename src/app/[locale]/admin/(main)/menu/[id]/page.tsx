@@ -1,10 +1,12 @@
 "use client"
 
-import { useState, useEffect, use } from "react"
-import { getMenuProfileById, toggleMenuProfileActive } from "@lib/db/queries"
+import { useState, useEffect } from "react"
+import { getMenuProfileById, toggleMenuProfileActive, deleteMenuProfile } from "@lib/db/queries"
 import MenuProfileForm from "@modules/admin/components/menu-profile-form"
 import Link from "next/link"
-import { notFound } from "next/navigation"
+import { notFound, useRouter } from "next/navigation"
+import { Trash } from "@medusajs/icons"
+import { useParams } from "@lib/hooks"
 
 interface MenuDetailsProps {
   params: Promise<{
@@ -14,17 +16,23 @@ interface MenuDetailsProps {
 }
 
 export default function MenuDetailsPage({ params }: MenuDetailsProps) {
-  const resolvedParams = use(params)
+  const resolvedParams = useParams(params)
+  const router = useRouter()
   const [menuProfile, setMenuProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [toggling, setToggling] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
-    loadMenuProfile()
-  }, [resolvedParams.id])
+    if (resolvedParams?.id) {
+      loadMenuProfile()
+    }
+  }, [resolvedParams?.id])
 
   const loadMenuProfile = async () => {
+    if (!resolvedParams?.id) return
+    
     try {
       const profile = await getMenuProfileById(resolvedParams.id)
       if (!profile) {
@@ -39,6 +47,8 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
   }
 
   const handleToggleActive = async () => {
+    if (!resolvedParams?.id) return
+    
     try {
       setToggling(true)
       const updatedProfile = await toggleMenuProfileActive(resolvedParams.id)
@@ -66,7 +76,28 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
     setIsEditing(false)
   }
 
-  if (loading) {
+  const handleDelete = async () => {
+    if (!menuProfile || !resolvedParams?.id) return
+
+    if (!confirm(`¿Estás seguro de que quieres eliminar el menú
+  "${menuProfile.name}"? Esta acción no se puede deshacer.`)) {
+      return
+    }
+
+    try {
+      setDeleting(true)
+      await deleteMenuProfile(resolvedParams.id)
+      alert("Menú eliminado exitosamente")
+      router.push("/admin/menu/all")
+    } catch (error) {
+      console.error("Error deleting menu:", error)
+      alert("Error al eliminar el menú")
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  if (loading || !resolvedParams) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg text-grey-sm">Cargando menú...</div>
@@ -154,6 +185,15 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
             >
               {toggling ? "Cambiando..." : menuProfile.isActive ? "Desactivar Menú" : "Activar Menú"}
             </button>
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors bg-red-600 rounded-full hover:bg-red-700 disabled:opacity-50"
+              title="Eliminar menú"
+            >
+              <Trash className="w-4 h-4 mr-2" />
+              {deleting ? "Eliminando..." : "Eliminar"}
+            </button>
           </div>
         </div>
       </div>
@@ -169,13 +209,13 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-dark-sm">Nombre (Español)</label>
-                  <div className="px-3 py-2 bg-gray-50 rounded-md">
+                  <div className="px-3 py-2 rounded-md bg-gray-50">
                     {menuProfile.name}
                   </div>
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-dark-sm">Nombre (Inglés)</label>
-                  <div className="px-3 py-2 bg-gray-50 rounded-md">
+                  <div className="px-3 py-2 rounded-md bg-gray-50">
                     {menuProfile.nameEn || "N/A"}
                   </div>
                 </div>
@@ -185,13 +225,13 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-dark-sm">Descripción (Español)</label>
-                  <div className="px-3 py-2 bg-gray-50 rounded-md min-h-20">
+                  <div className="px-3 py-2 rounded-md bg-gray-50 min-h-20">
                     {menuProfile.description || "N/A"}
                   </div>
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-dark-sm">Descripción (Inglés)</label>
-                  <div className="px-3 py-2 bg-gray-50 rounded-md min-h-20">
+                  <div className="px-3 py-2 rounded-md bg-gray-50 min-h-20">
                     {menuProfile.descriptionEn || "N/A"}
                   </div>
                 </div>
@@ -201,7 +241,7 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-dark-sm">Válido Desde</label>
-                  <div className="px-3 py-2 bg-gray-50 rounded-md">
+                  <div className="px-3 py-2 rounded-md bg-gray-50">
                     {menuProfile.validFrom 
                       ? new Date(menuProfile.validFrom).toLocaleDateString('es-ES')
                       : "Sin restricción"
@@ -210,7 +250,7 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-dark-sm">Válido Hasta</label>
-                  <div className="px-3 py-2 bg-gray-50 rounded-md">
+                  <div className="px-3 py-2 rounded-md bg-gray-50">
                     {menuProfile.validTo 
                       ? new Date(menuProfile.validTo).toLocaleDateString('es-ES')
                       : "Sin restricción"
@@ -264,7 +304,7 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
 
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-dark-sm">Orden</label>
-                <div className="px-3 py-1 text-sm bg-gray-50 rounded-md">
+                <div className="px-3 py-1 text-sm rounded-md bg-gray-50">
                   {menuProfile.sortOrder}
                 </div>
               </div>

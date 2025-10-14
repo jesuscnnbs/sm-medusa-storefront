@@ -44,7 +44,8 @@ export {
   getAllMenuProfiles,
   getMenuProfileById,
   updateMenuProfile,
-  toggleMenuProfileActive
+  toggleMenuProfileActive,
+  deleteMenuProfile,
 } from './queries/menu-profiles'
 
 // Dashboard

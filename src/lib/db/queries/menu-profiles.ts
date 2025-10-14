@@ -74,3 +74,11 @@ export async function toggleMenuProfileActive(id: string) {
 
   return updatedProfile
 }
+
+export async function deleteMenuProfile(id: string) {
+  const [deletedProfile] = await db
+    .delete(schema.menuProfiles)
+    .where(eq(schema.menuProfiles.id, id))
+    .returning()
+  return deletedProfile
+}
