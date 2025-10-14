@@ -1,31 +1,9 @@
-<p align="center">
-  <a href="https://www.medusajs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    </picture>
-  </a>
-</p>
-
 <h1 align="center">
-  Medusa Next.js Starter Template
+  Santa Monica Burgers
 </h1>
 
 <p align="center">
-Combine Medusa's modules for your commerce backend with the newest Next.js 15 features for a performant storefront.</p>
-
-<p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
-  <a href="https://discord.gg/xpCwq3Kfn8">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
-  </a>
-</p>
+A modern restaurant website built with Next.js 15, featuring bilingual support, menu management, and admin dashboard.</p>
 
 ### Security Mesaures implemented
 
@@ -84,44 +62,37 @@ Additional Security for Vercel:
   4. Backup: Enable automatic database backups in Vercel
   5. Domain Security: Add your domain to Vercel's domain allowlist
 
-### Prerequisites
-
-To use the [Next.js Starter Template](https://medusajs.com/nextjs-commerce/), you should have a Medusa server running locally on port 9000.
-For a quick setup, run:
-
-```shell
-npx create-medusa-app@latest
-```
-
-Check out [create-medusa-app docs](https://docs.medusajs.com/create-medusa-app) for more details and troubleshooting.
-
 # Overview
 
-The Medusa Next.js Starter is built with:
+Santa Monica Burgers is built with:
 
-- [Next.js](https://nextjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Medusa](https://medusajs.com/)
+- [Next.js 15](https://nextjs.org/) - React framework with App Router
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [Drizzle ORM](https://orm.drizzle.team/) - Type-safe database toolkit
+- [PostgreSQL](https://www.postgresql.org/) - Robust relational database
 
-Features include:
+## Features
 
-- Full ecommerce support:
-  - Product Detail Page
-  - Product Overview Page
-  - Search with Algolia / MeiliSearch
-  - Product Collections
-  - Cart
-  - Checkout with PayPal and Stripe
-  - User Accounts
-  - Order Details
-- Full Next.js 15 support:
-  - App Router
-  - Next fetching/caching
-  - Server Components
-  - Server Actions
-  - Streaming
-  - Static Pre-Rendering
+- **Restaurant Management**:
+  - Dynamic menu system with categories and items
+  - Bilingual support (Spanish/English)
+  - Admin dashboard for content management
+  - Menu profile management (seasonal menus, special events)
+  - Real-time menu updates
+
+- **Security & Admin**:
+  - Secure admin authentication
+  - Session management with IP binding
+  - Rate limiting for login attempts
+  - Role-based access control
+
+- **Modern Web Features**:
+  - Server Components and Server Actions
+  - Responsive design with mobile-first approach
+  - SEO optimized with internationalization
+  - Performance optimized with Next.js 15
+  - Edge-ready with serverless database support
 
 
 # Quickstart
@@ -434,10 +405,153 @@ NEXT_PUBLIC_STRIPE_KEY="your-stripe-key"
 NEXT_PUBLIC_PAYPAL_CLIENT_ID="your-paypal-id"
 ```
 
+## Database Setup & Migrations
+
+This project uses PostgreSQL with Drizzle ORM for database management. The setup is configured to work with both local PostgreSQL and remote databases (Neon for production).
+
+### Local Development Setup
+
+#### 1. Install PostgreSQL
+```bash
+# macOS (using Homebrew)
+brew install postgresql
+brew services start postgresql
+
+# Ubuntu/Debian
+sudo apt-get install postgresql postgresql-contrib
+
+# Create database
+createdb santa_monica_db
+```
+
+#### 2. Configure Environment Variables
+Create `.env.local` for local development:
+```bash
+# Database Configuration for Local Development
+DATABASE_URL="postgresql://user:pass@localhost:5432/santa_monica_db"
+POSTGRES_URL="postgresql://user:pass@localhost:5432/santa_monica_db"
+
+# Admin Authentication
+ADMIN_JWT_SECRET="your-local-jwt-secret-change-this"
+
+# Development URLs
+NEXT_PUBLIC_BASE_URL="http://localhost:8000"
+```
+
+**Note:** Replace `user` with your actual PostgreSQL username.
+
+#### 3. Run Initial Migration
+```bash
+# Install dependencies
+npm install
+
+# Generate and apply database schema
+npm run db:generate  # Generate migration files
+npm run db:push      # Apply migrations to local database
+
+# Test connection
+npm run db:test      # Verify database connectivity
+```
+
+### Production Setup (Neon Database)
+
+#### 1. Configure Environment Variables
+Create `.env` or update `.env.production`:
+```bash
+# Production Database (Neon)
+DATABASE_URL="postgresql://username:password@host:port/database?sslmode=require"
+POSTGRES_URL="postgresql://username:password@host:port/database?sslmode=require"
+POSTGRES_URL_NON_POOLING="postgresql://username:password@host:port/database?sslmode=require"
+
+# Security (required for production)
+NEXTAUTH_SECRET="your-production-secret"
+ADMIN_SESSION_SECRET="another-production-secret"
+NODE_ENV="production"
+```
+
+#### 2. Run Production Migration
+```bash
+# Push schema to production database
+npm run db:push-prod
+
+# Or use Neon-specific script
+npm run db:push-neon
+```
+
+### Database Commands Reference
+
+#### Local Development
+```bash
+# Schema Operations
+npm run db:generate    # Generate migration files from schema changes
+npm run db:push        # Apply schema changes to LOCAL database
+npm run db:studio      # Open Drizzle Studio for LOCAL database
+
+# Testing & Seeding
+npm run db:test        # Test LOCAL database connection
+npm run db:seed        # Seed LOCAL database with sample data
+```
+
+#### Production/Neon
+```bash
+# Production Operations  
+npm run db:push-prod   # Apply schema changes to PRODUCTION database
+npm run db:push-neon   # Apply schema changes via Neon script
+npm run db:studio-neon # Open Drizzle Studio for NEON database
+
+# Testing & Seeding
+npm run db:test-neon   # Test NEON database connection
+npm run db:seed-neon   # Seed NEON database with sample data
+```
+
+### Migration Workflow
+
+#### Making Schema Changes
+1. **Modify schema** in `src/lib/db/schema.ts`
+2. **Generate migration** (creates migration files):
+   ```bash
+   npm run db:generate
+   ```
+3. **Apply to local database**:
+   ```bash
+   npm run db:push
+   ```
+4. **Test changes locally**:
+   ```bash
+   npm run db:test
+   npm run dev
+   ```
+5. **Deploy to production**:
+   ```bash
+   npm run db:push-prod
+   ```
+
+#### Database Connection Logic
+The application automatically selects the appropriate database driver:
+- **Local Development**: Uses `node-postgres` driver with connection pooling
+- **Production/Vercel**: Uses `@neondatabase/serverless` driver for edge compatibility
+
+### Troubleshooting
+
+#### Common Issues
+1. **Migration not applied locally**: Ensure you're using the local database commands (`npm run db:push` not `npm run db:push-prod`)
+2. **Connection refused**: Check PostgreSQL is running and database exists
+3. **Permission denied**: Verify PostgreSQL user permissions
+4. **Schema conflicts**: Use `npm run db:studio` to inspect current schema
+
+#### Reset Local Database
+```bash
+# Drop and recreate database
+dropdb santa_monica_db
+createdb santa_monica_db
+npm run db:push
+npm run db:seed
+```
+
 ### Development Commands
 
 ```bash
-# Database operations
+# Database operations (see above for detailed commands)
 npm run db:test      # Test database connection
 npm run db:push      # Push schema changes
 npm run db:studio    # Open Drizzle Studio
