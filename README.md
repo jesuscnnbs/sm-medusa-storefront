@@ -97,189 +97,206 @@ Santa Monica Burgers is built with:
 
 # Quickstart
 
-### Setting up the environment variables
+### Prerequisites
 
-Navigate into your projects directory and get your environment variables ready:
+- Node.js 18+ 
+- PostgreSQL 12+
+- npm or yarn
 
-```shell
-cd nextjs-starter-medusa/
-mv .env.template .env.local
+### Installation
+
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd santa-monica-burgers
 ```
 
-### Install dependencies
-
-Use Yarn to install all dependencies.
-
-```shell
-yarn
+2. **Install dependencies**
+```bash
+npm install
 ```
 
-### Start developing
-
-You are now ready to start up your project.
-
-```shell
-yarn dev
+3. **Set up environment variables**
+```bash
+cp .env.example .env.local
+```
+Edit `.env.local` with your database credentials:
+```bash
+DATABASE_URL="postgresql://user:@localhost:5432/santa_monica_db"
+ADMIN_JWT_SECRET="your-secret-key"
 ```
 
-### Open the code and start customizing
+4. **Set up database**
+```bash
+# Create database
+createdb santa_monica_db
+
+# Run migrations
+npm run db:push
+
+# Seed with sample data (optional)
+npm run db:seed
+```
+
+5. **Start development server**
+```bash
+npm run dev
+```
 
 Your site is now running at http://localhost:8000!
 
-# Payment integrations
+# Payment integrations (Ready for Implementation)
 
-By default this starter supports the following payment integrations
+The project structure is ready to support the following payment integrations:
 
 - [Stripe](https://stripe.com/)
-- [Paypal](https://www.paypal.com/)
+- [PayPal](https://www.paypal.com/)
 
-To enable the integrations you need to add the following to your `.env.local` file:
+To enable payments when ready, add the following to your `.env.local` file:
 
 ```shell
 NEXT_PUBLIC_STRIPE_KEY=<your-stripe-public-key>
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=<your-paypal-client-id>
 ```
 
-You will also need to setup the integrations in your Medusa server. See the [Medusa documentation](https://docs.medusajs.com) for more information on how to configure [Stripe](https://docs.medusajs.com/add-plugins/stripe) and [PayPal](https://docs.medusajs.com/add-plugins/paypal) in your Medusa project.
+The payment components are already configured in the codebase but require backend API implementation.
 
-# Search integration
+# Search integration (Ready for Implementation)
 
-This starter is configured to support using the `medusa-search-meilisearch` plugin out of the box. To enable search you will need to enable the feature flag in `./store.config.json`, which you do by changing the config to this:
+The project structure includes search capabilities that can be implemented with:
 
-```javascript
-{
-  "features": {
-    // other features...
-    "search": true
-  }
-}
+- [MeiliSearch](https://www.meilisearch.com/)
+- [Algolia](https://www.algolia.com/)
+
+Search components are built with Algolia's `react-instant-search-hooks-web` library for flexibility.
+
+## To enable search:
+
+1. **Choose your search provider and install:**
+```bash
+# For Algolia
+npm install algoliasearch
+
+# For MeiliSearch  
+npm install @meilisearch/instant-meilisearch
 ```
 
-Before you can search you will need to install the plugin in your Medusa server, for a written guide on how to do this – [see our documentation](https://docs.medusajs.com/add-plugins/meilisearch).
-
-The search components in this starter are developed with Algolia's `react-instant-search-hooks-web` library which should make it possible for you to seemlesly change your search provider to Algolia instead of MeiliSearch.
-
-To do this you will need to add `algoliasearch` to the project, by running
-
-```shell
-yarn add algoliasearch
+2. **Configure environment variables:**
+```bash
+# Add to .env.local
+NEXT_PUBLIC_SEARCH_ENABLED=true
+NEXT_PUBLIC_SEARCH_APP_ID=your-app-id
+NEXT_PUBLIC_SEARCH_API_KEY=your-api-key
+NEXT_PUBLIC_INDEX_NAME=menu_items
 ```
 
-After this you will need to switch the current MeiliSearch `SearchClient` out with a Alogolia client. To do this update `@lib/search-client`.
+3. **Update search client configuration** in `@lib/search-client`
 
-```ts
-import algoliasearch from "algoliasearch/lite"
+The search functionality is ready to index menu items, categories, and other restaurant content.
 
-const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || "test_app_id" // You should add this to your environment variables
-
-const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || "test_key"
-
-export const searchClient = algoliasearch(appId, apiKey)
-
-export const SEARCH_INDEX_NAME =
-  process.env.NEXT_PUBLIC_INDEX_NAME || "products"
-```
-
-Then, in `src/app/(main)/search/actions.ts`, remove the MeiliSearch code (line 10-16) and uncomment the Algolia code.
-
-```ts
-"use server"
-
-import { searchClient, SEARCH_INDEX_NAME } from "@lib/search-client"
-
-/**
- * Uses MeiliSearch or Algolia to search for a query
- * @param {string} query - search query
- */
-export async function search(query: string) {
-  const index = searchClient.initIndex(SEARCH_INDEX_NAME)
-  const { hits } = await index.search(query)
-
-  return hits
-}
-```
-
-After this you will need to set up Algolia with your Medusa server, and then you should be good to go. For a more thorough walkthrough of using Algolia with Medusa – [see our documentation](https://docs.medusajs.com/add-plugins/algolia), and the [documentation for using `react-instantsearch-hooks-web`](https://www.algolia.com/doc/guides/building-search-ui/getting-started/react-hooks/).
-
-## App structure
-
-For the new version, the main folder structure remains unchanged. The contents have changed quite a bit though.
+# Project Structure
 
 ```
 .
 └── src
-    ├── app
-    ├── lib
-    ├── modules
-    ├── styles
-    ├── types
-    └── middleware.ts
-
+    ├── app                 # Next.js App Router pages and layouts
+    ├── lib                 # Core utilities, database, and configurations
+    ├── modules             # Feature-based components and templates
+    ├── styles              # Global styles and Tailwind CSS
+    ├── types               # TypeScript type definitions
+    └── middleware.ts       # Internationalization and security middleware
 ```
 
-### `/app` directory
+## `/app` Directory
 
-The app folder contains all Next.js App Router pages and layouts, and takes care of the routing.
+The app folder contains all Next.js App Router pages with internationalization support:
 
 ```
 .
-└── [countryCode]
-    ├── (checkout)
-        └── checkout
-    └── (main)
-        ├── account
-        │   ├── addresses
-        │   └── orders
-        │       └── details
-        │           └── [id]
-        ├── cart
-        ├── categories
-        │   └── [...category]
-        ├── collections
-        │   └── [handle]
-        ├── order
-        │   └── confirmed
-        │       └── [id]
-        ├── products
-        │   └── [handle]
-        ├── results
-        │   └── [query]
-        ├── search
-        └── store
+└── [locale]                # Dynamic locale routing (es, en)
+    ├── (checkout)          # Checkout flow with separate layout
+    │   └── checkout
+    └── (main)              # Main application routes
+        ├── admin           # Admin dashboard and management
+        │   ├── dashboard
+        │   ├── menu
+        │   ├── categories
+        │   └── login
+        ├── menu            # Public menu pages
+        ├── reservations    # Reservation system
+        └── about           # About and contact pages
 ```
 
-The app router folder structure represents the routes of the Starter. In this case, the structure is as follows:
+### Route Structure
 
-- The root directory is represented by the `[countryCode]` folder. This indicates a dynamic route based on the country code. The this will be populated by the countries you set up in your Medusa server. The param is then used to fetch region specific prices, languages, etc.
-- Within the root directory, there two Route Groups: `(checkout)` and `(main)`. This is done because the checkout flow uses a different layout.  All other parts of the app share the same layout and are in subdirectories of the `(main)` group. Route Groups do not affect the url.
-- Each of these subdirectories may have further subdirectories. For instance, the `account` directory has `addresses` and `orders` subdirectories. The `orders` directory further has a `details` subdirectory, which itself has a dynamic `[id]` subdirectory.
-- This nested structure allows for specific routing to various pages within the application. For example, a URL like `/account/orders/details/123` would correspond to the `account > orders > details > [id]` path in the router structure, with `123` being the dynamic `[id]`.
+- **`[locale]`** - Dynamic routing for internationalization (Spanish: `es`, English: `en`)
+- **Route Groups** - `(checkout)` and `(main)` use different layouts without affecting URLs
+- **Admin Routes** - Protected admin interface for content management
+- **Public Routes** - Customer-facing pages with bilingual support
 
-This structure enables efficient routing and organization of different parts of the Starter.
+Example URLs:
+- `/es/menu` - Spanish menu page
+- `/en/admin/dashboard` - English admin dashboard
+- `/es/admin/menu/create` - Create new menu (Spanish interface)
 
-### `/lib` **directory**
+## `/lib` Directory
 
-The lib directory contains all utilities like the Medusa JS client functions, util functions, config and constants. 
+Core utilities and configurations for the application:
 
-The most important file here is `/lib/data/index.ts`. This file defines various functions for interacting with the Medusa API, using the JS client. The functions cover a range of actions related to shopping carts, orders, shipping, authentication, customer management, regions, products, collections, and categories. It also includes utility functions for handling headers and errors, as well as some functions for sorting and transforming product data.
+```
+lib/
+├── db/                     # Database layer
+│   ├── index.ts           # Database connection and configuration
+│   ├── schema.ts          # Drizzle ORM schema definitions
+│   ├── queries/           # Database queries organized by feature
+│   └── migrations/        # Database migration files
+├── data/                  # Server Actions for API interactions
+├── context/               # React contexts
+├── hooks/                 # Custom React hooks
+├── util/                  # Utility functions
+└── config.ts             # Application configuration
+```
 
-These functions are used in different Server Actions.
+### Key Files
 
-### `/modules` directory
+- **`/lib/db/schema.ts`** - Defines database tables and relationships using Drizzle ORM
+- **`/lib/db/queries/`** - Organized database queries (menu items, categories, admin users, etc.)
+- **`/lib/data/`** - Server Actions for data fetching and mutations
+- **`/lib/config.ts`** - Application configuration and constants
 
-This is where all the components, templates and Server Actions are, grouped by section. Some subdirectories have an `actions.ts` file. These files contain all Server Actions relevant to that section of the app.
+## `/modules` Directory
 
-### `/styles` directory
+Feature-based components organized by domain:
 
-`global.css` imports Tailwind classes and defines a couple of global CSS classes. Tailwind and Medusa UI classes are used for styling throughout the app.
+```
+modules/
+├── admin/                  # Admin dashboard components
+│   ├── components/        # Reusable admin components
+│   └── templates/         # Admin page templates
+├── home/                  # Homepage components
+├── menu/                  # Menu display components
+├── layout/                # Layout components (header, footer)
+└── common/                # Shared components across features
+```
 
-### `/types` directory
+Each module contains components and templates relevant to that feature area.
 
-Contains global TypeScript type defintions.
+## `/styles` Directory
 
-### `middleware.ts`
+- **`global.css`** - Imports Tailwind CSS and defines global styles
+- **Custom styling** - Uses Tailwind CSS with Medusa UI components
+- **Santa Monica branding** - Custom colors and LemonMilk font family
 
-Next.js Middleware handles internationalization and security. It enforces a `locale` in the URL and includes security features like rate limiting and session validation.
+## `/types` Directory
+
+Global TypeScript type definitions for the application.
+
+## `middleware.ts`
+
+Next.js Middleware that handles:
+- **Internationalization** - Enforces locale in URLs (`/es/`, `/en/`)
+- **Security** - Rate limiting and session validation
+- **Region detection** - Automatic locale detection based on headers
 
 ## API Documentation
 
@@ -565,14 +582,10 @@ npm run lint         # Run ESLint
 
 # Resources
 
-## Learn more about Medusa
+## Learn more about the technologies
 
-- [Website](https://www.medusajs.com/)
-- [GitHub](https://github.com/medusajs)
-- [Documentation](https://docs.medusajs.com/)
-
-## Learn more about Next.js
-
-- [Website](https://nextjs.org/)
-- [GitHub](https://github.com/vercel/next.js)
-- [Documentation](https://nextjs.org/docs)
+- **Next.js 15** - [Website](https://nextjs.org/) | [Documentation](https://nextjs.org/docs)
+- **Drizzle ORM** - [Website](https://orm.drizzle.team/) | [Documentation](https://orm.drizzle.team/docs/overview)
+- **Tailwind CSS** - [Website](https://tailwindcss.com/) | [Documentation](https://tailwindcss.com/docs)
+- **PostgreSQL** - [Website](https://www.postgresql.org/) | [Documentation](https://www.postgresql.org/docs/)
+- **TypeScript** - [Website](https://www.typescriptlang.org/) | [Documentation](https://www.typescriptlang.org/docs/)
