@@ -34,7 +34,7 @@ export default async function AdminNav({ locale }: { locale: string }) {
 
   return (
     <div className="sticky inset-x-0 top-0 z-30 shadow-lg group">
-      <header className="relative h-16 mx-auto duration-200 border-b bg-light-sm-lighter border-ui-tag-neutral-border">
+      <header className="relative h-16 mx-auto duration-200 border-b-2 border-gray-950 bg-light-sm-lighter">
         <nav className="flex items-center justify-between w-full h-full px-4 content-container txt-xsmall-plus text-ui-fg-subtle text-small-regular">
           <div className="flex items-center flex-1 h-full gap-8 basis-0">
             <div className="h-full">

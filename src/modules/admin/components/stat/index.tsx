@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge"
+
 interface StatProps {
   title: string
   value: number
@@ -7,30 +9,40 @@ interface StatProps {
   textSecondary: string
 }
 
-export default function Stat({ 
-  title, 
-  value, 
-  description, 
-  bg, 
-  textPrimary, 
-  textSecondary 
+export default function Stat({
+  title,
+  value,
+  description,
+  bg,
+  textPrimary,
+  textSecondary
 }: StatProps) {
   return (
-    <div className={`overflow-hidden shadow ${bg}`}>
-      <div className="p-5">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <div className={`text-2xl font-bold ${textPrimary}`}>{value}</div>
-          </div>
-          <div className="flex-1 w-0 ml-5">
-            <dl>
-              <dt className={`text-sm font-medium truncate ${textPrimary}`}>
-                {title}
-              </dt>
-              <dd className={`text-sm ${textSecondary}`}>
-                {description}
-              </dd>
-            </dl>
+    <div className="border-2 border-dark-sm">
+      <div className="-m-0.5 border-2 border-dark-sm">
+        <div className={twMerge(
+          "relative -m-0.5 border-2 border-dark-sm p-6",
+          bg
+        )}>
+          <div className="flex flex-col">
+            <p className={twMerge(
+              "text-sm font-medium uppercase mb-2",
+              textPrimary
+            )}>
+              {title}
+            </p>
+            <div className={twMerge(
+              "text-4xl font-bold mb-1",
+              textPrimary
+            )}>
+              {value}
+            </div>
+            <p className={twMerge(
+              "text-xs",
+              textSecondary
+            )}>
+              {description}
+            </p>
           </div>
         </div>
       </div>
