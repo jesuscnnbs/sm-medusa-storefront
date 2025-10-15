@@ -8,12 +8,15 @@ export {
   getAllAdminUsers
 } from './queries/admin-users'
 
-// Menu Categories  
+// Menu Categories
 export {
   createMenuCategory,
   getAllMenuCategories,
+  getMenuCategoryById,
   updateMenuCategory,
   deleteMenuCategory,
+  toggleMenuCategoryActive,
+  hardDeleteMenuCategory,
   listMenuCategories
 } from './queries/menu-categories'
 

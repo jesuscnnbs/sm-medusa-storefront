@@ -59,3 +59,38 @@ export async function listMenuCategories() {
     return []
   }
 }
+
+export async function getMenuCategoryById(id: string) {
+  const [category] = await db
+    .select()
+    .from(schema.menuCategories)
+    .where(eq(schema.menuCategories.id, id))
+    .limit(1)
+  return category
+}
+
+export async function toggleMenuCategoryActive(id: string) {
+  const currentCategory = await getMenuCategoryById(id)
+  if (!currentCategory) {
+    throw new Error('Category not found')
+  }
+
+  const [updatedCategory] = await db
+    .update(schema.menuCategories)
+    .set({
+      isActive: !currentCategory.isActive,
+      updatedAt: new Date()
+    })
+    .where(eq(schema.menuCategories.id, id))
+    .returning()
+
+  return updatedCategory
+}
+
+export async function hardDeleteMenuCategory(id: string) {
+  const [deletedCategory] = await db
+    .delete(schema.menuCategories)
+    .where(eq(schema.menuCategories.id, id))
+    .returning()
+  return deletedCategory
+}

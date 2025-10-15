@@ -1,29 +1,29 @@
 import Link from "next/link"
-import MenuProfileForm from "@modules/admin/components/menu-profile-form"
+import CategoryForm from "@modules/admin/components/category-form"
 
-export default function CreateMenuPage() {
+export default function CreateCategoryPage() {
   return (
     <>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
             <Link
-              href="/admin/menu"
+              href="/admin/categories"
               className="inline-flex items-center mb-4 text-sm font-medium transition-colors text-primary-sm hover:text-primary-sm-darker"
             >
-               Volver a Menús
+              Volver a Categorías
             </Link>
             <h1 className="mb-2 text-2xl font-bold text-dark-sm">
-              Crear Nuevo Menú
+              Crear Nueva Categoría
             </h1>
             <p className="text-grey-sm">
-              Crea un nuevo perfil de menú para tu restaurante
+              Crea una nueva categoría para organizar los platos de tu menú
             </p>
           </div>
         </div>
       </div>
 
-      <MenuProfileForm mode="create" />
+      <CategoryForm mode="create" />
     </>
   )
 }

@@ -99,7 +99,7 @@ export default function MenuProfileForm({
       if (onSuccess) {
         onSuccess()
       } else {
-        router.push("/admin/menu/all")
+        router.push("/admin/menu")
       }
     } catch (error) {
       console.error("Error saving menu profile:", error)
@@ -113,7 +113,7 @@ export default function MenuProfileForm({
     if (onCancel) {
       onCancel()
     } else {
-      router.push("/admin/menu/all")
+      router.push("/admin/menu")
     }
   }
 
@@ -226,14 +226,14 @@ export default function MenuProfileForm({
                     id="isActive"
                     checked={formData.isActive}
                     onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="w-4 h-4 text-primary-sm bg-gray-100 border-gray-300 rounded focus:ring-primary-sm focus:ring-2"
+                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-sm focus:ring-primary-sm focus:ring-2"
                   />
                   <label htmlFor="isActive" className="ml-2 text-sm font-medium text-dark-sm">
                     Menú activo
                   </label>
                 </div>
                 {formData.isActive && (
-                  <div className="p-3 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-md">
+                  <div className="p-3 text-sm border rounded-md text-amber-800 bg-amber-50 border-amber-200">
                     ⚠️ <strong>Importante:</strong> Solo un menú puede estar activo a la vez. 
                     Si activas este menú, cualquier otro menú activo será desactivado automáticamente.
                   </div>
@@ -244,7 +244,7 @@ export default function MenuProfileForm({
                     id="isDefault"
                     checked={formData.isDefault}
                     onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                    className="w-4 h-4 text-primary-sm bg-gray-100 border-gray-300 rounded focus:ring-primary-sm focus:ring-2"
+                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-sm focus:ring-primary-sm focus:ring-2"
                   />
                   <label htmlFor="isDefault" className="ml-2 text-sm font-medium text-dark-sm">
                     Menú por defecto
@@ -275,7 +275,7 @@ export default function MenuProfileForm({
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2 text-sm font-medium text-white bg-primary-sm border border-transparent rounded-md hover:bg-primary-sm-darker focus:outline-none focus:ring-2 focus:ring-primary-sm focus:ring-offset-2 disabled:opacity-50"
+            className="px-6 py-2 text-sm font-medium text-white border border-transparent rounded-md bg-primary-sm hover:bg-primary-sm-darker focus:outline-none focus:ring-2 focus:ring-primary-sm focus:ring-offset-2 disabled:opacity-50"
           >
             {loading 
               ? (mode === "create" ? "Creando..." : "Guardando...") 
