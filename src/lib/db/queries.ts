@@ -28,6 +28,7 @@ export {
   getMenuItemsByCategory,
   updateMenuItem,
   deleteMenuItem,
+  toggleMenuItemAvailability,
   listMenuItems
 } from './queries/menu-items'
 
