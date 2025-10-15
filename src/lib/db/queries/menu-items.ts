@@ -97,12 +97,21 @@ export async function deleteMenuItem(id: string) {
 }
 
 export async function toggleMenuItemAvailability(id: string) {
-  const currentItem = await getMenuItemById(id)
+  // First, get the current availability status
+  const [currentItem] = await db
+    .select({
+      isAvailable: schema.menuItems.isAvailable
+    })
+    .from(schema.menuItems)
+    .where(eq(schema.menuItems.id, id))
+    .limit(1)
+
   if (!currentItem) {
     throw new Error('Menu item not found')
   }
 
-  const [updatedItem] = await db
+  // Toggle the availability
+  const result = await db
     .update(schema.menuItems)
     .set({
       isAvailable: !currentItem.isAvailable,
@@ -111,7 +120,11 @@ export async function toggleMenuItemAvailability(id: string) {
     .where(eq(schema.menuItems.id, id))
     .returning()
 
-  return updatedItem
+  if (!result || result.length === 0) {
+    throw new Error('Failed to update menu item')
+  }
+
+  return result[0]
 }
 
 export async function listMenuItems(locale: 'en' | 'es' = 'es', menuProfileId?: string) {

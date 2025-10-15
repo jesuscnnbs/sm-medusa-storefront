@@ -94,6 +94,92 @@ Santa Monica Burgers is built with:
   - Performance optimized with Next.js 15
   - Edge-ready with serverless database support
 
+## Admin Management System
+
+The admin dashboard provides comprehensive management for your restaurant's menu and content.
+
+### Categories Management (`/admin/categories`)
+
+Organize your menu items into categories with full CRUD operations:
+
+**Features:**
+- Create, read, update, and delete categories
+- Bilingual support (Spanish/English names and descriptions)
+- Image URL support with preview
+- Active/inactive status toggle
+- Sort order management
+- Real-time category status updates
+
+**Available Pages:**
+- **List View** (`/admin/categories`) - View all categories with quick actions
+- **Create** (`/admin/categories/create`) - Add new category
+- **Detail/Edit** (`/admin/categories/[id]`) - View and edit category details
+
+**Category Fields:**
+- Name (Spanish/English)
+- Description (Spanish/English)
+- Image URL
+- Sort order
+- Active status
+- Creation and update timestamps
+
+### Dish Management (`/admin/dish`)
+
+Manage your restaurant's menu items with comprehensive details:
+
+**Features:**
+- Complete CRUD operations for dishes
+- Bilingual support (Spanish/English)
+- Price management (stored in cents)
+- Category assignment
+- Image URL with preview
+- Availability toggle
+- Popular/featured dish marking
+- Ingredients list (comma-separated)
+- Allergens information
+- Nutritional details support
+- Sort order within categories
+
+**Available Pages:**
+- **List View** (`/admin/dish`) - View all dishes with filtering
+- **Create** (`/admin/dish/create`) - Add new dish
+- **Detail/Edit** (`/admin/dish/[id]`) - View and edit dish details
+
+**Dish Fields:**
+- Name (Spanish/English)
+- Description (Spanish/English)
+- Price (in cents, displayed as currency)
+- Category assignment
+- Image URL
+- Ingredients (array)
+- Allergens (array)
+- Availability status
+- Popular flag
+- Sort order
+- Creation and update timestamps
+
+**Quick Actions:**
+- Toggle dish availability from list view
+- Delete dishes with confirmation
+- Navigate between related sections (Categories, Menus)
+
+### Menu Profile Management (`/admin/menu`)
+
+Create and manage different menu configurations:
+
+**Features:**
+- Multiple menu profiles (seasonal, special events, default)
+- Active menu switching (only one active at a time)
+- Date-based validity periods
+- Menu item selection and ordering
+- Bilingual support
+
+**Use Cases:**
+- Regular menu
+- Seasonal menus (summer, winter)
+- Special event menus
+- Holiday menus
+- Limited-time offers
 
 # Quickstart
 
@@ -272,12 +358,37 @@ Feature-based components organized by domain:
 modules/
 ├── admin/                  # Admin dashboard components
 │   ├── components/        # Reusable admin components
+│   │   ├── category-form/         # Category create/edit form
+│   │   ├── dish-form/             # Dish create/edit form
+│   │   ├── menu-profile-form/     # Menu profile form
+│   │   ├── menu-item-selector/    # Multi-select for menu items
+│   │   ├── admin-login/           # Admin authentication form
+│   │   ├── side-menu/             # Admin navigation sidebar
+│   │   ├── submit-button/         # Form submit button
+│   │   ├── error-message/         # Error display component
+│   │   └── stat/                  # Dashboard statistics card
 │   └── templates/         # Admin page templates
+│       └── nav/                   # Admin navigation template
 ├── home/                  # Homepage components
 ├── menu/                  # Menu display components
 ├── layout/                # Layout components (header, footer)
 └── common/                # Shared components across features
 ```
+
+### Admin Components
+
+**Form Components:**
+- **`CategoryForm`** - Handles category creation and editing with bilingual fields
+- **`DishForm`** - Complete form for menu item management with all fields
+- **`MenuProfileForm`** - Form for menu profile configuration and item selection
+- **`MenuItemSelector`** - Multi-select component for assigning items to menu profiles
+
+**UI Components:**
+- **`AdminLogin`** - Secure login form with rate limiting
+- **`SideMenu`** - Responsive sidebar navigation for admin dashboard
+- **`SubmitButton`** - Loading-aware form submission button
+- **`ErrorMessage`** - Consistent error display component
+- **`Stat`** - Dashboard statistics card component
 
 Each module contains components and templates relevant to that feature area.
 
@@ -320,6 +431,72 @@ This section documents the available APIs and Server Actions for the Santa Monic
   - **Security**: Session validation, IP binding check
 
 ### Menu Management APIs
+
+#### Categories Management
+
+**Query Functions** (`src/lib/db/queries/menu-categories.ts`):
+
+- **`createMenuCategory(data)`** - Create new category
+  - **Parameters**: Category data object
+  - **Returns**: Created category object
+  - **Fields**: name, nameEn, description, descriptionEn, image, sortOrder, isActive
+
+- **`listMenuCategories()`** - Get all categories
+  - **Returns**: Array of all categories (active and inactive)
+  - **Sorting**: By sortOrder, then by name
+
+- **`getMenuCategoryById(id)`** - Get category by ID
+  - **Parameters**: Category UUID
+  - **Returns**: Single category object or null
+
+- **`updateMenuCategory(id, data)`** - Update category
+  - **Parameters**: Category ID and partial data object
+  - **Returns**: Updated category object
+
+- **`toggleMenuCategoryActive(id)`** - Toggle active status
+  - **Parameters**: Category UUID
+  - **Returns**: Updated category with toggled status
+
+- **`deleteMenuCategory(id)`** - Soft delete (set inactive)
+  - **Parameters**: Category UUID
+  - **Returns**: Updated category object
+
+- **`hardDeleteMenuCategory(id)`** - Permanently delete category
+  - **Parameters**: Category UUID
+  - **Returns**: Deleted category object
+
+#### Dish (Menu Items) Management
+
+**Query Functions** (`src/lib/db/queries/menu-items.ts`):
+
+- **`createMenuItem(data)`** - Create new menu item
+  - **Parameters**: Menu item data object
+  - **Returns**: Created menu item object
+  - **Fields**: name, nameEn, description, descriptionEn, price (cents), categoryId, image, isAvailable, isPopular, ingredients[], allergens[], sortOrder
+
+- **`getAllMenuItems()`** - Get all menu items with categories
+  - **Returns**: Array of menu items with joined category data
+  - **Includes**: Category information for each item
+
+- **`getMenuItemById(id)`** - Get menu item by ID
+  - **Parameters**: Menu item UUID
+  - **Returns**: Single menu item with category details
+
+- **`updateMenuItem(id, data)`** - Update menu item
+  - **Parameters**: Menu item ID and partial data object
+  - **Returns**: Updated menu item object
+
+- **`deleteMenuItem(id)`** - Permanently delete menu item
+  - **Parameters**: Menu item UUID
+  - **Returns**: Deleted menu item object
+
+- **`toggleMenuItemAvailability(id)`** - Toggle availability status
+  - **Parameters**: Menu item UUID
+  - **Returns**: Updated menu item with toggled availability
+
+- **`getMenuItemsByCategory(categoryId)`** - Get items by category
+  - **Parameters**: Category UUID
+  - **Returns**: Array of menu items in that category
 
 #### Database Statistics
 - **`getDashboardStats()`** - Get dashboard statistics
@@ -376,8 +553,17 @@ The application uses PostgreSQL with Drizzle ORM. Key tables include:
 
 #### Menu Tables
 - **`menu_profiles`** - Menu configurations (default, seasonal, special)
+  - Fields: name, nameEn, description, descriptionEn, validFrom, validTo, isActive, isDefault, sortOrder
+
 - **`menu_categories`** - Menu categories with bilingual support
+  - Fields: name, nameEn, description, descriptionEn, image, sortOrder, isActive, timestamps
+
 - **`menu_items`** - Menu items with pricing, ingredients, allergens
+  - Fields: name, nameEn, description, descriptionEn, price (cents), categoryId, image, isAvailable, isPopular, ingredients[], allergens[], nutritionalInfo, sortOrder, timestamps
+
+- **`menu_profile_items`** - Junction table for menu profiles and items
+  - Fields: menuProfileId, menuItemId, sortOrder
+
 - **`site_settings`** - Dynamic site configuration
 
 ### Security Features

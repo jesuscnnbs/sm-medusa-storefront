@@ -4,9 +4,11 @@ import { useState, useEffect } from "react"
 import { getMenuItemById, toggleMenuItemAvailability, deleteMenuItem } from "@lib/db/queries"
 import DishForm from "@modules/admin/components/dish-form"
 import Link from "next/link"
+import Image from "next/image"
 import { notFound, useRouter } from "next/navigation"
 import { Trash } from "@medusajs/icons"
 import { useParams } from "@lib/hooks"
+import { convertGoogleDriveUrl } from "@lib/utils/image-utils"
 
 interface DishDetailsProps {
   params: Promise<{
@@ -240,13 +242,12 @@ export default function DishDetailsPage({ params }: DishDetailsProps) {
                 <label className="block mb-2 text-sm font-medium text-dark-sm">Imagen</label>
                 {dish.image ? (
                   <div className="flex items-center gap-4">
-                    <img
-                      src={dish.image}
-                      alt={dish.name}
+                    <Image
+                      src={convertGoogleDriveUrl(dish.image)}
+                      alt={dish.name || 'Plato'}
+                      width={64}
+                      height={64}
                       className="object-cover w-32 h-32 rounded-md"
-                      onError={(e) => {
-                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect fill='%23e0e0e0' width='128' height='128'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EError%3C/text%3E%3C/svg%3E"
-                      }}
                     />
                     <div className="px-3 py-2 text-sm break-all rounded-md bg-gray-50">
                       {dish.image}
