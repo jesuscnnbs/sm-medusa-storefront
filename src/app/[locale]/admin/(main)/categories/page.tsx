@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { listMenuCategories } from "@lib/db/queries"
+import { NewMenuCategory } from "@lib/db"
 
 export const metadata: Metadata = {
   title: "Categorías - Santa Monica Admin",
@@ -28,7 +29,7 @@ export default async function AdminCategories() {
             <p className="text-grey-sm">Aún no has creado ninguna categoría para tu menú.</p>
           </div>
         ) : (
-          categories.map((category) => (
+          categories.map((category: NewMenuCategory) => (
             <div key={category.id} className="overflow-hidden shadow bg-light-sm-lighter">
               <div className="p-2">
                 <div className="flex items-center justify-between">
@@ -79,7 +80,7 @@ export default async function AdminCategories() {
               <div className="px-5 py-3 bg-light-sm">
                 <div className="flex items-center justify-between">
                   <div className="text-xs text-grey-sm">
-                    Creada: {new Date(category.createdAt).toLocaleDateString('es-ES')}
+                    Creada: {category.createdAt && new Date(category.createdAt).toLocaleDateString('es-ES')}
                   </div>
                   <div className="grid grid-cols-2 gap-1">
                     <button className="px-1 text-sm font-medium transition-colors text-primary-sm hover:text-primary-sm-darker">
