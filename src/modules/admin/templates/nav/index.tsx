@@ -23,7 +23,7 @@ export default async function AdminNav({ locale }: { locale: string }) {
 
   const MenuItems = {
     Dashboard: { href: "/admin/dashboard", name: "Dashboard" },
-    Menu: { href: "/admin/menu/all", name: "Menús" },
+    Menu: { href: "/admin/menu", name: "Menús" },
     Admin: { href: "/admin/admin", name: "Administradores" },
     Settings: { href: "/admin/settings", name: "Ajustes" },
   }

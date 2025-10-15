@@ -64,7 +64,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="px-5 py-3 bg-light-sm">
           <div className="text-sm">
-            <a href="/admin/menu/all" className="font-medium transition-colors text-secondary-sm hover:text-secondary-sm-darker">
+            <a href="/admin/menu" className="font-medium transition-colors text-secondary-sm hover:text-secondary-sm-darker">
               Ver Menú →
             </a>
           </div>
