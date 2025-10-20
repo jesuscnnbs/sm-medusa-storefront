@@ -4,6 +4,7 @@ import AdminSideMenu from "@modules/admin/components/side-menu"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 import { getCurrentAdmin } from "@lib/auth/admin"
 import { createAdminLogoutAction } from "@lib/data/admin"
+import BrutalButton from "@modules/admin/components/brutal-button"
 
 const AdminHomeLink = () => {
   return (
@@ -72,14 +73,14 @@ export default async function AdminNav({ locale }: { locale: string }) {
               </span>
             </div>
             <form action={adminLogoutAction}>
-              <Button
+              <BrutalButton
                 type="submit"
                 variant="secondary"
-                className="text-sm uppercase rounded-none"
+                size="sm"
                 data-testid="admin-logout-button"
               >
                 Salir
-              </Button>
+              </BrutalButton>
             </form>
           </div>
         </nav>

@@ -42,9 +42,11 @@ export async function adminLogin(prevState: any, formData: FormData) {
 }
 
 export async function createAdminLogoutAction(locale: string) {
+  "use server"
+
   return async function adminLogoutAction(formData?: FormData) {
     "use server"
-    
+
     try {
       await logoutAdmin()
     } catch (error) {
@@ -54,7 +56,7 @@ export async function createAdminLogoutAction(locale: string) {
         console.error("Admin logout error:", error)
       }
     }
-    
+
     // Redirect to login page with correct locale
     redirect(`/${locale}/admin/login`)
   }

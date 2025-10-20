@@ -2,6 +2,8 @@ import { Metadata } from "next"
 import { getCurrentAdmin } from "@lib/auth/admin"
 import { redirect } from "next/navigation"
 import AdminNav from "@modules/admin/templates/nav"
+import { MenuTabsWrapper } from "@modules/admin/components/menu-tabs-wrapper"
+import { NotificationProvider } from "@lib/context/notification-context"
 
 export const metadata: Metadata = {
   title: {
@@ -26,12 +28,15 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-light-sm-darker">
-      <AdminNav locale={locale} />
-      
-      <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        {children}
+    <NotificationProvider>
+      <div className="min-h-screen bg-light-sm-darker">
+        <AdminNav locale={locale} />
+        <MenuTabsWrapper />
+
+        <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          {children}
+        </div>
       </div>
-    </div>
+    </NotificationProvider>
   )
 }

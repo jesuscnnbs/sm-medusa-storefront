@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { getAllMenuItems } from "@lib/db/queries"
+import BrutalButton from "../brutal-button"
+import { BrutalInput, BrutalFormContainer } from "../brutal-form"
 
 interface MenuItem {
   id: string
@@ -94,111 +96,136 @@ export default function MenuItemSelector({
 
   if (loading) {
     return (
-      <div className="p-6 border border-gray-200 rounded-lg">
-        <div className="text-center text-grey-sm">Cargando platos...</div>
-      </div>
+      <BrutalFormContainer>
+        <div className="text-center font-bold uppercase text-grey-sm">Cargando platos...</div>
+      </BrutalFormContainer>
     )
   }
 
   return (
-    <div className="p-6 border border-gray-200 rounded-lg">
-      <div className="mb-4">
-        <h3 className="text-lg font-medium text-dark-sm mb-2">
+    <BrutalFormContainer>
+      {/* Header */}
+      <div className="mb-6">
+        <h3 className="text-lg font-bold uppercase text-dark-sm mb-2">
           Seleccionar Platos del Menú
         </h3>
-        <p className="text-sm text-grey-sm mb-4">
+        <p className="text-sm font-medium text-grey-sm mb-4">
           {selectedCount} plato{selectedCount !== 1 ? 's' : ''} seleccionado{selectedCount !== 1 ? 's' : ''}
         </p>
-        
+
         {/* Search */}
         <div className="mb-4">
-          <input
+          <BrutalInput
             type="text"
             placeholder="Buscar platos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
           />
         </div>
 
         {/* Bulk Actions */}
-        <div className="flex gap-2 mb-4">
-          <button
+        <div className="flex gap-2">
+          <BrutalButton
             type="button"
             onClick={handleSelectAll}
-            className="px-3 py-1 text-sm bg-green-100 text-green-800 rounded hover:bg-green-200"
+            variant="primary"
+            size="sm"
           >
             Seleccionar todos ({filteredItems.length})
-          </button>
-          <button
+          </BrutalButton>
+          <BrutalButton
             type="button"
             onClick={handleDeselectAll}
-            className="px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200"
+            variant="secondary"
+            size="sm"
           >
             Deseleccionar filtrados
-          </button>
+          </BrutalButton>
         </div>
       </div>
 
-      {/* Items List */}
-      <div className="max-h-96 overflow-y-auto">
+      {/* Table */}
+      <div className="overflow-x-auto">
         {filteredItems.length === 0 ? (
-          <p className="text-centre text-grey-sm py-4">
+          <p className="text-center font-bold uppercase text-grey-sm py-8">
             {searchTerm ? 'No se encontraron platos' : 'No hay platos disponibles'}
           </p>
         ) : (
-          <div className="space-y-2">
-            {filteredItems.map((item) => {
-              const isSelected = selectedItemIds.includes(item.id)
-              const displayName = locale === 'en' ? (item.nameEn || item.name) : item.name
-              const displayDescription = locale === 'en' ? (item.descriptionEn || item.description) : item.description
-              const categoryName = locale === 'en' 
-                ? (item.category?.nameEn || item.category?.name || 'Sin categoría') 
-                : (item.category?.name || 'Sin categoría')
+          <div className="border-2 border-dark-sm overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-dark-sm text-light-sm">
+                  <th className="w-12 px-3 py-3 text-left">
+                    <input
+                      type="checkbox"
+                      checked={filteredItems.every(item => selectedItemIds.includes(item.id))}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          handleSelectAll()
+                        } else {
+                          handleDeselectAll()
+                        }
+                      }}
+                      className="w-5 h-5 border-2 border-light-sm accent-primary-sm"
+                    />
+                  </th>
+                  <th className="px-3 py-3 text-left text-xs font-black uppercase">Nombre</th>
+                  <th className="px-3 py-3 text-left text-xs font-black uppercase">Categoría</th>
+                  <th className="px-3 py-3 text-right text-xs font-black uppercase">Precio</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredItems.map((item, index) => {
+                  const isSelected = selectedItemIds.includes(item.id)
+                  const displayName = locale === 'en' ? (item.nameEn || item.name) : item.name
+                  const displayDescription = locale === 'en' ? (item.descriptionEn || item.description) : item.description
+                  const categoryName = locale === 'en'
+                    ? (item.category?.nameEn || item.category?.name || 'Sin categoría')
+                    : (item.category?.name || 'Sin categoría')
 
-              return (
-                <div
-                  key={item.id}
-                  className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
-                    isSelected 
-                      ? 'bg-primary-sm-lighter border-primary-sm' 
-                      : 'bg-white border-gray-200 hover:bg-gray-50'
-                  }`}
-                  onClick={() => handleToggleItem(item.id)}
-                >
-                  <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={() => handleToggleItem(item.id)}
-                    className="mr-3 w-4 h-4 text-primary-sm bg-gray-100 border-gray-300 rounded focus:ring-primary-sm focus:ring-2"
-                  />
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-medium text-dark-sm truncate">
-                        {displayName}
-                      </h4>
-                      <span className="text-sm font-medium text-dark-sm ml-2">
-                        ${(item.price / 100).toFixed(2)}
-                      </span>
-                    </div>
-                    
-                    {displayDescription && (
-                      <p className="text-xs text-grey-sm mt-1 line-clamp-2">
-                        {displayDescription}
-                      </p>
-                    )}
-                    
-                    <p className="text-xs text-primary-sm mt-1">
-                      {categoryName}
-                    </p>
-                  </div>
-                </div>
-              )
-            })}
+                  return (
+                    <tr
+                      key={item.id}
+                      onClick={() => handleToggleItem(item.id)}
+                      className={`border-t-2 border-dark-sm cursor-pointer transition-colors ${
+                        isSelected
+                          ? 'bg-primary-sm-lighter'
+                          : index % 2 === 0 ? 'bg-light-sm' : 'bg-light-sm-lighter hover:bg-primary-sm-lighter/30'
+                      }`}
+                    >
+                      <td className="px-3 py-3">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleToggleItem(item.id)}
+                          className="w-5 h-5 border-2 border-dark-sm accent-primary-sm"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </td>
+                      <td className="px-3 py-3">
+                        <div className="font-bold text-dark-sm">{displayName}</div>
+                        {displayDescription && (
+                          <div className="text-xs text-grey-sm mt-1 line-clamp-1">
+                            {displayDescription}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-3 py-3">
+                        <span className="text-sm font-medium text-dark-sm">{categoryName}</span>
+                      </td>
+                      <td className="px-3 py-3 text-right">
+                        <span className="font-bold text-dark-sm">
+                          ${(item.price / 100).toFixed(2)}
+                        </span>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
-    </div>
+    </BrutalFormContainer>
   )
 }

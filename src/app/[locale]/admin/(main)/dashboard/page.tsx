@@ -90,7 +90,7 @@ export default async function AdminDashboard() {
 
     </SpringCardsGrid>
 
-    <div className="mt-8 shadow bg-light-sm-lighter">
+    <div className="mt-8 rounded-lg shadow bg-light-sm-lighter">
       <div className="px-4 py-5 sm:p-6">
         <h3 className="text-lg font-medium leading-6 text-dark-sm">
           Estadísticas

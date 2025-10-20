@@ -47,26 +47,12 @@ export const SpringCard = ({
       <motion.div
         whileHover="hovered"
         className={twMerge(
-          "group w-full border-2",
+          "group w-full border-2 rounded-lg",
           borderColor,
           bgColor || className
         )}
       >
-        <motion.div
-          initial={{
-            y: 0,
-          }}
-          variants={{
-            hovered: {
-              y: -2,
-            },
-          }}
-          className={twMerge(
-            "-m-0.5 border-2",
-            borderColor,
-            bgColor || className
-          )}
-        >
+        
           <motion.div
             initial={{
               y: 0,
@@ -77,7 +63,7 @@ export const SpringCard = ({
               },
             }}
             className={twMerge(
-              "relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 p-8",
+              "relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 p-8 rounded-lg",
               borderColor,
               bgColor || className
             )}
@@ -104,7 +90,7 @@ export const SpringCard = ({
                 {subtitle}
               </p>
               <button className={twMerge(
-                "absolute bottom-2 left-2 right-2 translate-y-full border-2 px-4 py-2 font-medium opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100",
+                "rounded-md absolute bottom-2 left-2 right-2 translate-y-full border-2 px-4 py-2 font-medium opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100",
                 borderColor,
                 buttonBgColor,
                 buttonTextColor
@@ -152,7 +138,6 @@ export const SpringCard = ({
             </motion.svg>
           </motion.div>
         </motion.div>
-      </motion.div>
     </MotionConfig>
   )
 

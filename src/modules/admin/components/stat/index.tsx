@@ -18,8 +18,8 @@ export default function Stat({
   textSecondary
 }: StatProps) {
   return (
-    <div className="border-2 border-dark-sm">
-      <div className="-m-0.5 border-2 border-dark-sm">
+    <div className="border-2 rounded-lg border-dark-sm">
+      <div className="-m-0.5 border-2 border-dark-sm rounded-lg">
         <div className={twMerge(
           "relative -m-0.5 border-2 border-dark-sm p-6",
           bg
