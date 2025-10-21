@@ -1,31 +1,9 @@
-<p align="center">
-  <a href="https://www.medusajs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    </picture>
-  </a>
-</p>
-
 <h1 align="center">
-  Medusa Next.js Starter Template
+  Santa Monica Burgers
 </h1>
 
 <p align="center">
-Combine Medusa's modules for your commerce backend with the newest Next.js 15 features for a performant storefront.</p>
-
-<p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
-  <a href="https://discord.gg/xpCwq3Kfn8">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
-  </a>
-</p>
+A modern restaurant website built with Next.js 15, featuring bilingual support, menu management, and admin dashboard.</p>
 
 ### Security Mesaures implemented
 
@@ -84,231 +62,352 @@ Additional Security for Vercel:
   4. Backup: Enable automatic database backups in Vercel
   5. Domain Security: Add your domain to Vercel's domain allowlist
 
-### Prerequisites
-
-To use the [Next.js Starter Template](https://medusajs.com/nextjs-commerce/), you should have a Medusa server running locally on port 9000.
-For a quick setup, run:
-
-```shell
-npx create-medusa-app@latest
-```
-
-Check out [create-medusa-app docs](https://docs.medusajs.com/create-medusa-app) for more details and troubleshooting.
-
 # Overview
 
-The Medusa Next.js Starter is built with:
+Santa Monica Burgers is built with:
 
-- [Next.js](https://nextjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Medusa](https://medusajs.com/)
+- [Next.js 15](https://nextjs.org/) - React framework with App Router
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [Drizzle ORM](https://orm.drizzle.team/) - Type-safe database toolkit
+- [PostgreSQL](https://www.postgresql.org/) - Robust relational database
 
-Features include:
+## Features
 
-- Full ecommerce support:
-  - Product Detail Page
-  - Product Overview Page
-  - Search with Algolia / MeiliSearch
-  - Product Collections
-  - Cart
-  - Checkout with PayPal and Stripe
-  - User Accounts
-  - Order Details
-- Full Next.js 15 support:
-  - App Router
-  - Next fetching/caching
-  - Server Components
-  - Server Actions
-  - Streaming
-  - Static Pre-Rendering
+- **Restaurant Management**:
+  - Dynamic menu system with categories and items
+  - Bilingual support (Spanish/English)
+  - Admin dashboard for content management
+  - Menu profile management (seasonal menus, special events)
+  - Real-time menu updates
 
+- **Security & Admin**:
+  - Secure admin authentication
+  - Session management with IP binding
+  - Rate limiting for login attempts
+  - Role-based access control
+
+- **Modern Web Features**:
+  - Server Components and Server Actions
+  - Responsive design with mobile-first approach
+  - SEO optimized with internationalization
+  - Performance optimized with Next.js 15
+  - Edge-ready with serverless database support
+
+## Admin Management System
+
+The admin dashboard provides comprehensive management for your restaurant's menu and content.
+
+### Categories Management (`/admin/categories`)
+
+Organize your menu items into categories with full CRUD operations:
+
+**Features:**
+- Create, read, update, and delete categories
+- Bilingual support (Spanish/English names and descriptions)
+- Image URL support with preview
+- Active/inactive status toggle
+- Sort order management
+- Real-time category status updates
+
+**Available Pages:**
+- **List View** (`/admin/categories`) - View all categories with quick actions
+- **Create** (`/admin/categories/create`) - Add new category
+- **Detail/Edit** (`/admin/categories/[id]`) - View and edit category details
+
+**Category Fields:**
+- Name (Spanish/English)
+- Description (Spanish/English)
+- Image URL
+- Sort order
+- Active status
+- Creation and update timestamps
+
+### Dish Management (`/admin/dish`)
+
+Manage your restaurant's menu items with comprehensive details:
+
+**Features:**
+- Complete CRUD operations for dishes
+- Bilingual support (Spanish/English)
+- Price management (stored in cents)
+- Category assignment
+- Image URL with preview
+- Availability toggle
+- Popular/featured dish marking
+- Ingredients list (comma-separated)
+- Allergens information
+- Nutritional details support
+- Sort order within categories
+
+**Available Pages:**
+- **List View** (`/admin/dish`) - View all dishes with filtering
+- **Create** (`/admin/dish/create`) - Add new dish
+- **Detail/Edit** (`/admin/dish/[id]`) - View and edit dish details
+
+**Dish Fields:**
+- Name (Spanish/English)
+- Description (Spanish/English)
+- Price (in cents, displayed as currency)
+- Category assignment
+- Image URL
+- Ingredients (array)
+- Allergens (array)
+- Availability status
+- Popular flag
+- Sort order
+- Creation and update timestamps
+
+**Quick Actions:**
+- Toggle dish availability from list view
+- Delete dishes with confirmation
+- Navigate between related sections (Categories, Menus)
+
+### Menu Profile Management (`/admin/menu`)
+
+Create and manage different menu configurations:
+
+**Features:**
+- Multiple menu profiles (seasonal, special events, default)
+- Active menu switching (only one active at a time)
+- Date-based validity periods
+- Menu item selection and ordering
+- Bilingual support
+
+**Use Cases:**
+- Regular menu
+- Seasonal menus (summer, winter)
+- Special event menus
+- Holiday menus
+- Limited-time offers
 
 # Quickstart
 
-### Setting up the environment variables
+### Prerequisites
 
-Navigate into your projects directory and get your environment variables ready:
+- Node.js 18+ 
+- PostgreSQL 12+
+- npm or yarn
 
-```shell
-cd nextjs-starter-medusa/
-mv .env.template .env.local
+### Installation
+
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd santa-monica-burgers
 ```
 
-### Install dependencies
-
-Use Yarn to install all dependencies.
-
-```shell
-yarn
+2. **Install dependencies**
+```bash
+npm install
 ```
 
-### Start developing
-
-You are now ready to start up your project.
-
-```shell
-yarn dev
+3. **Set up environment variables**
+```bash
+cp .env.example .env.local
+```
+Edit `.env.local` with your database credentials:
+```bash
+DATABASE_URL="postgresql://user:@localhost:5432/santa_monica_db"
+ADMIN_JWT_SECRET="your-secret-key"
 ```
 
-### Open the code and start customizing
+4. **Set up database**
+```bash
+# Create database
+createdb santa_monica_db
+
+# Run migrations
+npm run db:push
+
+# Seed with sample data (optional)
+npm run db:seed
+```
+
+5. **Start development server**
+```bash
+npm run dev
+```
 
 Your site is now running at http://localhost:8000!
 
-# Payment integrations
+# Payment integrations (Ready for Implementation)
 
-By default this starter supports the following payment integrations
+The project structure is ready to support the following payment integrations:
 
 - [Stripe](https://stripe.com/)
-- [Paypal](https://www.paypal.com/)
+- [PayPal](https://www.paypal.com/)
 
-To enable the integrations you need to add the following to your `.env.local` file:
+To enable payments when ready, add the following to your `.env.local` file:
 
 ```shell
 NEXT_PUBLIC_STRIPE_KEY=<your-stripe-public-key>
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=<your-paypal-client-id>
 ```
 
-You will also need to setup the integrations in your Medusa server. See the [Medusa documentation](https://docs.medusajs.com) for more information on how to configure [Stripe](https://docs.medusajs.com/add-plugins/stripe) and [PayPal](https://docs.medusajs.com/add-plugins/paypal) in your Medusa project.
+The payment components are already configured in the codebase but require backend API implementation.
 
-# Search integration
+# Search integration (Ready for Implementation)
 
-This starter is configured to support using the `medusa-search-meilisearch` plugin out of the box. To enable search you will need to enable the feature flag in `./store.config.json`, which you do by changing the config to this:
+The project structure includes search capabilities that can be implemented with:
 
-```javascript
-{
-  "features": {
-    // other features...
-    "search": true
-  }
-}
+- [MeiliSearch](https://www.meilisearch.com/)
+- [Algolia](https://www.algolia.com/)
+
+Search components are built with Algolia's `react-instant-search-hooks-web` library for flexibility.
+
+## To enable search:
+
+1. **Choose your search provider and install:**
+```bash
+# For Algolia
+npm install algoliasearch
+
+# For MeiliSearch  
+npm install @meilisearch/instant-meilisearch
 ```
 
-Before you can search you will need to install the plugin in your Medusa server, for a written guide on how to do this – [see our documentation](https://docs.medusajs.com/add-plugins/meilisearch).
-
-The search components in this starter are developed with Algolia's `react-instant-search-hooks-web` library which should make it possible for you to seemlesly change your search provider to Algolia instead of MeiliSearch.
-
-To do this you will need to add `algoliasearch` to the project, by running
-
-```shell
-yarn add algoliasearch
+2. **Configure environment variables:**
+```bash
+# Add to .env.local
+NEXT_PUBLIC_SEARCH_ENABLED=true
+NEXT_PUBLIC_SEARCH_APP_ID=your-app-id
+NEXT_PUBLIC_SEARCH_API_KEY=your-api-key
+NEXT_PUBLIC_INDEX_NAME=menu_items
 ```
 
-After this you will need to switch the current MeiliSearch `SearchClient` out with a Alogolia client. To do this update `@lib/search-client`.
+3. **Update search client configuration** in `@lib/search-client`
 
-```ts
-import algoliasearch from "algoliasearch/lite"
+The search functionality is ready to index menu items, categories, and other restaurant content.
 
-const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || "test_app_id" // You should add this to your environment variables
-
-const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || "test_key"
-
-export const searchClient = algoliasearch(appId, apiKey)
-
-export const SEARCH_INDEX_NAME =
-  process.env.NEXT_PUBLIC_INDEX_NAME || "products"
-```
-
-Then, in `src/app/(main)/search/actions.ts`, remove the MeiliSearch code (line 10-16) and uncomment the Algolia code.
-
-```ts
-"use server"
-
-import { searchClient, SEARCH_INDEX_NAME } from "@lib/search-client"
-
-/**
- * Uses MeiliSearch or Algolia to search for a query
- * @param {string} query - search query
- */
-export async function search(query: string) {
-  const index = searchClient.initIndex(SEARCH_INDEX_NAME)
-  const { hits } = await index.search(query)
-
-  return hits
-}
-```
-
-After this you will need to set up Algolia with your Medusa server, and then you should be good to go. For a more thorough walkthrough of using Algolia with Medusa – [see our documentation](https://docs.medusajs.com/add-plugins/algolia), and the [documentation for using `react-instantsearch-hooks-web`](https://www.algolia.com/doc/guides/building-search-ui/getting-started/react-hooks/).
-
-## App structure
-
-For the new version, the main folder structure remains unchanged. The contents have changed quite a bit though.
+# Project Structure
 
 ```
 .
 └── src
-    ├── app
-    ├── lib
-    ├── modules
-    ├── styles
-    ├── types
-    └── middleware.ts
-
+    ├── app                 # Next.js App Router pages and layouts
+    ├── lib                 # Core utilities, database, and configurations
+    ├── modules             # Feature-based components and templates
+    ├── styles              # Global styles and Tailwind CSS
+    ├── types               # TypeScript type definitions
+    └── middleware.ts       # Internationalization and security middleware
 ```
 
-### `/app` directory
+## `/app` Directory
 
-The app folder contains all Next.js App Router pages and layouts, and takes care of the routing.
+The app folder contains all Next.js App Router pages with internationalization support:
 
 ```
 .
-└── [countryCode]
-    ├── (checkout)
-        └── checkout
-    └── (main)
-        ├── account
-        │   ├── addresses
-        │   └── orders
-        │       └── details
-        │           └── [id]
-        ├── cart
-        ├── categories
-        │   └── [...category]
-        ├── collections
-        │   └── [handle]
-        ├── order
-        │   └── confirmed
-        │       └── [id]
-        ├── products
-        │   └── [handle]
-        ├── results
-        │   └── [query]
-        ├── search
-        └── store
+└── [locale]                # Dynamic locale routing (es, en)
+    ├── (checkout)          # Checkout flow with separate layout
+    │   └── checkout
+    └── (main)              # Main application routes
+        ├── admin           # Admin dashboard and management
+        │   ├── dashboard
+        │   ├── menu
+        │   ├── categories
+        │   └── login
+        ├── menu            # Public menu pages
+        ├── reservations    # Reservation system
+        └── about           # About and contact pages
 ```
 
-The app router folder structure represents the routes of the Starter. In this case, the structure is as follows:
+### Route Structure
 
-- The root directory is represented by the `[countryCode]` folder. This indicates a dynamic route based on the country code. The this will be populated by the countries you set up in your Medusa server. The param is then used to fetch region specific prices, languages, etc.
-- Within the root directory, there two Route Groups: `(checkout)` and `(main)`. This is done because the checkout flow uses a different layout.  All other parts of the app share the same layout and are in subdirectories of the `(main)` group. Route Groups do not affect the url.
-- Each of these subdirectories may have further subdirectories. For instance, the `account` directory has `addresses` and `orders` subdirectories. The `orders` directory further has a `details` subdirectory, which itself has a dynamic `[id]` subdirectory.
-- This nested structure allows for specific routing to various pages within the application. For example, a URL like `/account/orders/details/123` would correspond to the `account > orders > details > [id]` path in the router structure, with `123` being the dynamic `[id]`.
+- **`[locale]`** - Dynamic routing for internationalization (Spanish: `es`, English: `en`)
+- **Route Groups** - `(checkout)` and `(main)` use different layouts without affecting URLs
+- **Admin Routes** - Protected admin interface for content management
+- **Public Routes** - Customer-facing pages with bilingual support
 
-This structure enables efficient routing and organization of different parts of the Starter.
+Example URLs:
+- `/es/menu` - Spanish menu page
+- `/en/admin/dashboard` - English admin dashboard
+- `/es/admin/menu/create` - Create new menu (Spanish interface)
 
-### `/lib` **directory**
+## `/lib` Directory
 
-The lib directory contains all utilities like the Medusa JS client functions, util functions, config and constants. 
+Core utilities and configurations for the application:
 
-The most important file here is `/lib/data/index.ts`. This file defines various functions for interacting with the Medusa API, using the JS client. The functions cover a range of actions related to shopping carts, orders, shipping, authentication, customer management, regions, products, collections, and categories. It also includes utility functions for handling headers and errors, as well as some functions for sorting and transforming product data.
+```
+lib/
+├── db/                     # Database layer
+│   ├── index.ts           # Database connection and configuration
+│   ├── schema.ts          # Drizzle ORM schema definitions
+│   ├── queries/           # Database queries organized by feature
+│   └── migrations/        # Database migration files
+├── data/                  # Server Actions for API interactions
+├── context/               # React contexts
+├── hooks/                 # Custom React hooks
+├── util/                  # Utility functions
+└── config.ts             # Application configuration
+```
 
-These functions are used in different Server Actions.
+### Key Files
 
-### `/modules` directory
+- **`/lib/db/schema.ts`** - Defines database tables and relationships using Drizzle ORM
+- **`/lib/db/queries/`** - Organized database queries (menu items, categories, admin users, etc.)
+- **`/lib/data/`** - Server Actions for data fetching and mutations
+- **`/lib/config.ts`** - Application configuration and constants
 
-This is where all the components, templates and Server Actions are, grouped by section. Some subdirectories have an `actions.ts` file. These files contain all Server Actions relevant to that section of the app.
+## `/modules` Directory
 
-### `/styles` directory
+Feature-based components organized by domain:
 
-`global.css` imports Tailwind classes and defines a couple of global CSS classes. Tailwind and Medusa UI classes are used for styling throughout the app.
+```
+modules/
+├── admin/                  # Admin dashboard components
+│   ├── components/        # Reusable admin components
+│   │   ├── category-form/         # Category create/edit form
+│   │   ├── dish-form/             # Dish create/edit form
+│   │   ├── menu-profile-form/     # Menu profile form
+│   │   ├── menu-item-selector/    # Multi-select for menu items
+│   │   ├── admin-login/           # Admin authentication form
+│   │   ├── side-menu/             # Admin navigation sidebar
+│   │   ├── submit-button/         # Form submit button
+│   │   ├── error-message/         # Error display component
+│   │   └── stat/                  # Dashboard statistics card
+│   └── templates/         # Admin page templates
+│       └── nav/                   # Admin navigation template
+├── home/                  # Homepage components
+├── menu/                  # Menu display components
+├── layout/                # Layout components (header, footer)
+└── common/                # Shared components across features
+```
 
-### `/types` directory
+### Admin Components
 
-Contains global TypeScript type defintions.
+**Form Components:**
+- **`CategoryForm`** - Handles category creation and editing with bilingual fields
+- **`DishForm`** - Complete form for menu item management with all fields
+- **`MenuProfileForm`** - Form for menu profile configuration and item selection
+- **`MenuItemSelector`** - Multi-select component for assigning items to menu profiles
 
-### `middleware.ts`
+**UI Components:**
+- **`AdminLogin`** - Secure login form with rate limiting
+- **`SideMenu`** - Responsive sidebar navigation for admin dashboard
+- **`SubmitButton`** - Loading-aware form submission button
+- **`ErrorMessage`** - Consistent error display component
+- **`Stat`** - Dashboard statistics card component
 
-Next.js Middleware handles internationalization and security. It enforces a `locale` in the URL and includes security features like rate limiting and session validation.
+Each module contains components and templates relevant to that feature area.
+
+## `/styles` Directory
+
+- **`global.css`** - Imports Tailwind CSS and defines global styles
+- **Custom styling** - Uses Tailwind CSS with Medusa UI components
+- **Santa Monica branding** - Custom colors and LemonMilk font family
+
+## `/types` Directory
+
+Global TypeScript type definitions for the application.
+
+## `middleware.ts`
+
+Next.js Middleware that handles:
+- **Internationalization** - Enforces locale in URLs (`/es/`, `/en/`)
+- **Security** - Rate limiting and session validation
+- **Region detection** - Automatic locale detection based on headers
 
 ## API Documentation
 
@@ -332,6 +431,72 @@ This section documents the available APIs and Server Actions for the Santa Monic
   - **Security**: Session validation, IP binding check
 
 ### Menu Management APIs
+
+#### Categories Management
+
+**Query Functions** (`src/lib/db/queries/menu-categories.ts`):
+
+- **`createMenuCategory(data)`** - Create new category
+  - **Parameters**: Category data object
+  - **Returns**: Created category object
+  - **Fields**: name, nameEn, description, descriptionEn, image, sortOrder, isActive
+
+- **`listMenuCategories()`** - Get all categories
+  - **Returns**: Array of all categories (active and inactive)
+  - **Sorting**: By sortOrder, then by name
+
+- **`getMenuCategoryById(id)`** - Get category by ID
+  - **Parameters**: Category UUID
+  - **Returns**: Single category object or null
+
+- **`updateMenuCategory(id, data)`** - Update category
+  - **Parameters**: Category ID and partial data object
+  - **Returns**: Updated category object
+
+- **`toggleMenuCategoryActive(id)`** - Toggle active status
+  - **Parameters**: Category UUID
+  - **Returns**: Updated category with toggled status
+
+- **`deleteMenuCategory(id)`** - Soft delete (set inactive)
+  - **Parameters**: Category UUID
+  - **Returns**: Updated category object
+
+- **`hardDeleteMenuCategory(id)`** - Permanently delete category
+  - **Parameters**: Category UUID
+  - **Returns**: Deleted category object
+
+#### Dish (Menu Items) Management
+
+**Query Functions** (`src/lib/db/queries/menu-items.ts`):
+
+- **`createMenuItem(data)`** - Create new menu item
+  - **Parameters**: Menu item data object
+  - **Returns**: Created menu item object
+  - **Fields**: name, nameEn, description, descriptionEn, price (cents), categoryId, image, isAvailable, isPopular, ingredients[], allergens[], sortOrder
+
+- **`getAllMenuItems()`** - Get all menu items with categories
+  - **Returns**: Array of menu items with joined category data
+  - **Includes**: Category information for each item
+
+- **`getMenuItemById(id)`** - Get menu item by ID
+  - **Parameters**: Menu item UUID
+  - **Returns**: Single menu item with category details
+
+- **`updateMenuItem(id, data)`** - Update menu item
+  - **Parameters**: Menu item ID and partial data object
+  - **Returns**: Updated menu item object
+
+- **`deleteMenuItem(id)`** - Permanently delete menu item
+  - **Parameters**: Menu item UUID
+  - **Returns**: Deleted menu item object
+
+- **`toggleMenuItemAvailability(id)`** - Toggle availability status
+  - **Parameters**: Menu item UUID
+  - **Returns**: Updated menu item with toggled availability
+
+- **`getMenuItemsByCategory(categoryId)`** - Get items by category
+  - **Parameters**: Category UUID
+  - **Returns**: Array of menu items in that category
 
 #### Database Statistics
 - **`getDashboardStats()`** - Get dashboard statistics
@@ -388,8 +553,17 @@ The application uses PostgreSQL with Drizzle ORM. Key tables include:
 
 #### Menu Tables
 - **`menu_profiles`** - Menu configurations (default, seasonal, special)
+  - Fields: name, nameEn, description, descriptionEn, validFrom, validTo, isActive, isDefault, sortOrder
+
 - **`menu_categories`** - Menu categories with bilingual support
+  - Fields: name, nameEn, description, descriptionEn, image, sortOrder, isActive, timestamps
+
 - **`menu_items`** - Menu items with pricing, ingredients, allergens
+  - Fields: name, nameEn, description, descriptionEn, price (cents), categoryId, image, isAvailable, isPopular, ingredients[], allergens[], nutritionalInfo, sortOrder, timestamps
+
+- **`menu_profile_items`** - Junction table for menu profiles and items
+  - Fields: menuProfileId, menuItemId, sortOrder
+
 - **`site_settings`** - Dynamic site configuration
 
 ### Security Features
@@ -434,10 +608,153 @@ NEXT_PUBLIC_STRIPE_KEY="your-stripe-key"
 NEXT_PUBLIC_PAYPAL_CLIENT_ID="your-paypal-id"
 ```
 
+## Database Setup & Migrations
+
+This project uses PostgreSQL with Drizzle ORM for database management. The setup is configured to work with both local PostgreSQL and remote databases (Neon for production).
+
+### Local Development Setup
+
+#### 1. Install PostgreSQL
+```bash
+# macOS (using Homebrew)
+brew install postgresql
+brew services start postgresql
+
+# Ubuntu/Debian
+sudo apt-get install postgresql postgresql-contrib
+
+# Create database
+createdb santa_monica_db
+```
+
+#### 2. Configure Environment Variables
+Create `.env.local` for local development:
+```bash
+# Database Configuration for Local Development
+DATABASE_URL="postgresql://user:pass@localhost:5432/santa_monica_db"
+POSTGRES_URL="postgresql://user:pass@localhost:5432/santa_monica_db"
+
+# Admin Authentication
+ADMIN_JWT_SECRET="your-local-jwt-secret-change-this"
+
+# Development URLs
+NEXT_PUBLIC_BASE_URL="http://localhost:8000"
+```
+
+**Note:** Replace `user` with your actual PostgreSQL username.
+
+#### 3. Run Initial Migration
+```bash
+# Install dependencies
+npm install
+
+# Generate and apply database schema
+npm run db:generate  # Generate migration files
+npm run db:push      # Apply migrations to local database
+
+# Test connection
+npm run db:test      # Verify database connectivity
+```
+
+### Production Setup (Neon Database)
+
+#### 1. Configure Environment Variables
+Create `.env` or update `.env.production`:
+```bash
+# Production Database (Neon)
+DATABASE_URL="postgresql://username:password@host:port/database?sslmode=require"
+POSTGRES_URL="postgresql://username:password@host:port/database?sslmode=require"
+POSTGRES_URL_NON_POOLING="postgresql://username:password@host:port/database?sslmode=require"
+
+# Security (required for production)
+NEXTAUTH_SECRET="your-production-secret"
+ADMIN_SESSION_SECRET="another-production-secret"
+NODE_ENV="production"
+```
+
+#### 2. Run Production Migration
+```bash
+# Push schema to production database
+npm run db:push-prod
+
+# Or use Neon-specific script
+npm run db:push-neon
+```
+
+### Database Commands Reference
+
+#### Local Development
+```bash
+# Schema Operations
+npm run db:generate    # Generate migration files from schema changes
+npm run db:push        # Apply schema changes to LOCAL database
+npm run db:studio      # Open Drizzle Studio for LOCAL database
+
+# Testing & Seeding
+npm run db:test        # Test LOCAL database connection
+npm run db:seed        # Seed LOCAL database with sample data
+```
+
+#### Production/Neon
+```bash
+# Production Operations  
+npm run db:push-prod   # Apply schema changes to PRODUCTION database
+npm run db:push-neon   # Apply schema changes via Neon script
+npm run db:studio-neon # Open Drizzle Studio for NEON database
+
+# Testing & Seeding
+npm run db:test-neon   # Test NEON database connection
+npm run db:seed-neon   # Seed NEON database with sample data
+```
+
+### Migration Workflow
+
+#### Making Schema Changes
+1. **Modify schema** in `src/lib/db/schema.ts`
+2. **Generate migration** (creates migration files):
+   ```bash
+   npm run db:generate
+   ```
+3. **Apply to local database**:
+   ```bash
+   npm run db:push
+   ```
+4. **Test changes locally**:
+   ```bash
+   npm run db:test
+   npm run dev
+   ```
+5. **Deploy to production**:
+   ```bash
+   npm run db:push-prod
+   ```
+
+#### Database Connection Logic
+The application automatically selects the appropriate database driver:
+- **Local Development**: Uses `node-postgres` driver with connection pooling
+- **Production/Vercel**: Uses `@neondatabase/serverless` driver for edge compatibility
+
+### Troubleshooting
+
+#### Common Issues
+1. **Migration not applied locally**: Ensure you're using the local database commands (`npm run db:push` not `npm run db:push-prod`)
+2. **Connection refused**: Check PostgreSQL is running and database exists
+3. **Permission denied**: Verify PostgreSQL user permissions
+4. **Schema conflicts**: Use `npm run db:studio` to inspect current schema
+
+#### Reset Local Database
+```bash
+# Drop and recreate database
+dropdb santa_monica_db
+createdb santa_monica_db
+npm run db:push
+npm run db:seed
+```
+
 ### Development Commands
 
 ```bash
-# Database operations
+# Database operations (see above for detailed commands)
 npm run db:test      # Test database connection
 npm run db:push      # Push schema changes
 npm run db:studio    # Open Drizzle Studio
@@ -451,14 +768,10 @@ npm run lint         # Run ESLint
 
 # Resources
 
-## Learn more about Medusa
+## Learn more about the technologies
 
-- [Website](https://www.medusajs.com/)
-- [GitHub](https://github.com/medusajs)
-- [Documentation](https://docs.medusajs.com/)
-
-## Learn more about Next.js
-
-- [Website](https://nextjs.org/)
-- [GitHub](https://github.com/vercel/next.js)
-- [Documentation](https://nextjs.org/docs)
+- **Next.js 15** - [Website](https://nextjs.org/) | [Documentation](https://nextjs.org/docs)
+- **Drizzle ORM** - [Website](https://orm.drizzle.team/) | [Documentation](https://orm.drizzle.team/docs/overview)
+- **Tailwind CSS** - [Website](https://tailwindcss.com/) | [Documentation](https://tailwindcss.com/docs)
+- **PostgreSQL** - [Website](https://www.postgresql.org/) | [Documentation](https://www.postgresql.org/docs/)
+- **TypeScript** - [Website](https://www.typescriptlang.org/) | [Documentation](https://www.typescriptlang.org/docs/)

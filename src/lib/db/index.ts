@@ -83,6 +83,8 @@ export type NewMenuCategory = typeof schema.menuCategories.$inferInsert
 
 export type MenuItem = typeof schema.menuItems.$inferSelect
 export type NewMenuItem = typeof schema.menuItems.$inferInsert
+export type MenuProfileItem = typeof schema.menuProfileItems.$inferSelect
+export type NewMenuProfileItem = typeof schema.menuProfileItems.$inferInsert
 
 export type SiteSetting = typeof schema.siteSettings.$inferSelect
 export type NewSiteSetting = typeof schema.siteSettings.$inferInsert

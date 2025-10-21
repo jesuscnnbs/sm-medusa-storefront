@@ -55,7 +55,7 @@ const SideMenu = ({
                 enterTo="opacity-100 backdrop-blur-2xl translate-x-0"
                 leave="transition ease-in duration-150"
                 leaveFrom="opacity-100 backdrop-blur-2xl translate-x-0"
-                leaveTo="opacity-0"
+                leaveTo="opacity-0 -translate-x-10"
               >
                 <PopoverPanel className="absolute inset-x-0 z-30 flex flex-col w-full h-screen pr-4 m-0 overflow-hidden text-sm sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min text-secondary-sm-darker backdrop-blur-2xl">
                   <div

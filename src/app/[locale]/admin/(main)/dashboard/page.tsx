@@ -1,6 +1,7 @@
 import { Metadata } from "next"
-import { getDashboardStats } from "@lib/data/menu"
+import { getDashboardStats } from "@lib/db/queries"
 import Stat from "@modules/admin/components/stat"
+import { SpringCard, SpringCardsGrid } from "@modules/admin/components/spring-card"
 
 export const metadata: Metadata = {
   title: "Admin Dashboard - Santa Monica",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function AdminDashboard() {
   const stats = await getDashboardStats()
-  
+
   const statsData = [
     {
       title: "Menu",
@@ -20,11 +21,11 @@ export default async function AdminDashboard() {
       textSecondary: "text-light-sm"
     },
     {
-      title: "Categorías", 
+      title: "Categorias",
       value: stats.activeCategoriesCount,
-      description: "Categorías activas",
-      bg: "bg-primary-sm-lighter",
-      textPrimary: "text-light-sm", 
+      description: "Categorias activas",
+      bg: "bg-primary-sm",
+      textPrimary: "text-light-sm",
       textSecondary: "text-light-sm"
     },
     {
@@ -38,105 +39,58 @@ export default async function AdminDashboard() {
   ]
   return (
     <>
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {/* Menu Management */}
-      <div className="overflow-hidden shadow bg-light-sm-lighter">
-        <div className="p-5">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="flex items-center justify-center w-8 h-8 bg-secondary-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-white size-5">
-                  <path fillRule="evenodd" d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-4.12-4.122A1.5 1.5 0 0 0 11.378 2H4.5Zm2.25 8.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Zm0 3a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-            <div className="flex-1 w-0 ml-5">
-              <dl>
-                <dt className="text-sm font-medium truncate text-grey-sm">
-                  Menú y Categorías
-                </dt>
-                <dd className="text-lg font-medium text-dark-sm">
-                  Gestión
-                </dd>
-              </dl>
-            </div>
-          </div>
-        </div>
-        <div className="px-5 py-3 bg-light-sm">
-          <div className="text-sm">
-            <a href="/admin/menu/all" className="font-medium transition-colors text-secondary-sm hover:text-secondary-sm-darker">
-              Ver Menú →
-            </a>
-          </div>
-        </div>
-      </div>
+    <SpringCardsGrid className="mb-8">
+      <SpringCard
+        title="MENU"
+        subtitle="Gestiona tu menu, categorias y platos del restaurante. Crea, edita y organiza los items."
+        href="/admin/menu"
+        buttonText="VER MENU"
+        circularText="MENU • PLATOS • CATEGORIAS • MENU • PLATOS •"
+        className="bg-secondary-sm"
+        textColor="text-light-sm"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-20 h-20">
+            <path fillRule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm6.905 9.97a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72V18a.75.75 0 0 0 1.5 0v-4.19l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z" clipRule="evenodd" />
+            <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
+          </svg>
+        }
+      />
 
-      {/* User Management */}
-      <div className="overflow-hidden shadow bg-light-sm-lighter">
-        <div className="p-5">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="flex items-center justify-center w-8 h-8 bg-primary-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-white size-5">
-                  <path d="M7 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM14.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM14.5 16h-.106c.07-.297.088-.611.048-.933a7.47 7.47 0 0 0-1.588-3.755 4.502 4.502 0 0 1 5.874 2.636.818.818 0 0 1-.36.98A7.465 7.465 0 0 1 14.5 16Z" />
-                </svg>
-              </div>
-            </div>
-            <div className="flex-1 w-0 ml-5">
-              <dl>
-                <dt className="text-sm font-medium truncate text-grey-sm">
-                  Gestión de Usuarios
-                </dt>
-                <dd className="text-lg font-medium text-dark-sm">
-                  Administradores
-                </dd>
-              </dl>
-            </div>
-          </div>
-        </div>
-        <div className="px-5 py-3 bg-light-sm">
-          <div className="text-sm">
-            <a href="#" className="font-medium transition-colors text-primary-sm hover:text-primary-sm-darker">
-              Ver Usuarios →
-            </a>
-          </div>
-        </div>
-      </div>
+      <SpringCard
+        title="AJUSTES"
+        subtitle="Configura las opciones generales del sitio web. Personaliza la experiencia de tus clientes."
+        href="/admin/settings"
+        buttonText="CONFIGURAR"
+        circularText="AJUSTES • CONFIGURACION • OPCIONES • AJUSTES •"
+        bgColor="bg-emerald-600"
+        borderColor="border-dark-sm"
+        textColor="text-light-sm"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-20 h-20">
+            <path fillRule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.570.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" clipRule="evenodd" />
+          </svg>
+        }
+      />
 
-      {/* Site Settings */}
-      <div className="overflow-hidden shadow bg-light-sm-lighter">
-        <div className="p-5">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="flex items-center justify-center w-8 h-8 bg-dark-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="text-white size-5">
-                  <path fillRule="evenodd" d="M8.34 1.804A1 1 0 0 1 9.32 1h1.36a1 1 0 0 1 .98.804l.295 1.473c.497.144.971.342 1.416.587l1.25-.834a1 1 0 0 1 1.262.125l.962.962a1 1 0 0 1 .125 1.262l-.834 1.25c.245.445.443.919.587 1.416l1.473.294a1 1 0 0 1 .804.98v1.361a1 1 0 0 1-.804.98l-1.473.295a6.95 6.95 0 0 1-.587 1.416l.834 1.25a1 1 0 0 1-.125 1.262l-.962.962a1 1 0 0 1-1.262.125l-1.25-.834a6.953 6.953 0 0 1-1.416.587l-.294 1.473a1 1 0 0 1-.98.804H9.32a1 1 0 0 1-.98-.804l-.295-1.473a6.957 6.957 0 0 1-1.416-.587l-1.25.834a1 1 0 0 1-1.262-.125l-.962-.962a1 1 0 0 1-.125-1.262l.834-1.25a6.957 6.957 0 0 1-.587-1.416l-1.473-.294A1 1 0 0 1 1 10.68V9.32a1 1 0 0 1 .804-.98l1.473-.295c.144-.497.342-.971.587-1.416l-.834-1.25a1 1 0 0 1 .125-1.262l.962-.962A1 1 0 0 1 5.38 3.03l1.25.834a6.957 6.957 0 0 1 1.416-.587l.294-1.473ZM13 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-            <div className="flex-1 w-0 ml-5">
-              <dl>
-                <dt className="text-sm font-medium truncate text-grey-sm">
-                  Ajustes del Sitio Web
-                </dt>
-                <dd className="text-lg font-medium text-dark-sm">
-                  Configurar ajustes
-                </dd>
-              </dl>
-            </div>
-          </div>
-        </div>
-        <div className="px-5 py-3 bg-light-sm">
-          <div className="text-sm">
-            <a href="#" className="font-medium transition-colors text-dark-sm hover:text-dark-sm-darker">
-              Ver ajustes →
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+      <SpringCard
+        title="USUARIOS"
+        subtitle="Administra los usuarios del panel de administracion. Controla permisos y accesos."
+        href="/admin/admin"
+        buttonText="VER USUARIOS"
+        circularText="ADMINISTRADORES • USUARIOS • PERMISOS • ADMIN •"
+        bgColor="bg-light-sm"
+        borderColor="border-dark-sm"
+        textColor="text-dark-sm"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-20 h-20">
+            <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+          </svg>
+        }
+      />
 
-    <div className="mt-8 shadow bg-light-sm-lighter">
+    </SpringCardsGrid>
+
+    <div className="mt-8 rounded-lg shadow bg-light-sm-lighter">
       <div className="px-4 py-5 sm:p-6">
         <h3 className="text-lg font-medium leading-6 text-dark-sm">
           Estadísticas
