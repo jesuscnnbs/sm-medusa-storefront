@@ -39,10 +39,10 @@ export const BrutalToggle = ({
       onClick={onToggle}
       disabled={disabled}
       className={twMerge(
-        "flex border-2 rounded-lg border-dark-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed relative",
+        "flex border-2 rounded-lg border-dark-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed relative hover:bg-light-sm-lighter",
         sizeClasses[size].container,
         isActive
-          ? "bg-primary-sm justify-end"
+          ? "bg-primary-sm justify-end hover:bg-primary-sm-lighter"
           : "bg-light-sm justify-start",
         className
       )}

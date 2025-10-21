@@ -53,19 +53,19 @@ export const BrutalButtonLink = ({
   const variantClasses = {
     primary: active
       ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "bg-primary-sm text-light-sm border-dark-sm hover:-rotate-2",
+      : "bg-primary-sm text-light-sm border-dark-sm group-hover:-rotate-2",
     secondary: active
       ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "bg-secondary-sm text-light-sm border-dark-sm hover:-rotate-2",
+      : "bg-secondary-sm text-light-sm border-dark-sm group-hover:-rotate-2",
     neutral: active
       ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "bg-white text-dark-sm border-dark-sm hover:-rotate-2",
+      : "bg-white text-dark-sm border-dark-sm group-hover:-rotate-2",
   }
 
   return (
     <div
       className={twMerge(
-        "inline-block rounded-lg transition-colors bg-dark-sm",
+        "inline-block rounded-lg transition-colors bg-dark-sm group",
         className
       )}
     >

@@ -1,11 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { getAllMenuProfiles, toggleMenuProfileActive, deleteMenuProfile } from "@lib/db/queries"
 import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
 import { LoaderContainer } from "@modules/admin/components/bar-loader"
 import { ProfileCard } from "@modules/admin/components/profile-card"
 import { useNotification } from "@lib/context/notification-context"
+import React from "react"
+import { BrutalAlert } from "@modules/admin/components/brutal-form"
 
 export default function AdminMenuProfiles() {
   const { addNotification } = useNotification()
@@ -60,19 +62,29 @@ export default function AdminMenuProfiles() {
     }
   }
 
+  const activeProfiles = React.useMemo(() => {
+    return profiles.filter(p => p.isActive).length
+  }, [profiles])
+
   if (loading) {
     return <LoaderContainer />
   }
   
   return (
     <>
-      <div className="mb-8">
+      <div className="mb-4">
         <div className="flex gap-2 mt-4">
           <BrutalButtonLink href="/admin/menu/create" variant="secondary" size="sm">
             + Crear Menú
           </BrutalButtonLink>
         </div>
       </div>
+
+      {activeProfiles === 0 && profiles.length > 0 && (
+        <BrutalAlert variant="warning" className="mb-2">
+          ⚠️ Actualmente no hay menús activos. Por favor, activa al menos un menú para que esté disponible en la tienda.
+        </BrutalAlert>
+      )}
 
       <div className="grid grid-cols-1 gap-6">
         {profiles.length === 0 ? (
@@ -129,7 +141,7 @@ export default function AdminMenuProfiles() {
               <div className="p-4 overflow-hidden border-2 rounded-md border-dark-sm bg-secondary-sm">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="text-3xl font-bold text-light-sm">{profiles.filter(p => p.isActive).length}</div>
+                    <div className="text-3xl font-bold text-light-sm">{activeProfiles}</div>
                   </div>
                   <div className="flex-1 w-0 ml-5">
                     <dl>

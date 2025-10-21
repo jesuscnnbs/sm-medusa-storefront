@@ -43,13 +43,13 @@ const BrutalButton = React.forwardRef<HTMLButtonElement, BrutalButtonProps>(
     const variantClasses = {
       primary: active
         ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-        : "bg-primary-sm text-light-sm border-dark-sm hover:-rotate-2",
+        : "bg-primary-sm text-light-sm border-dark-sm group-hover:-rotate-2",
       secondary: active
         ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-        : "bg-secondary-sm text-light-sm border-dark-sm hover:-rotate-2",
+        : "bg-secondary-sm text-light-sm border-dark-sm group-hover:-rotate-2",
       neutral: active
         ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-        : "bg-white text-dark-sm border-dark-sm hover:-rotate-2",
+        : "bg-white text-dark-sm border-dark-sm group-hover:-rotate-2",
     }
 
     const baseClasses = twMerge(
@@ -68,7 +68,7 @@ const BrutalButton = React.forwardRef<HTMLButtonElement, BrutalButtonProps>(
     return (
       <div
         className={twMerge(
-          "rounded-lg transition-colors bg-dark-sm",
+          "rounded-lg transition-colors bg-dark-sm group",
           className
         )}
       >
