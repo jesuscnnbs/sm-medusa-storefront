@@ -4,6 +4,17 @@ import { useState, useEffect } from "react"
 import { createMenuItem, updateMenuItem } from "@lib/db/queries"
 import { listMenuCategories } from "@lib/db/queries/menu-categories"
 import { useRouter } from "next/navigation"
+import BrutalButton from "../brutal-button"
+import {
+  BrutalLabel,
+  BrutalInput,
+  BrutalTextarea,
+  BrutalCheckbox,
+  BrutalFormContainer,
+  BrutalAlert,
+  BrutalSelect,
+} from "../brutal-form"
+import { useNotification } from "@lib/context/notification-context"
 
 interface DishData {
   id?: string
@@ -35,6 +46,7 @@ export default function DishForm({
   onCancel
 }: DishFormProps) {
   const router = useRouter()
+  const { addNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState<any[]>([])
   const [formData, setFormData] = useState<DishData>({
@@ -75,12 +87,12 @@ export default function DishForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formData.name.trim()) {
-      alert("El nombre es requerido")
+      addNotification("El nombre es requerido", "error")
       return
     }
 
     if (formData.price < 0) {
-      alert("El precio debe ser mayor o igual a 0")
+      addNotification("El precio debe ser mayor o igual a 0", "error")
       return
     }
 
@@ -100,10 +112,10 @@ export default function DishForm({
 
       if (mode === "create") {
         await createMenuItem(dataToSubmit)
-        alert("Plato creado exitosamente")
+        addNotification("Plato creado exitosamente", "success")
       } else if (initialData?.id) {
         await updateMenuItem(initialData.id, dataToSubmit)
-        alert("Plato actualizado exitosamente")
+        addNotification("Plato actualizado exitosamente", "success")
       } else {
         throw new Error("Invalid operation")
       }
@@ -115,7 +127,7 @@ export default function DishForm({
       }
     } catch (error) {
       console.error("Error saving dish:", error)
-      alert("Error al guardar el plato")
+      addNotification("Error al guardar el plato", "error")
     } finally {
       setLoading(false)
     }
@@ -132,90 +144,76 @@ export default function DishForm({
   return (
     <div className="max-w-4xl mx-auto">
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="p-6 shadow bg-light-sm-lighter">
-          <h3 className="mb-6 text-lg font-medium text-dark-sm">
+        <BrutalFormContainer>
+          <h3 className="mb-6 text-lg font-bold uppercase text-dark-sm">
             {mode === "create" ? "Nuevo Plato" : "Editar Plato"}
           </h3>
 
           <div className="grid grid-cols-1 gap-6">
+            {/* Names */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Nombre (Espanol) *
-                </label>
-                <input
+                <BrutalLabel required>Nombre (Español)</BrutalLabel>
+                <BrutalInput
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                   required
                 />
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Nombre (Ingles)
-                </label>
-                <input
+                <BrutalLabel>Nombre (Inglés)</BrutalLabel>
+                <BrutalInput
                   type="text"
                   value={formData.nameEn}
                   onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
             </div>
 
+            {/* Descriptions */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Descripcion (Espanol)
-                </label>
-                <textarea
+                <BrutalLabel>Descripción (Español)</BrutalLabel>
+                <BrutalTextarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Descripcion (Ingles)
-                </label>
-                <textarea
+                <BrutalLabel>Descripción (Inglés)</BrutalLabel>
+                <BrutalTextarea
                   value={formData.descriptionEn}
                   onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
             </div>
 
+            {/* Price and Category */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Precio (en centavos) *
-                </label>
-                <input
+                <BrutalLabel required>Precio (en céntimos)</BrutalLabel>
+                <BrutalInput
                   type="number"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) || 0 })}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                   required
                 />
                 <p className="mt-1 text-xs text-grey-sm">
-                  Ejemplo: 1250 = $12.50
+                  Ejemplo: 1250 = €12.50
                 </p>
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Categoria
-                </label>
+                <BrutalLabel>Categoría</BrutalLabel>
                 <select
                   value={formData.categoryId || ""}
                   onChange={(e) => setFormData({ ...formData, categoryId: e.target.value || undefined })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
+                  className="w-full px-3 py-2 border-2 rounded-lg border-dark-sm bg-light-sm focus:outline-none focus:ring-2 focus:ring-primary-sm text-dark-sm"
                 >
-                  <option value="">Sin categoria</option>
+                  <option value="">Sin categoría</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
@@ -225,23 +223,21 @@ export default function DishForm({
               </div>
             </div>
 
+            {/* Image */}
             <div>
-              <label className="block mb-2 text-sm font-medium text-dark-sm">
-                URL de Imagen
-              </label>
-              <input
+              <BrutalLabel>URL de Imagen</BrutalLabel>
+              <BrutalInput
                 type="text"
                 value={formData.image}
                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                 placeholder="https://ejemplo.com/imagen.jpg"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
               />
               {formData.image && (
                 <div className="mt-2">
                   <img
                     src={formData.image}
                     alt="Preview"
-                    className="object-cover w-32 h-32 rounded-md"
+                    className="object-cover w-32 h-32 border-2 rounded-lg border-dark-sm"
                     onError={(e) => {
                       e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23ddd' width='100' height='100'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EError%3C/text%3E%3C/svg%3E"
                     }}
@@ -250,105 +246,88 @@ export default function DishForm({
               )}
             </div>
 
+            {/* Ingredients and Allergens */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Ingredientes (separados por comas)
-                </label>
-                <textarea
+                <BrutalLabel>Ingredientes (separados por comas)</BrutalLabel>
+                <BrutalTextarea
                   value={ingredientsText}
                   onChange={(e) => setIngredientsText(e.target.value)}
                   rows={3}
                   placeholder="Carne, Lechuga, Tomate, Cebolla"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Alergenos (separados por comas)
-                </label>
-                <textarea
+                <BrutalLabel>Alérgenos (separados por comas)</BrutalLabel>
+                <BrutalTextarea
                   value={allergensText}
                   onChange={(e) => setAllergensText(e.target.value)}
                   rows={3}
-                  placeholder="Gluten, Lacteos, Frutos secos"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
+                  placeholder="Gluten, Lácteos, Frutos secos"
                 />
               </div>
             </div>
 
+            {/* Additional Settings */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Orden de Clasificacion
-                </label>
-                <input
+                <BrutalLabel>Orden de Clasificación</BrutalLabel>
+                <BrutalInput
                   type="number"
                   value={formData.sortOrder}
                   onChange={(e) => setFormData({ ...formData, sortOrder: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
+              <div className="space-y-4">
+                <BrutalCheckbox
                   id="isAvailable"
+                  label="Disponible"
                   checked={formData.isAvailable}
                   onChange={(e) => setFormData({ ...formData, isAvailable: e.target.checked })}
-                  className="w-4 h-4 text-primary-sm bg-gray-100 border-gray-300 rounded focus:ring-primary-sm focus:ring-2"
                 />
-                <label htmlFor="isAvailable" className="ml-2 text-sm font-medium text-dark-sm">
-                  Disponible
-                </label>
               </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
+              <div className="space-y-4">
+                <BrutalCheckbox
                   id="isPopular"
+                  label="Popular"
                   checked={formData.isPopular}
                   onChange={(e) => setFormData({ ...formData, isPopular: e.target.checked })}
-                  className="w-4 h-4 text-primary-sm bg-gray-100 border-gray-300 rounded focus:ring-primary-sm focus:ring-2"
                 />
-                <label htmlFor="isPopular" className="ml-2 text-sm font-medium text-dark-sm">
-                  Popular
-                </label>
               </div>
             </div>
           </div>
-        </div>
+        </BrutalFormContainer>
 
+        {/* Actions */}
         <div className="flex justify-end space-x-4">
-          <button
+          <BrutalButton
             type="button"
             onClick={handleCancel}
             disabled={loading}
-            className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
+            variant="neutral"
+            size="md"
           >
             Cancelar
-          </button>
-          <button
+          </BrutalButton>
+          <BrutalButton
             type="submit"
             disabled={loading}
-            className="px-6 py-2 text-sm font-medium text-white bg-primary-sm border border-transparent rounded-md hover:bg-primary-sm-darker focus:outline-none focus:ring-2 focus:ring-primary-sm focus:ring-offset-2 disabled:opacity-50"
+            variant="primary"
+            size="md"
           >
             {loading
               ? (mode === "create" ? "Creando..." : "Guardando...")
               : (mode === "create" ? "Crear Plato" : "Guardar Cambios")
             }
-          </button>
+          </BrutalButton>
         </div>
       </form>
 
-      <div className="p-4 mt-6 border-l-4 border-blue-400 bg-blue-50">
-        <div className="flex">
-          <div className="ml-3">
-            <p className="text-sm text-blue-700">
-              <strong>Nota:</strong> Los platos se organizan por categorias en el menu.
-              El precio debe ingresarse en centavos (1250 = $12.50).
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Info Box */}
+      <BrutalAlert variant="info" className="mt-6">
+        <span className="font-black uppercase">💡 Nota:</span> Los platos se organizan por categorías en el menú.
+        El precio debe ingresarse en céntimos (1250 = €12.50).
+      </BrutalAlert>
     </div>
   )
 }
