@@ -53,13 +53,13 @@ export const NeuButton = ({
   const buttonVariantClasses = {
     primary: active
       ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "border-dark-sm bg-light-sm text-dark-sm hover:rotate-2",
+      : "border-dark-sm bg-light-sm text-dark-sm hover:-rotate-2",
     secondary: active
       ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "border-dark-sm bg-light-sm text-dark-sm hover:rotate-2",
+      : "border-dark-sm bg-light-sm text-dark-sm hover:-rotate-2",
     neutral: active
       ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "border-dark-sm bg-light-sm text-dark-sm hover:rotate-2",
+      : "border-dark-sm bg-light-sm text-dark-sm hover:-rotate-2",
   }
 
   return (
@@ -74,10 +74,10 @@ export const NeuButton = ({
         onClick={onClick}
         disabled={disabled}
         className={twMerge(
-          "w-full origin-top-left rounded-lg border-2 font-medium transition-all",
+          "w-full origin-bottom-left rounded-lg border-2 font-medium transition-all",
           sizeClasses[size],
           buttonVariantClasses[variant],
-          active && "translate-y-1",
+          active && "-translate-y-1",
           disabled && "opacity-50 cursor-not-allowed"
         )}
       >

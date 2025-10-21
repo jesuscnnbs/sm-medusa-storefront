@@ -1,7 +1,7 @@
 "use client"
 
+import { motion } from "framer-motion"
 import React from "react"
-import {motion} from "framer-motion"
 import { twMerge } from "tailwind-merge"
 
 interface BrutalToggleProps {
@@ -56,8 +56,8 @@ export const BrutalToggle = ({
         layout
         transition={{
           type: "spring",
-          visualDuration: 0.2,
-          bounce: 0.2,
+          duration: 0.2,
+          bounce: 0,
         }}
       />
     </button>

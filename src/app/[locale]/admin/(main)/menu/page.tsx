@@ -82,7 +82,7 @@ export default function AdminMenuProfiles() {
 
       {activeProfiles === 0 && profiles.length > 0 && (
         <BrutalAlert variant="warning" className="mb-2">
-          ⚠️ Actualmente no hay menús activos. Por favor, activa al menos un menú para que esté disponible en la tienda.
+          ⚠️ Actualmente no hay menús activos. Por favor, activa al menos un menú para que esté disponible.
         </BrutalAlert>
       )}
 
