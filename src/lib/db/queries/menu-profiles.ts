@@ -21,7 +21,7 @@ export async function getAllMenuProfiles() {
   return await db
     .select()
     .from(schema.menuProfiles)
-    .orderBy(desc(schema.menuProfiles.isActive), asc(schema.menuProfiles.sortOrder))
+    .orderBy(asc(schema.menuProfiles.createdAt))
 }
 
 export async function getMenuProfileById(id: string) {

@@ -7,6 +7,10 @@ import Link from "next/link"
 import { notFound, useRouter } from "next/navigation"
 import { Trash } from "@medusajs/icons"
 import { useParams } from "@lib/hooks"
+import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
+import BrutalButton from "@modules/admin/components/brutal-button"
+import { BrutalFormContainer, BrutalLabel, BrutalAlert } from "@modules/admin/components/brutal-form"
+import { useNotification } from "@lib/context/notification-context"
 
 interface MenuDetailsProps {
   params: Promise<{
@@ -18,6 +22,7 @@ interface MenuDetailsProps {
 export default function MenuDetailsPage({ params }: MenuDetailsProps) {
   const resolvedParams = useParams(params)
   const router = useRouter()
+  const { addNotification } = useNotification()
   const [menuProfile, setMenuProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [toggling, setToggling] = useState(false)
@@ -48,20 +53,20 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
 
   const handleToggleActive = async () => {
     if (!resolvedParams?.id) return
-    
+
     try {
       setToggling(true)
       const updatedProfile = await toggleMenuProfileActive(resolvedParams.id)
       setMenuProfile(updatedProfile)
-      
+
       if (updatedProfile.isActive) {
-        alert("Menú activado exitosamente. Todos los demás menús han sido desactivados.")
+        addNotification("Menú activado exitosamente. Todos los demás menús han sido desactivados.", "success")
       } else {
-        alert("Menú desactivado exitosamente.")
+        addNotification("Menú desactivado exitosamente.", "info")
       }
     } catch (error) {
       console.error("Error toggling menu status:", error)
-      alert("Error al cambiar el estado del menú")
+      addNotification("Error al cambiar el estado del menú", "error")
     } finally {
       setToggling(false)
     }
@@ -79,19 +84,18 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
   const handleDelete = async () => {
     if (!menuProfile || !resolvedParams?.id) return
 
-    if (!confirm(`¿Estás seguro de que quieres eliminar el menú
-  "${menuProfile.name}"? Esta acción no se puede deshacer.`)) {
+    if (!confirm(`¿Estás seguro de que quieres eliminar el menú "${menuProfile.name}"? Esta acción no se puede deshacer.`)) {
       return
     }
 
     try {
       setDeleting(true)
       await deleteMenuProfile(resolvedParams.id)
-      alert("Menú eliminado exitosamente")
+      addNotification("Menú eliminado exitosamente", "success")
       router.push("/admin/menu")
     } catch (error) {
       console.error("Error deleting menu:", error)
-      alert("Error al eliminar el menú")
+      addNotification("Error al eliminar el menú", "error")
     } finally {
       setDeleting(false)
     }
@@ -122,18 +126,13 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <Link
+              <BrutalButtonLink
                 href="/admin/menu"
-                className="inline-flex items-center mb-4 text-sm font-medium transition-colors text-primary-sm hover:text-primary-sm-darker"
+                size="sm"
+                variant="neutral"
               >
                 ← Volver a Menús
-              </Link>
-              <h1 className="mb-2 text-2xl font-bold text-dark-sm">
-                Editar Menú
-              </h1>
-              <p className="text-grey-sm">
-                Modifica la configuración de este perfil de menú
-              </p>
+              </BrutalButtonLink>
             </div>
           </div>
         </div>
@@ -153,47 +152,42 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <Link
+            <BrutalButtonLink
               href="/admin/menu"
-              className="inline-flex items-center mb-4 text-sm font-medium transition-colors text-primary-sm hover:text-primary-sm-darker"
+              size="sm"
+              variant="neutral"
+
             >
               ← Volver a Menús
-            </Link>
-            <h1 className="mb-2 text-2xl font-bold text-dark-sm">
-              Detalles del Menú
-            </h1>
-            <p className="text-grey-sm">
-              Gestiona la configuración de este perfil de menú
-            </p>
+            </BrutalButtonLink>
           </div>
           
-          <div className="flex gap-2">
-            <button
+          <div className="flex gap-3">
+            <BrutalButton
               onClick={() => setIsEditing(true)}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors bg-secondary-sm hover:bg-secondary-sm-darker"
+              variant="secondary"
+              size="sm"
             >
               Editar Menú
-            </button>
-            <button
+            </BrutalButton>
+            <BrutalButton
               onClick={handleToggleActive}
               disabled={toggling}
-              className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors disabled:opacity-50 ${
-                menuProfile.isActive
-                  ? 'bg-red-600 hover:bg-red-700'
-                  : 'bg-green-600 hover:bg-green-700'
-              }`}
+              variant={menuProfile.isActive ? "neutral" : "primary"}
+              size="sm"
             >
-              {toggling ? "Cambiando..." : menuProfile.isActive ? "Desactivar Menú" : "Activar Menú"}
-            </button>
-            <button
+              {toggling ? "Cambiando..." : menuProfile.isActive ? "Desactivar" : "Activar"}
+            </BrutalButton>
+            <BrutalButton
               onClick={handleDelete}
               disabled={deleting}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors bg-red-600 rounded-full hover:bg-red-700 disabled:opacity-50"
+              variant="neutral"
+              size="sm"
               title="Eliminar menú"
             >
-              <Trash className="w-4 h-4 mr-2" />
+              <Trash className="inline-block w-4 h-4 mr-2" />
               {deleting ? "Eliminando..." : "Eliminar"}
-            </button>
+            </BrutalButton>
           </div>
         </div>
       </div>
@@ -201,21 +195,21 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main Content */}
         <div className="lg:col-span-2">
-          <div className="p-6 shadow bg-light-sm-lighter">
-            <h3 className="mb-4 text-lg font-medium text-dark-sm">Información del Menú</h3>
-            
+          <BrutalFormContainer>
+            <h3 className="mb-6 text-lg font-bold uppercase text-dark-sm">Información del Menú</h3>
+
             <div className="grid grid-cols-1 gap-6">
               {/* Names */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-dark-sm">Nombre (Español)</label>
-                  <div className="px-3 py-2 rounded-md bg-gray-50">
+                  <BrutalLabel>Nombre (Español)</BrutalLabel>
+                  <div className="px-3 py-2 border-2 rounded-lg border-dark-sm bg-light-sm">
                     {menuProfile.name}
                   </div>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-dark-sm">Nombre (Inglés)</label>
-                  <div className="px-3 py-2 rounded-md bg-gray-50">
+                  <BrutalLabel>Nombre (Inglés)</BrutalLabel>
+                  <div className="px-3 py-2 border-2 rounded-lg border-dark-sm bg-light-sm">
                     {menuProfile.nameEn || "N/A"}
                   </div>
                 </div>
@@ -224,14 +218,14 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
               {/* Descriptions */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-dark-sm">Descripción (Español)</label>
-                  <div className="px-3 py-2 rounded-md bg-gray-50 min-h-20">
+                  <BrutalLabel>Descripción (Español)</BrutalLabel>
+                  <div className="px-3 py-2 border-2 rounded-lg border-dark-sm bg-light-sm min-h-20">
                     {menuProfile.description || "N/A"}
                   </div>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-dark-sm">Descripción (Inglés)</label>
-                  <div className="px-3 py-2 rounded-md bg-gray-50 min-h-20">
+                  <BrutalLabel>Descripción (Inglés)</BrutalLabel>
+                  <div className="px-3 py-2 border-2 rounded-lg border-dark-sm bg-light-sm min-h-20">
                     {menuProfile.descriptionEn || "N/A"}
                   </div>
                 </div>
@@ -240,18 +234,18 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
               {/* Validity Period */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-dark-sm">Válido Desde</label>
-                  <div className="px-3 py-2 rounded-md bg-gray-50">
-                    {menuProfile.validFrom 
+                  <BrutalLabel>Válido Desde</BrutalLabel>
+                  <div className="px-3 py-2 border-2 rounded-lg border-dark-sm bg-light-sm">
+                    {menuProfile.validFrom
                       ? new Date(menuProfile.validFrom).toLocaleDateString('es-ES')
                       : "Sin restricción"
                     }
                   </div>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-dark-sm">Válido Hasta</label>
-                  <div className="px-3 py-2 rounded-md bg-gray-50">
-                    {menuProfile.validTo 
+                  <BrutalLabel>Válido Hasta</BrutalLabel>
+                  <div className="px-3 py-2 border-2 rounded-lg border-dark-sm bg-light-sm">
+                    {menuProfile.validTo
                       ? new Date(menuProfile.validTo).toLocaleDateString('es-ES')
                       : "Sin restricción"
                     }
@@ -259,85 +253,72 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
                 </div>
               </div>
             </div>
-          </div>
+          </BrutalFormContainer>
 
           {/* Action Note */}
-          <div className="p-4 mt-6 border-l-4 border-blue-400 bg-blue-50">
-            <div className="flex">
-              <div className="ml-3">
-                <p className="text-sm text-blue-700">
-                  <strong>Nota:</strong> Solo un menú puede estar activo a la vez. 
-                  Al activar este menú, todos los demás se desactivarán automáticamente.
-                </p>
-              </div>
-            </div>
-          </div>
+          <BrutalAlert variant="info" className="mt-6">
+            <p>
+              <strong>Nota:</strong> Solo un menú puede estar activo a la vez.
+              Al activar este menú, todos los demás se desactivarán automáticamente.
+            </p>
+          </BrutalAlert>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Status */}
-          <div className="p-6 shadow bg-light-sm-lighter">
-            <h3 className="mb-4 text-lg font-medium text-dark-sm">Estado</h3>
+          <BrutalFormContainer>
+            <h3 className="mb-4 text-lg font-bold uppercase text-dark-sm">Estado</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-dark-sm">Estado Actual</label>
-                <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                  menuProfile.isActive 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-gray-100 text-gray-800'
+                <BrutalLabel className="mb-0">Estado Actual</BrutalLabel>
+                <div className={`inline-flex items-center px-3 py-1 border-2 text-xs font-bold uppercase ${
+                  menuProfile.isActive
+                    ? 'bg-green-100 text-green-800 border-green-800'
+                    : 'bg-gray-100 text-gray-800 border-gray-800'
                 }`}>
                   {menuProfile.isActive ? 'Activo' : 'Inactivo'}
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-dark-sm">Menú por Defecto</label>
-                <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                  menuProfile.isDefault 
-                    ? 'bg-blue-100 text-blue-800' 
-                    : 'bg-gray-100 text-gray-800'
+                <BrutalLabel className="mb-0">Menú por Defecto</BrutalLabel>
+                <div className={`inline-flex items-center px-3 py-1 border-2 text-xs font-bold uppercase ${
+                  menuProfile.isDefault
+                    ? 'bg-blue-100 text-blue-800 border-blue-800'
+                    : 'bg-gray-100 text-gray-800 border-gray-800'
                 }`}>
                   {menuProfile.isDefault ? 'Sí' : 'No'}
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-dark-sm">Orden</label>
-                <div className="px-3 py-1 text-sm rounded-md bg-gray-50">
+                <BrutalLabel className="mb-0">Orden</BrutalLabel>
+                <div className="px-3 py-1 text-sm border-2 border-dark-sm bg-light-sm">
                   {menuProfile.sortOrder}
                 </div>
               </div>
             </div>
-          </div>
+          </BrutalFormContainer>
 
           {/* Metadata */}
-          <div className="p-6 shadow bg-light-sm-lighter">
-            <h3 className="mb-4 text-lg font-medium text-dark-sm">Metadatos</h3>
-            <div className="space-y-2 text-sm text-grey-sm">
-              <p><strong>Creado:</strong> {new Date(menuProfile.createdAt).toLocaleDateString('es-ES')}</p>
-              <p><strong>Actualizado:</strong> {new Date(menuProfile.updatedAt).toLocaleDateString('es-ES')}</p>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="p-6 shadow bg-light-sm-lighter">
-            <h3 className="mb-4 text-lg font-medium text-dark-sm">Acciones Rápidas</h3>
+          <BrutalFormContainer>
+            <h3 className="mb-4 text-lg font-bold uppercase text-dark-sm">Metadatos</h3>
             <div className="space-y-3">
-              <Link
-                href={`/admin/dish`}
-                className="block w-full px-4 py-2 text-sm font-medium text-center transition-colors border border-secondary-sm text-secondary-sm hover:bg-secondary-sm hover:text-white"
-              >
-                Ver Platos del Menú
-              </Link>
-              <Link
-                href={`/admin/categories`}
-                className="block w-full px-4 py-2 text-sm font-medium text-center transition-colors border border-secondary-sm text-secondary-sm hover:bg-secondary-sm hover:text-white"
-              >
-                Gestionar Categorías
-              </Link>
+              <div>
+                <BrutalLabel className="mb-1">Creado</BrutalLabel>
+                <div className="px-3 py-2 text-sm border-2 rounded-md border-dark-sm bg-light-sm">
+                  {new Date(menuProfile.createdAt).toLocaleDateString('es-ES')}
+                </div>
+              </div>
+              <div>
+                <BrutalLabel className="mb-1">Actualizado</BrutalLabel>
+                <div className="px-3 py-2 text-sm border-2 rounded-md border-dark-sm bg-light-sm">
+                  {new Date(menuProfile.updatedAt).toLocaleDateString('es-ES')}
+                </div>
+              </div>
             </div>
-          </div>
+          </BrutalFormContainer>
         </div>
       </div>
     </>

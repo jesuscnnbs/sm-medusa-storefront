@@ -4,6 +4,15 @@ import { useState, useEffect } from "react"
 import { createMenuProfile, updateMenuProfile, getMenuProfileItems, setMenuProfileItems } from "@lib/db/queries"
 import MenuItemSelector from "../menu-item-selector"
 import { useRouter } from "next/navigation"
+import BrutalButton from "../brutal-button"
+import {
+  BrutalLabel,
+  BrutalInput,
+  BrutalTextarea,
+  BrutalCheckbox,
+  BrutalFormContainer,
+  BrutalAlert,
+} from "../brutal-form"
 
 interface MenuProfileData {
   id?: string
@@ -121,35 +130,29 @@ export default function MenuProfileForm({
     <div className="max-w-4xl mx-auto">
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Main Content */}
-        <div className="p-6 shadow bg-light-sm-lighter">
-          <h3 className="mb-6 text-lg font-medium text-dark-sm">
+        <BrutalFormContainer>
+          <h3 className="mb-6 text-lg font-bold uppercase text-dark-sm">
             {mode === "create" ? "Nuevo Menú" : "Editar Menú"}
           </h3>
-          
+
           <div className="grid grid-cols-1 gap-6">
             {/* Names */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Nombre (Español) *
-                </label>
-                <input
+                <BrutalLabel required>Nombre (Español)</BrutalLabel>
+                <BrutalInput
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                   required
                 />
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Nombre (Inglés)
-                </label>
-                <input
+                <BrutalLabel>Nombre (Inglés)</BrutalLabel>
+                <BrutalInput
                   type="text"
                   value={formData.nameEn}
                   onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
             </div>
@@ -157,25 +160,19 @@ export default function MenuProfileForm({
             {/* Descriptions */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Descripción (Español)
-                </label>
-                <textarea
+                <BrutalLabel>Descripción (Español)</BrutalLabel>
+                <BrutalTextarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Descripción (Inglés)
-                </label>
-                <textarea
+                <BrutalLabel>Descripción (Inglés)</BrutalLabel>
+                <BrutalTextarea
                   value={formData.descriptionEn}
                   onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
             </div>
@@ -183,25 +180,19 @@ export default function MenuProfileForm({
             {/* Validity Period */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Válido Desde
-                </label>
-                <input
+                <BrutalLabel>Válido Desde</BrutalLabel>
+                <BrutalInput
                   type="date"
                   value={formData.validFrom}
                   onChange={(e) => setFormData({ ...formData, validFrom: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Válido Hasta
-                </label>
-                <input
+                <BrutalLabel>Válido Hasta</BrutalLabel>
+                <BrutalInput
                   type="date"
                   value={formData.validTo}
                   onChange={(e) => setFormData({ ...formData, validTo: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
             </div>
@@ -209,51 +200,36 @@ export default function MenuProfileForm({
             {/* Additional Settings */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-dark-sm">
-                  Orden de Clasificación
-                </label>
-                <input
+                <BrutalLabel>Orden de Clasificación</BrutalLabel>
+                <BrutalInput
                   type="number"
                   value={formData.sortOrder}
                   onChange={(e) => setFormData({ ...formData, sortOrder: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-sm focus:border-transparent"
                 />
               </div>
               <div className="space-y-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="isActive"
-                    checked={formData.isActive}
-                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-sm focus:ring-primary-sm focus:ring-2"
-                  />
-                  <label htmlFor="isActive" className="ml-2 text-sm font-medium text-dark-sm">
-                    Menú activo
-                  </label>
-                </div>
+                <BrutalCheckbox
+                  id="isActive"
+                  label="Menú activo"
+                  checked={formData.isActive}
+                  onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                />
                 {formData.isActive && (
-                  <div className="p-3 text-sm border rounded-md text-amber-800 bg-amber-50 border-amber-200">
-                    ⚠️ <strong>Importante:</strong> Solo un menú puede estar activo a la vez. 
+                  <BrutalAlert variant="warning">
+                    <span className="font-black">⚠️ IMPORTANTE:</span> Solo un menú puede estar activo a la vez.
                     Si activas este menú, cualquier otro menú activo será desactivado automáticamente.
-                  </div>
+                  </BrutalAlert>
                 )}
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="isDefault"
-                    checked={formData.isDefault}
-                    onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-sm focus:ring-primary-sm focus:ring-2"
-                  />
-                  <label htmlFor="isDefault" className="ml-2 text-sm font-medium text-dark-sm">
-                    Menú por defecto
-                  </label>
-                </div>
+                <BrutalCheckbox
+                  id="isDefault"
+                  label="Menú por defecto"
+                  checked={formData.isDefault}
+                  onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
+                />
               </div>
             </div>
           </div>
-        </div>
+        </BrutalFormContainer>
 
         {/* Menu Items Selection */}
         <MenuItemSelector
@@ -264,39 +240,35 @@ export default function MenuProfileForm({
 
         {/* Actions */}
         <div className="flex justify-end space-x-4">
-          <button
+          <BrutalButton
             type="button"
             onClick={handleCancel}
             disabled={loading}
-            className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
+            variant="neutral"
+            size="md"
           >
             Cancelar
-          </button>
-          <button
+          </BrutalButton>
+          <BrutalButton
             type="submit"
             disabled={loading}
-            className="px-6 py-2 text-sm font-medium text-white border border-transparent rounded-md bg-primary-sm hover:bg-primary-sm-darker focus:outline-none focus:ring-2 focus:ring-primary-sm focus:ring-offset-2 disabled:opacity-50"
+            variant="primary"
+            size="md"
           >
-            {loading 
-              ? (mode === "create" ? "Creando..." : "Guardando...") 
+            {loading
+              ? (mode === "create" ? "Creando..." : "Guardando...")
               : (mode === "create" ? "Crear Menú" : "Guardar Cambios")
             }
-          </button>
+          </BrutalButton>
         </div>
       </form>
 
       {/* Info Box */}
-      <div className="p-4 mt-6 border-l-4 border-blue-400 bg-blue-50">
-        <div className="flex">
-          <div className="ml-3">
-            <p className="text-sm text-blue-700">
-              <strong>Nota:</strong> Solo un menú puede estar activo a la vez. Si activas este menú, 
-              todos los demás menús se desactivarán automáticamente. El menú "por defecto" se usa 
-              cuando no hay ningún menú activo específico.
-            </p>
-          </div>
-        </div>
-      </div>
+      <BrutalAlert variant="info" className="mt-6">
+        <span className="font-black uppercase">💡 Nota:</span> Solo un menú puede estar activo a la vez. Si activas este menú,
+        todos los demás menús se desactivarán automáticamente. El menú "por defecto" se usa
+        cuando no hay ningún menú activo específico.
+      </BrutalAlert>
     </div>
   )
 }
