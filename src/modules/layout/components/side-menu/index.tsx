@@ -30,7 +30,7 @@ const SideMenu = ({
                   data-testid="nav-menu-button"
                   className="relative flex items-center h-full transition-colors duration-200 ease-out focus:outline-none hover:text-ui-fg-base"
                 >
-                  <div className="p-2 rounded-full hover:bg-zinc-200">
+                  <div className="p-2 border-2 rounded-md hover:bg-light-sm active:scale-95 border-dark-sm-lighter">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"

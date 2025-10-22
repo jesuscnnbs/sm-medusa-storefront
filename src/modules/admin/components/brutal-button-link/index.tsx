@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import Link from "next/link"
 import { twMerge } from "tailwind-merge"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 interface BrutalButtonLinkProps {
   children: React.ReactNode
@@ -69,7 +69,7 @@ export const BrutalButtonLink = ({
         className
       )}
     >
-      <Link
+      <LocalizedClientLink
         href={href}
         className={twMerge(
           "inline-flex items-center w-full origin-top-left rounded-lg border-2 font-semibold uppercase transition-all duration-100",
@@ -80,7 +80,7 @@ export const BrutalButtonLink = ({
         )}
       >
         {children}
-      </Link>
+      </LocalizedClientLink>
     </div>
   )
 }
