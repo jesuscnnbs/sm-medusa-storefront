@@ -203,5 +203,17 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-radix")()],
+  plugins: [
+    require("tailwindcss-radix")(),
+    function ({ addUtilities }) {
+      addUtilities({
+        '.text-shadow-outline': {
+          textShadow: '-2px -2px 2px var(--dark-sm), 2px -2px 2px var(--dark-sm), -2px 2px 2px var(--dark-sm), 2px 2px 2px var(--dark-sm), -3px 0px 2px var(--dark-sm), 3px 0px 2px var(--dark-sm), 0px -3px 2px var(--dark-sm), 0px 3px 2px var(--dark-sm)',
+        },
+        '.text-shadow-outline-sm': {
+          textShadow: '-1px -1px 1px var(--dark-sm), 1px -1px 1px var(--dark-sm), -1px 1px 1px var(--dark-sm), 1px 1px 1px var(--dark-sm), -2px 0px 1px var(--dark-sm), 2px 0px 1px var(--dark-sm), 0px -2px 1px var(--dark-sm), 0px 2px 1px var(--dark-sm)',
+        },
+      })
+    },
+  ],
 }

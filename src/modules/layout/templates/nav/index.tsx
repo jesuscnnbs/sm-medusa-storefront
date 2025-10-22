@@ -37,8 +37,8 @@ export default async function Nav() {
   }
 
   return (
-    <div className="sticky inset-x-0 top-0 z-30 shadow-2xl">
-      <header className="relative h-16 mx-auto border-b-2 bg-ui-bg-base border-dark-sm">
+    <div className="sticky inset-x-0 top-0 z-30 border-b-2 border-secondary-sm">
+      <header className="relative h-16 mx-auto bg-ui-bg-base">
         <nav className="flex items-center justify-between w-full h-full content-container txt-xsmall-plus text-ui-fg-subtle text-small-regular">
           <div className="flex items-center flex-1 h-full gap-8 basis-0">
             <div className="h-full">
@@ -61,25 +61,10 @@ export default async function Nav() {
               href="/reserve"
               data-testid="nav-reservation-link"
               variant="primary"
-              className="transition-transform active:scale-95"
+              size="sm"
             >
             {t("callToActionButton")}
             </BrutalButtonLink>
-          {/** TODO Shopping Cart
-            <Suspense
-              fallback={
-                <LocalizedClientLink
-                  className="flex gap-2 hover:text-ui-fg-base"
-                  href="/cart"
-                  data-testid="nav-cart-link"
-                >
-                  Cart (0)
-                </LocalizedClientLink>
-              }
-            >
-              <CartButton />
-            </Suspense>
-            */}
           </div>
         </nav>
       </header>

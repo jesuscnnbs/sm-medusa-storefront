@@ -37,7 +37,7 @@ export const SmoothScrollHero = () => {
 };
 
 
-const SECTION_HEIGHT = 3000;
+const SECTION_HEIGHT = 2000;
 
 const Hero = () => {
   return (
@@ -45,44 +45,8 @@ const Hero = () => {
       style={{ height: `calc(${SECTION_HEIGHT}px + 100vh)` }}
       className="relative w-full"
     >
-      <CenterImage />
       <ParallaxImages />
     </div>
-  );
-};
-
-const CenterImage = () => {
-  const { scrollY } = useScroll();
-
-  const clip1 = useTransform(scrollY, [0, 1500], [25, 0]);
-  const clip2 = useTransform(scrollY, [0, 1500], [75, 100]);
-
-  const clipPath = useMotionTemplate`polygon(${clip1}% ${clip1}%, ${clip2}% ${clip1}%, ${clip2}% ${clip2}%, ${clip1}% ${clip2}%)`;
-
-  const backgroundSize = useTransform(
-    scrollY,
-    [0, SECTION_HEIGHT + 500],
-    ["170%", "100%"]
-  );
-  const opacity = useTransform(
-    scrollY,
-    [SECTION_HEIGHT, SECTION_HEIGHT + 500],
-    [1, 0]
-  );
-
-  return (
-    <motion.div
-      className="sticky top-0 w-full h-screen"
-      style={{
-        clipPath,
-        backgroundSize,
-        opacity,
-        backgroundImage:
-          `url(${bgImage.src})`,
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    />
   );
 };
 
@@ -91,35 +55,35 @@ const ParallaxImages = () => {
     <div className="mx-auto max-w-5xl px-4 pt-[200px]">
       <ParallaxImg
         src={parallax1.src}
-        alt="And example of a space launch"
+        alt="Historia de Santa Mónica"
         start={-200}
         end={200}
         className="w-1/3"
       />
       <ParallaxImg
         src={parallax2.src}
-        alt="An example of a space launch"
+        alt="Historia de Santa Mónica"
         start={200}
         end={-250}
         className="w-2/3 mx-auto"
       />
       <ParallaxImg
         src={parallax3.src}
-        alt="Orbiting satellite"
+        alt="Historia de Santa Mónica"
         start={-200}
         end={200}
         className="w-1/3 ml-auto"
       />
       <ParallaxImg
         src={parallax4.src}
-        alt="Orbiting satellite"
+        alt="Historia de Santa Mónica"
         start={100}
         end={-100}
         className="w-5/12 ml-24"
       />
       <ParallaxImg
         src={parallax5.src}
-        alt="Orbiting satellite"
+        alt="Historia de Santa Mónica"
         start={0}
         end={200}
         className="w-1/3"
@@ -133,7 +97,7 @@ const ParallaxImages = () => {
       />
       <ParallaxImg
         src={parallax7.src}
-        alt="Orbiting satellite"
+        alt="Historia de Santa Mónica"
         start={200}
         end={-300}
         className="w-7/12 ml-32"
@@ -160,7 +124,7 @@ const ParallaxImg = ({ className, alt, src, start, end }: any) => {
     <motion.img
       src={src}
       alt={alt}
-      className={className}
+      className={className + " border-2 border-dark-sm"}
       ref={ref}
       style={{ transform, opacity }}
     />
@@ -178,7 +142,7 @@ const Schedule = () => {
         initial={{ y: 48, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ ease: "easeInOut", duration: 0.75 }}
-        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
+        className="mb-1 text-4xl font-black uppercase font-lemonMilk"
       >
         2022
       </motion.h1>
@@ -187,7 +151,7 @@ const Schedule = () => {
         initial={{ y: 48, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ ease: "easeInOut", duration: 0.75 }}
-        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
+        className="mb-1 text-4xl font-black uppercase font-lemonMilk"
       >
         2023
       </motion.h1>
@@ -196,7 +160,7 @@ const Schedule = () => {
         initial={{ y: 48, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ ease: "easeInOut", duration: 0.75 }}
-        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
+        className="mb-1 text-4xl font-black uppercase font-lemonMilk"
       >
         2024
       </motion.h1>
@@ -205,7 +169,7 @@ const Schedule = () => {
         initial={{ y: 48, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ ease: "easeInOut", duration: 0.75 }}
-        className="mb-20 text-4xl font-black uppercase text-zinc-50 font-lemonMilk"
+        className="mb-1 text-4xl font-black uppercase font-lemonMilk"
       >
         2025
       </motion.h1>
@@ -218,13 +182,13 @@ const ScheduleItem = ({ title, text }: any) => {
   return (
     <motion.div
       initial={{ y: 48, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
+      whileInView={{ y: 10, opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.75 }}
-      className="flex items-center justify-between px-3 mb-32 border-b-8 border-primary-sm pb-9"
+      className="flex items-center justify-between px-5 mb-32 border-2 rounded-lg shadow-drop py-7 bg-light-sm-lighter border-dark-sm"
     >
       <div>
-        {title && <p className="mb-1.5 text-xl text-zinc-50">{title}</p>}
-        <p className="text-lg text-zinc-50">{text}</p>
+        {title && <p className="mb-1.5 text-xl text-dark-sm">{title}</p>}
+        <p className="text-lg text-dark-sm">{text}</p>
       </div>
     </motion.div>
   );

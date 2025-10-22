@@ -9,7 +9,7 @@
   --primary-sm-lighter: rgba(207, 73, 152, 1);
   --secondary-sm: rgba(55, 126, 139, 1);
   --secondary-sm-darker: rgba(43, 96, 105, 1);
-  --secondary-sm-lighter: rgba(87, 180, 195, 1);
+  --secondary-sm-lighter: rgba(107, 175, 195, 1);
   --light-sm: rgba(251, 244, 233, 1);
   --light-sm-lighter: rgba(255, 255, 245, 1);
   --light-sm-darker: rgba(233, 223, 211, 1);
@@ -271,8 +271,9 @@
     @apply text-[32px] leading-[44px] font-semibold;
   }
 
+  /* drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)]*/
   .santa-monica {
-    @apply uppercase text-ui-bg-base leading-[1.1] tracking-tight drop-shadow-[0px_10px_2px_rgba(0,0,0,0.4)] lg:drop-shadow-[0px_20px_2px_rgba(0,0,0,0.4)];
+    @apply uppercase text-ui-bg-base leading-[1.1] tracking-tight text-shadow-outline-sm lg:text-shadow-outline shadow-drop;
     font-size: min(20vw, 210px);
   }
   .monica {
@@ -323,6 +324,9 @@
 }
 
 @layer base {
+  .shadow-drop {
+    @apply drop-shadow-[4px_4px_0px_var(--dark-sm-darker)] lg:drop-shadow-[6px_6px_0px_var(--dark-sm-darker)]
+  }
   .font-outline-2 {
     text-shadow: 1px 1px 1px var(--dark-sm),
     -1px 1px 1px var(--dark-sm),

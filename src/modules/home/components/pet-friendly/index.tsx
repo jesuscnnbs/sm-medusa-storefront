@@ -13,7 +13,7 @@ function PetFriendly({ translations }: PetFriendlyProps) {
   const imageRef = useRef<HTMLImageElement>(null)
   
   return (
-    <section className="relative pt-[400px] pb-[100px] bg-secondary-sm">
+    <section className="relative pt-[400px] pb-[100px] bg-secondary-sm border-y-2 border-secondary-sm-darker">
        <Image
           ref={imageRef}
           src={picture.src}

@@ -5,10 +5,9 @@ import emmy from "../../../../../public/emmy.jpg"
 import acapulco from "../../../../../public/acapulco.jpeg"
 import creamzy from "../../../../../public/creamzy.jpg"
 import chicken from "../../../../../public/chicken_crispy.jpg"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { Button } from "@medusajs/ui"
 import ParallaxTitle from "@modules/common/components/parallax-title"
 import { Translations } from "types/global"
+import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
 
 interface BestSellersProps {
   translations: Translations
@@ -46,7 +45,7 @@ const BestSellers: FunctionComponent<BestSellersProps> = ({translations}) => {
               const imageRef = useRef<HTMLImageElement>(null)
               
               return (
-                <div className={`${ROTATE_CLASS[index]} flex flex-col max-w-full gap-4 p-4 mx-auto rounded-none shadow-lg bg-ui-bg-base`}>
+                <div className={`${ROTATE_CLASS[index]} border-2 border-dark-sm flex flex-col max-w-full gap-4 p-4 mx-auto rounded-none shadow-drop bg-ui-bg-base`}>
                   <Image
                     ref={imageRef}
                     src={burger.src}
@@ -54,7 +53,7 @@ const BestSellers: FunctionComponent<BestSellersProps> = ({translations}) => {
                     loading="lazy"
                     width="300"
                     height="300"
-                    className="transition-opacity duration-500 rounded-none opacity-0"
+                    className="transition-opacity duration-500 border-2 rounded-none opacity-0 border-dark-sm"
                     onLoad={() => {
                       if (imageRef.current) {
                         imageRef.current.classList.replace("opacity-0", "opacity-100")
@@ -73,9 +72,9 @@ const BestSellers: FunctionComponent<BestSellersProps> = ({translations}) => {
         </div>
       </div>
       <div className="flex justify-center mt-20">
-        <LocalizedClientLink href="/menu" data-testid="menu-link">
-          <Button variant="secondary" className="uppercase rounded-none text-light-sm-lighter">{translations.seeMore}</Button>
-        </LocalizedClientLink>
+        <BrutalButtonLink href="/menu" data-testid="menu-link" variant="secondary">
+         {translations.seeMore}
+        </BrutalButtonLink>
       </div>
     </section>
   )

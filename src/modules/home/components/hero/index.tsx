@@ -9,7 +9,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 const Hero = ({translation}: {translation: string}) => {
   const imageRef = React.useRef<HTMLImageElement>(null)
   return (
-    <div className="min-h-[650px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm-lighter">
+    <div className="min-h-[650px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
       <Image
         ref={imageRef}
         src={backgroundFadeIn.src}
@@ -20,7 +20,7 @@ const Hero = ({translation}: {translation: string}) => {
         className="transition-opacity duration-1000 opacity-0 blur-[2px]"
         onLoad={() => {
           if (imageRef.current) {
-            imageRef.current.classList.replace("opacity-0", "opacity-30")
+            imageRef.current.classList.replace("opacity-0", "opacity-20")
           }
         }}
       />

@@ -28,7 +28,7 @@ const Menu = ({menuItems}: Props) => {
     }, 200)
   }
   return (
-    <div className="max-w-2xl px-6 py-12 mx-auto bg-ui-bg-base">
+    <div className="max-w-2xl px-6 py-12 mx-auto border-2 rounded-lg bg-light-sm-lighter border-dark-sm">
       {menuItems.map((category, index) => {
         return (
           <div className="mb-16" key={index}>

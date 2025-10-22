@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState, useEffect } from "react"
+import React from "react"
 import { motion } from "framer-motion"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { usePathname } from "next/navigation"
@@ -16,44 +16,13 @@ interface NavMenuTabsProps {
 
 export default function NavMenuTabs({ menuItems }: NavMenuTabsProps) {
   const pathname = usePathname()
-  const [indicator, setIndicator] = useState({
-    left: 0,
-    width: 0,
-    opacity: 0,
-  })
 
   // Get current path without locale
   const currentPath = pathname.split('/').slice(2).join('/') || '/'
 
   return (
     <nav
-      onMouseLeave={() => {
-        // Return to active tab position if exists
-        const activeIndex = Object.values(menuItems).findIndex(
-          item => {
-            const itemPath = item.href === '/' ? '/' : item.href.replace(/^\//, '')
-            return currentPath === itemPath || (currentPath === '' && itemPath === '/')
-          }
-        )
-
-        if (activeIndex !== -1) {
-          const activeElement = document.querySelector(`[data-nav-index="${activeIndex}"]`)
-          if (activeElement) {
-            const { width } = activeElement.getBoundingClientRect()
-            setIndicator({
-              left: (activeElement as HTMLElement).offsetLeft,
-              width,
-              opacity: 1,
-            })
-          }
-        } else {
-          setIndicator((prev) => ({
-            ...prev,
-            opacity: 0,
-          }))
-        }
-      }}
-      className="relative flex items-center h-full"
+      className="relative flex items-center h-full overflow-hidden"
       role="navigation"
     >
       {Object.entries(menuItems).map(([_name, item], index) => {
@@ -67,12 +36,9 @@ export default function NavMenuTabs({ menuItems }: NavMenuTabsProps) {
             name={item.name}
             index={index}
             isActive={isActive}
-            setIndicator={setIndicator}
           />
         )
       })}
-
-      <TabIndicator position={indicator} />
     </nav>
   )
 }
@@ -82,45 +48,12 @@ interface NavTabProps {
   name: string
   index: number
   isActive: boolean
-  setIndicator: React.Dispatch<React.SetStateAction<{
-    left: number
-    width: number
-    opacity: number
-  }>>
 }
 
-const NavTab = ({ href, name, index, isActive, setIndicator }: NavTabProps) => {
-  const ref = useRef<HTMLDivElement>(null)
-
-  // Set initial position for active tab
-  useEffect(() => {
-    if (isActive && ref.current) {
-      const { width } = ref.current.getBoundingClientRect()
-      setIndicator({
-        left: ref.current.offsetLeft,
-        width,
-        opacity: 1,
-      })
-    }
-  }, [isActive, setIndicator])
-
-  const handleClick = () => {
-    if (!ref?.current) return
-
-    const { width } = ref.current.getBoundingClientRect()
-
-    setIndicator({
-      left: ref.current.offsetLeft,
-      width,
-      opacity: 1,
-    })
-  }
-
+const NavTab = ({ href, name, index, isActive }: NavTabProps) => {
   return (
     <div
-      ref={ref}
       data-nav-index={index}
-      onClick={handleClick}
       className="relative h-full"
     >
       <LocalizedClientLink
@@ -138,27 +71,27 @@ const NavTab = ({ href, name, index, isActive, setIndicator }: NavTabProps) => {
       >
         {name}
       </LocalizedClientLink>
+
+      <TabIndicator isActive={isActive} />
     </div>
   )
 }
 
-const TabIndicator = ({ position }: { position: { left: number; width: number; opacity: number } }) => {
+const TabIndicator = ({ isActive }: { isActive: boolean }) => {
   return (
     <motion.div
       animate={{
-        left: position.left,
-        width: position.width,
-        opacity: position.opacity,
+        scaleY: isActive ? 1 : 0,
+      }}
+      initial={{
+        scaleY: 0,
       }}
       transition={{
         type: "spring",
         stiffness: 500,
         damping: 35,
       }}
-      className="absolute bottom-0 h-1 bg-dark-sm-lighter rounded-t-md"
-      style={{
-        opacity: position.opacity,
-      }}
+      className="absolute left-0 right-0 h-2.5 origin-bottom -bottom-1 bg-secondary-sm rounded-t-3xl border-dark-sm"
     />
   )
 }
