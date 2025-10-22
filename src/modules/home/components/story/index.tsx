@@ -1,11 +1,10 @@
 "use client"
 import { useRef } from "react"
 import Image from "next/image"
-import { Button } from "@medusajs/ui"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ParallaxTitle from "@modules/common/components/parallax-title"
 import picture from "../../../../../public/sm-burgers-home.jpg"
 import { Translations } from "types/global"
+import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
 
 interface StoryProps {
   translations: Translations
@@ -32,7 +31,7 @@ function Story({translations}: StoryProps) {
           height={0}
           sizes="100vw"
           style={{ width: "100%", height: "auto" }}
-          className="-mt-5 transition-opacity duration-500 rounded-none opacity-0"
+          className="-mt-5 transition-opacity duration-500 border-2 rounded-none opacity-0 border-dark-sm"
           onLoad={() => {
             if (imageRef.current) {
               imageRef.current.classList.replace("opacity-0", "opacity-100")
@@ -44,11 +43,9 @@ function Story({translations}: StoryProps) {
         </p>
       </div>
       <div className="flex justify-center mt-10">
-        <LocalizedClientLink href="/about" data-testid="about-link">
-          <Button variant="secondary" className="uppercase rounded-none text-light-sm-lighter">
+        <BrutalButtonLink href="/about" data-testid="about-link" variant="secondary">
             {translations.learnMore}
-          </Button>
-        </LocalizedClientLink>
+        </BrutalButtonLink>
       </div>
     </section>
   )

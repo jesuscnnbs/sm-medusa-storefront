@@ -22,15 +22,15 @@ const SideMenu = ({
   return (
     <div className="h-full">
       <div className="flex items-center h-full gap-4">
-        <Popover className="flex h-full">
+        <Popover className="flex h-full outline-none focus:outline-none focus-visible:outline-none">
           {({ open, close }) => (
             <>
               <div className="relative flex h-full">
                 <PopoverButton
                   data-testid="nav-menu-button"
-                  className="relative flex items-center h-full transition-colors duration-200 ease-out focus:outline-none hover:text-ui-fg-base"
+                  className="relative flex items-center h-full transition-colors duration-200 ease-out outline-none focus:outline-none focus-visible:outline-none hover:text-ui-fg-base"
                 >
-                  <div className="p-2 rounded-full hover:bg-zinc-200">
+                  <div className="p-2 border-2 rounded-md outline-none hover:bg-light-sm active:scale-95 border-dark-sm-lighter focus:outline-none focus-visible:outline-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -57,10 +57,10 @@ const SideMenu = ({
                 leaveFrom="opacity-100 backdrop-blur-2xl translate-x-0"
                 leaveTo="opacity-0 -translate-x-10"
               >
-                <PopoverPanel className="absolute inset-x-0 z-30 flex flex-col w-full h-screen pr-4 m-0 overflow-hidden text-sm sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min text-secondary-sm-darker backdrop-blur-2xl">
+                <PopoverPanel className="absolute inset-x-0 z-30 flex flex-col w-full h-screen pr-4 m-0 overflow-hidden text-sm sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min text-dark-sm-darker">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col justify-between h-full p-6 overflow-hidden bg-light-sm"
+                    className="flex flex-col justify-between h-full p-6 overflow-hidden border-x-2 bg-light-sm-lighter border-dark-sm"
                   >
                     <div className="absolute pointer-events-none right-2 opacity-15 bottom-2">
                       <SantaMonicaIcon size={750} />

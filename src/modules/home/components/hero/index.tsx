@@ -20,7 +20,7 @@ const Hero = ({translation}: {translation: string}) => {
         className="transition-opacity duration-1000 opacity-0 blur-[2px]"
         onLoad={() => {
           if (imageRef.current) {
-            imageRef.current.classList.replace("opacity-0", "opacity-30")
+            imageRef.current.classList.replace("opacity-0", "opacity-20")
           }
         }}
       />

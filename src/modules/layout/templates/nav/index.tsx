@@ -7,10 +7,12 @@ import SantaMonicaIcon from "@modules/common/icons/santa-monica"
 //import Instagram from "@modules/common/icons/instagram"
 import LanguageSelect from "@modules/layout/components/language-select";
 import { getTranslations } from "next-intl/server"
+import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link";
+import NavMenuTabs from "@modules/layout/components/nav-menu-tabs";
 
 const HomeIconLink = () => {
   return (
-    <LocalizedClientLink href="/" data-testid="nav-home-link" className="flex items-center">
+    <LocalizedClientLink href="/" data-testid="nav-home-link" className="flex items-center transition-transform active:scale-95">
       <SantaMonicaIcon size={40} />
       <span className="mt-[2px] hidden mx-2 text-[22px] font-medium uppercase align-middle small:block text-secondary-sm font-lemonMilk">Santa<br/><span className="text-[17px]">Mónica</span></span>
     </LocalizedClientLink>
@@ -35,8 +37,8 @@ export default async function Nav() {
   }
 
   return (
-    <div className="sticky inset-x-0 top-0 z-30 shadow-2xl group">
-      <header className="relative h-16 mx-auto duration-200 border-b bg-ui-bg-base border-ui-tag-neutral-border">
+    <div className="sticky inset-x-0 top-0 z-30 border-b-2 border-secondary-sm">
+      <header className="relative h-16 mx-auto bg-ui-bg-base">
         <nav className="flex items-center justify-between w-full h-full content-container txt-xsmall-plus text-ui-fg-subtle text-small-regular">
           <div className="flex items-center flex-1 h-full gap-8 basis-0">
             <div className="h-full">
@@ -48,45 +50,21 @@ export default async function Nav() {
           </div>
 
           <div className="flex items-center h-full">
-            <div className="items-center hidden h-full small:flex gap-x-6">
-              {Object.entries(MenuItems).map(([_name, item], index) => {
-                return (
-                  <LocalizedClientLink
-                    href={item.href}
-                    className="font-sans text-sm font-medium uppercase text-dark-sm hover:text-primary-sm"
-                    data-testid={`nav-${item.name}-link`}
-                    key={index}
-                  >
-                    {item.name}
-                  </LocalizedClientLink>
-                )
-              })}
+            <div className="items-center hidden h-full small:flex">
+              <NavMenuTabs menuItems={MenuItems} />
             </div>
           </div>
 
            <div className="flex items-center justify-end flex-1 h-full gap-x-6 basis-0">
             <LanguageSelect />
-            <LocalizedClientLink
+            <BrutalButtonLink
               href="/reserve"
               data-testid="nav-reservation-link"
+              variant="primary"
+              size="sm"
             >
-              <Button variant="primary" className="uppercase rounded-none">{t("callToActionButton")}</Button>
-            </LocalizedClientLink>
-          {/** TODO Shopping Cart
-            <Suspense
-              fallback={
-                <LocalizedClientLink
-                  className="flex gap-2 hover:text-ui-fg-base"
-                  href="/cart"
-                  data-testid="nav-cart-link"
-                >
-                  Cart (0)
-                </LocalizedClientLink>
-              }
-            >
-              <CartButton />
-            </Suspense>
-            */}
+            {t("callToActionButton")}
+            </BrutalButtonLink>
           </div>
         </nav>
       </header>

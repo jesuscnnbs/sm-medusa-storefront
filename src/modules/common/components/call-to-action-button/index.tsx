@@ -22,11 +22,11 @@ const CallToActionButton = ({text}: Props) => {
   return (
     <motion.button
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="group relative grid h-[150px] w-[150px] place-content-center rounded-full transition-colors duration-700 ease-out"
+      className="group relative grid h-[150px] w-[150px] place-content-center rounded-full transition-transform duration-700 ease-out active:scale-95"
     >
       <MdOutlineArrowUpward className="relative z-10 text-5xl transition-transform duration-700 ease-out rotate-90 pointer-events-none text-dark-sm group-hover:rotate-0" />
 
-      <div className="absolute inset-0 z-0 border-[2px] rounded-full pointer-events-none bg-ui-bg-base" />
+      <div className="absolute inset-0 z-0 border-[1px] border-dark-sm rounded-full pointer-events-none bg-ui-bg-base" />
 
       <motion.svg
         initial={{ rotate: 0 }}
