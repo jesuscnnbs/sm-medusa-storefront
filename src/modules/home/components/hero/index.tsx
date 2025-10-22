@@ -9,7 +9,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 const Hero = ({translation}: {translation: string}) => {
   const imageRef = React.useRef<HTMLImageElement>(null)
   return (
-    <div className="min-h-[650px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
+    <div className="min-h-[650px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm-lighter">
       <Image
         ref={imageRef}
         src={backgroundFadeIn.src}
