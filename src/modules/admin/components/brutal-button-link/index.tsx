@@ -27,7 +27,7 @@ export const BrutalButtonLink = ({
   icon = false,
 }: BrutalButtonLinkProps) => {
   return (
-    <div className={twMerge("inline-block", getBrutalButtonWrapperClasses(className))}>
+    <div className={twMerge("inline-block", getBrutalButtonWrapperClasses(variant, className))}>
       <LocalizedClientLink
         href={href}
         className={twMerge(

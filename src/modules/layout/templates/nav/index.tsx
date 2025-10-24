@@ -10,14 +10,7 @@ import { getTranslations } from "next-intl/server"
 import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link";
 import NavMenuTabs from "@modules/layout/components/nav-menu-tabs";
 
-const HomeIconLink = () => {
-  return (
-    <LocalizedClientLink href="/" data-testid="nav-home-link" className="flex items-center transition-transform active:scale-95">
-      <SantaMonicaIcon size={40} />
-      <span className="mt-[2px] hidden mx-2 text-[22px] font-medium uppercase align-middle small:block text-secondary-sm font-lemonMilk">Santa<br/><span className="text-[17px]">Mónica</span></span>
-    </LocalizedClientLink>
-  )
-}
+
 
 export default async function Nav() {
   const t = await getTranslations('Common')
@@ -43,9 +36,6 @@ export default async function Nav() {
           <div className="flex items-center flex-1 h-full gap-8 basis-0">
             <div className="h-full">
               <SideMenu menuItems={SideMenuItems} />
-            </div>
-            <div className="flex">
-              {HomeIconLink()}
             </div>
           </div>
 

@@ -1,28 +1,25 @@
 "use client"
-import * as React from "react"
+import { memo } from "react"
 import Image from "next/image"
 import PageTitle from "@modules/common/components/page-title"
 import backgroundFadeIn from "../../../../../public/burger3.jpeg"
 import CallToActionButton from "@modules/common/components/call-to-action-button"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { useImageFadeIn } from "@lib/hooks"
 
-const Hero = ({translation}: {translation: string}) => {
-  const imageRef = React.useRef<HTMLImageElement>(null)
+const Hero = memo(({translation}: {translation: string}) => {
+  const { imageRef, handleImageLoad } = useImageFadeIn("opacity-0", "opacity-20")
   return (
     <div className="min-h-[650px] h-[80vh] w-full border-b border-ui-border-base relative overflow-hidden bg-secondary-sm">
       <Image
         ref={imageRef}
         src={backgroundFadeIn.src}
         alt="Santa Mónica Burger"
-        loading="lazy"
+        priority
         fill={true}
         objectFit="cover"
         className="transition-opacity duration-1000 opacity-0 blur-[2px]"
-        onLoad={() => {
-          if (imageRef.current) {
-            imageRef.current.classList.replace("opacity-0", "opacity-20")
-          }
-        }}
+        onLoad={handleImageLoad}
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4 gap-7">
         <div className="flex flex-col items-start gap-2">
@@ -39,6 +36,8 @@ const Hero = ({translation}: {translation: string}) => {
       </div>
     </div>
   )
-}
+})
+
+Hero.displayName = "Hero"
 
 export default Hero

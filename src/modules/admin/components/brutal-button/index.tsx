@@ -26,7 +26,7 @@ const BrutalButton = React.forwardRef<HTMLButtonElement, BrutalButtonProps>(
     }
 
     return (
-      <div className={getBrutalButtonWrapperClasses(className)}>
+      <div className={getBrutalButtonWrapperClasses(variant, className)}>
         <button ref={ref} className={baseClasses} {...props}>
           {children}
         </button>

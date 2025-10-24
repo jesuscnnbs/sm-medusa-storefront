@@ -37,11 +37,11 @@ export const getVariantClasses = (
 ) => {
   const variantClasses = {
     primary: active
-      ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "bg-primary-sm text-light-sm border-dark-sm",
+      ? `border-primary-sm-darker ${activeBgColor} ${activeTextColor}`
+      : "bg-light-sm text-primary-sm-darker border-primary-sm-darker",
     secondary: active
-      ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
-      : "bg-secondary-sm text-light-sm border-dark-sm",
+      ? `border-dark-sm-darker ${activeBgColor} ${activeTextColor}`
+      : "bg-secondary-sm text-light-sm border-dark-sm-darker",
     neutral: active
       ? `border-dark-sm ${activeBgColor} ${activeTextColor}`
       : "bg-white text-dark-sm border-dark-sm",
@@ -61,8 +61,8 @@ export const getBrutalButtonClasses = (
   const activeTextColor = getTextColor(activeBgColor)
 
   return twMerge(
-    "origin-top-left rounded-md border-2 font-semibold uppercase transition-all duration-100 -translate-y-1 -translate-x-1 lg:-translate-y-0 lg:-translate-x-0",
-    "group-active:translate-y-0 group-active:translate-x-0 group-hover:-translate-y-1 group-hover:-translate-x-1",
+    "rounded-md border-2 font-semibold uppercase transition-all duration-100 -translate-y-0.5 -translate-x-0.5 lg:-translate-y-0 lg:-translate-x-0",
+    "group-active:translate-y-0 group-active:translate-x-0 group-hover:-translate-y-0.5 group-hover:-translate-x-0.5",
     getSizeClasses(size, icon),
     getVariantClasses(variant, active, activeBgColor, activeTextColor),
     active && "translate-y-1",
@@ -70,9 +70,16 @@ export const getBrutalButtonClasses = (
   )
 }
 
-export const getBrutalButtonWrapperClasses = (className?: string) => {
+export const getBrutalButtonWrapperClasses = (variant: BrutalButtonVariant, className?: string) => {
+  const backgroundClasses = {
+    primary: "bg-primary-sm",
+    secondary: "bg-secondary-sm",
+    neutral: "bg-dark-sm",
+  }
+
   return twMerge(
-    "rounded-md transition-colors bg-dark-sm group",
+    "rounded-md transition-colors group",
+    backgroundClasses[variant],
     className
   )
 }

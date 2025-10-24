@@ -15,7 +15,7 @@ import parallax3 from "../../../../../public/nala.jpeg"
 import parallax4 from "../../../../../public/yarlin.jpg"
 import parallax5 from "../../../../../public/sm-yaidilier.jpeg"
 import parallax6 from "../../../../../public/dani.jpeg"
-import parallax7 from "../../../../../public/sm-cabo-gata.jpeg"
+import parallax7 from "../../../../../public/team.jpg"
 
 export const SmoothScrollHero = () => {
   return (
@@ -25,8 +25,8 @@ export const SmoothScrollHero = () => {
         options={{
           // Learn more -> https://github.com/darkroomengineering/lenis?tab=readme-ov-file#instance-settings
           lerp: 0.05,
-          //   infinite: true,
-          //   syncTouch: true,
+          //infinite: true,
+          syncTouch: true,
         }}
       >
         <Hero />
@@ -37,7 +37,7 @@ export const SmoothScrollHero = () => {
 };
 
 
-const SECTION_HEIGHT = 2000;
+const SECTION_HEIGHT = 2100;
 
 const Hero = () => {
   return (
@@ -54,32 +54,32 @@ const ParallaxImages = () => {
   return (
     <div className="mx-auto max-w-5xl px-4 pt-[200px]">
       <ParallaxImg
-        src={parallax1.src}
+        src={parallax7.src}
         alt="Historia de Santa Mónica"
-        start={-200}
-        end={200}
-        className="w-1/3"
+        start={-300}
+        end={300}
+        className="w-full mx-auto sm:w-2/3"
       />
       <ParallaxImg
         src={parallax2.src}
         alt="Historia de Santa Mónica"
-        start={200}
-        end={-250}
-        className="w-2/3 mx-auto"
+        start={-100}
+        end={100}
+        className="w-2/3 sm:w-1/3"
       />
       <ParallaxImg
-        src={parallax3.src}
+        src={parallax1.src}
         alt="Historia de Santa Mónica"
-        start={-200}
-        end={200}
-        className="w-1/3 ml-auto"
+        start={100}
+        end={100}
+        className="w-2/3 ml-auto sm:w-1/3"
       />
       <ParallaxImg
         src={parallax4.src}
         alt="Historia de Santa Mónica"
         start={100}
         end={-100}
-        className="w-5/12 ml-24"
+        className="w-2/3 mx-auto sm:w-1/3"
       />
       <ParallaxImg
         src={parallax5.src}
@@ -96,7 +96,7 @@ const ParallaxImages = () => {
         className="w-1/3 ml-auto"
       />
       <ParallaxImg
-        src={parallax7.src}
+        src={parallax3.src}
         alt="Historia de Santa Mónica"
         start={200}
         end={-300}
@@ -124,7 +124,7 @@ const ParallaxImg = ({ className, alt, src, start, end }: any) => {
     <motion.img
       src={src}
       alt={alt}
-      className={className + " border-2 border-dark-sm"}
+      className={className + " border-2 border-dark-sm rounded-lg shadow-drop"}
       ref={ref}
       style={{ transform, opacity }}
     />
