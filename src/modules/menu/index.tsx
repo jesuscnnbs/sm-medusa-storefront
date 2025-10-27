@@ -6,7 +6,6 @@ import { menu } from "./menu"
 import Modal from "@modules/common/components/modal"
 import { InformationCircleSolid } from "@medusajs/icons"
 import { MenuCategoryType } from "types/global"
-import { convertGoogleDriveUrl, isValidImageUrl } from "@lib/utils/image-utils"
 
 interface Props {
   menuItems: MenuCategoryType[]
@@ -69,15 +68,15 @@ const Menu = ({menuItems}: Props) => {
         {itemSelected && (
           <React.Fragment>
             <div className="p-6">
-              {itemSelected.image && isValidImageUrl(itemSelected.image) && (
+              {itemSelected.image && (
                 <div className="mb-4 text-center">
-                  <div className="relative mx-auto overflow-hidden rounded-lg w-80 h-60">
+                  <div className="relative overflow-hidden rounded-lg size-60 sm:size-82">
                     <Image
-                      src={convertGoogleDriveUrl(itemSelected.image)}
+                      src={itemSelected.image}
                       alt={itemSelected.title}
                       fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 320px"
+                      className="object-contain w-full h-full"
+                      sizes="(max-width: 768px) 100vw, 240px"
                       priority
                     />
                   </div>

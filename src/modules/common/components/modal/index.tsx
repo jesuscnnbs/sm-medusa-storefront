@@ -59,7 +59,7 @@ const Modal = ({
               <DialogPanel
                 data-testid={dataTestId}
                 className={clx(
-                  "flex flex-col justify-start w-full transform p-5 text-left align-middle transition-all max-h-[75vh] h-fit will-change-transform",
+                  "flex flex-col justify-start w-full transform p-1 sm:p-4 text-left align-middle transition-all max-h-[75vh] h-fit will-change-transform border-2 border-dark-sm shadow-drop",
                   {
                     "max-w-md": size === "small",
                     "max-w-xl": size === "medium",
