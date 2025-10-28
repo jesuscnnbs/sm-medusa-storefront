@@ -16,7 +16,11 @@ const HomeIconLink = () => {
   return (
     <>
       <SantaMonicaIcon size={40} />
-      <span className="mt-[2px] hidden mx-2 text-[22px] font-medium uppercase align-middle small:block text-secondary-sm font-lemonMilk">Santa<br/><span className="text-[17px]">Mónica</span></span>
+      <span className="mt-[2px] hidden mx-2 text-[22px] font-medium uppercase align-middle small:block text-secondary-sm font-lemonMilk">
+        Santa
+        <br/>
+        <span className="text-[17px]">Mónica</span>
+      </span>
     </>
   )
 }
