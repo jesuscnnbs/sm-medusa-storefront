@@ -88,9 +88,26 @@ export async function uploadMenuImage(formData: FormData): Promise<UploadResult>
 /**
  * Get all images from /public/menu/ directory
  * Used for image gallery/selector
+ *
+ * In production (Vercel), reads from images.json file generated at build time
+ * In development, reads directory directly for real-time updates
  */
 export async function listMenuImages(): Promise<string[]> {
   try {
+    // In production, read from pre-generated JSON index
+    if (process.env.NODE_ENV === "production") {
+      const { readFile } = await import("fs/promises")
+      const indexPath = path.join(process.cwd(), "public", "menu", "images.json")
+
+      if (existsSync(indexPath)) {
+        const data = await readFile(indexPath, "utf-8")
+        return JSON.parse(data)
+      }
+
+      return []
+    }
+
+    // In development, read directory directly for real-time updates
     const { readdir } = await import("fs/promises")
     const menuDir = path.join(process.cwd(), "public", "menu")
 
