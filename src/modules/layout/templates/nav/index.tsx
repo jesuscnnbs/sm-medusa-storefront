@@ -33,19 +33,19 @@ export default async function Nav() {
     <div className="sticky inset-x-0 top-0 z-30 border-b-2 border-secondary-sm">
       <header className="relative h-16 mx-auto bg-ui-bg-base">
         <nav className="flex items-center justify-between w-full h-full content-container txt-xsmall-plus text-ui-fg-subtle text-small-regular">
-          <div className="flex items-center flex-1 h-full gap-8 basis-0">
+          <div className="flex items-center w-20 h-full gap-8 sm:flex-1 basis-0">
             <div className="h-full">
               <SideMenu menuItems={SideMenuItems} />
             </div>
           </div>
 
-          <div className="flex items-center h-full">
-            <div className="items-center hidden h-full small:flex">
+          <div className="items-center hidden h-full small:flex">
+            <div className="items-center h-full ">
               <NavMenuTabs menuItems={MenuItems} />
             </div>
           </div>
 
-           <div className="flex items-center justify-end flex-1 h-full gap-x-6 basis-0">
+           <div className="flex items-center justify-end flex-1 h-full gap-1 sm:gap-x-6 basis-0">
             <LanguageSelect />
             <BrutalButtonLink
               href="/reserve"

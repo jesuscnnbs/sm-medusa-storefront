@@ -48,14 +48,14 @@ const BurgerCard: FunctionComponent<BurgerCardProps> = memo(({ src, name, rotate
   const { imageRef, handleImageLoad } = useImageFadeIn()
 
   return (
-    <div className={`${rotateClass} border-2 border-secondary-sm-darker flex flex-col max-w-full gap-4 p-4 mx-auto rounded-lg shadow-drop bg-ui-bg-base`}>
+    <div className={`${rotateClass} border-2 border-secondary-sm-darker flex flex-col max-w-[91%] gap-4 p-4 mx-auto rounded-lg shadow-drop bg-ui-bg-base`}>
       <Image
         ref={imageRef}
         src={src}
         alt={name}
         loading="lazy"
-        width={300}
-        height={300}
+        width={280}
+        height={280}
         className="transition-opacity duration-500 border-2 rounded-md opacity-0 border-dark-sm"
         onLoad={handleImageLoad}
       />

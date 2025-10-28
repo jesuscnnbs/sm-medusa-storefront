@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react"
 import { getMenuProfileById, toggleMenuProfileActive, deleteMenuProfile } from "@lib/db/queries"
 import MenuProfileForm from "@modules/admin/components/menu-profile-form"
-import Link from "next/link"
 import { notFound, useRouter } from "next/navigation"
-import { Trash } from "@medusajs/icons"
+import { CircleMinus, CircleSolid, Trash } from "@medusajs/icons"
 import { useParams } from "@lib/hooks"
 import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
 import BrutalButton from "@modules/admin/components/brutal-button"
@@ -176,7 +175,17 @@ export default function MenuDetailsPage({ params }: MenuDetailsProps) {
               variant={menuProfile.isActive ? "neutral" : "primary"}
               size="sm"
             >
-              {toggling ? "Cambiando..." : menuProfile.isActive ? "Desactivar" : "Activar"}
+              {menuProfile.isActive ? (
+                <>
+                <CircleMinus className="inline-block w-4 h-4 mr-2" />
+                <span>Desactivar</span>
+                </>
+              ) : (
+                <>
+                <CircleSolid className="inline-block w-4 h-4 mr-2" />
+                <span>Activar</span>
+                </>
+              )}
             </BrutalButton>
             <BrutalButton
               onClick={handleDelete}

@@ -144,6 +144,7 @@ export default function CategoryForm({
             </div>
 
             {/* Image URL */}
+            {/* 
             <div>
               <BrutalLabel>URL de Imagen</BrutalLabel>
               <BrutalInput
@@ -165,6 +166,7 @@ export default function CategoryForm({
                 </div>
               )}
             </div>
+            */}
 
             {/* Additional Settings */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

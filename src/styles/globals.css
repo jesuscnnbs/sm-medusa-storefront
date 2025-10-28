@@ -184,11 +184,16 @@
   /* Fix modal scroll-lock flicker */
   html {
     scrollbar-gutter: stable;
+    overflow-x: clip;
+    width: 100%;
   }
 
   /* Smooth transitions for body style changes */
   body {
     transition: padding-right 150ms ease-out;
+    overflow-x: clip;
+    width: 100%;
+    position: relative;
   }
 
 

@@ -1,9 +1,9 @@
 import { Dialog, Description as DialogDescription, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react"
 import { clx } from "@medusajs/ui"
 import React, { Fragment } from "react"
+import { XMark } from "@medusajs/icons"
 
 import { ModalProvider, useModal } from "@lib/context/modal-context"
-import X from "@modules/common/icons/x"
 
 type ModalProps = {
   isOpen: boolean
@@ -37,13 +37,13 @@ const Modal = ({
           <div className="fixed inset-0 h-screen bg-opacity-80 backdrop-blur-md" />
         </TransitionChild>
 
-        <div className="fixed inset-0 overflow-y-hidden">
+        <div className="fixed inset-0 overflow-y-auto">
           <div
             className={clx(
-              "flex min-h-full h-full justify-center p-4 text-center",
+              "flex min-h-full justify-center p-2 text-center",
               {
-                "items-center": !search,
-                "items-start": search,
+                "items-center p-4": !search,
+                "items-start p-0 sm:p-4": search,
               }
             )}
           >
@@ -59,7 +59,7 @@ const Modal = ({
               <DialogPanel
                 data-testid={dataTestId}
                 className={clx(
-                  "flex flex-col justify-start w-full transform p-1 sm:p-4 text-left align-middle transition-all max-h-[75vh] h-fit will-change-transform border-2 border-dark-sm shadow-drop",
+                  "flex flex-col justify-start w-full transform p-1 sm:p-4 text-left align-middle transition-all h-fit will-change-transform border-2 border-dark-sm shadow-drop",
                   {
                     "max-w-md": size === "small",
                     "max-w-xl": size === "medium",
@@ -69,7 +69,20 @@ const Modal = ({
                   }
                 )}
               >
-                <ModalProvider close={close}>{children}</ModalProvider>
+                <ModalProvider close={close}>
+                  {!search && (
+                    <button
+                      onClick={close}
+                      className="absolute right-0 z-10 top-5"
+                      aria-label="Close modal"
+                    >
+                      <XMark className="w-8 h-8 text-dark-sm" />
+                    </button>
+                  )}
+                  <div className="p-1 sm:p-4">
+                    {children}
+                  </div>
+                </ModalProvider>
               </DialogPanel>
             </TransitionChild>
           </div>
@@ -85,11 +98,6 @@ const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <DialogTitle className="flex items-center justify-between">
       <div className="text-large-semi">{children}</div>
-      <div>
-        <button onClick={close} data-testid="close-modal-button">
-          <X size={20} />
-        </button>
-      </div>
     </DialogTitle>
   )
 }

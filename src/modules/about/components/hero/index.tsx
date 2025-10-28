@@ -24,9 +24,9 @@ export const SmoothScrollHero = () => {
         root
         options={{
           // Learn more -> https://github.com/darkroomengineering/lenis?tab=readme-ov-file#instance-settings
-          lerp: 0.05,
+          //lerp: 0.05,
           //infinite: true,
-          syncTouch: true,
+          //syncTouch: true,
         }}
       >
         <Hero />
@@ -58,28 +58,28 @@ const ParallaxImages = () => {
         alt="Historia de Santa Mónica"
         start={-300}
         end={300}
-        className="w-full mx-auto sm:w-2/3"
+        className="w-full mx-auto mb-40 sm:mb-0 sm:w-2/3"
       />
       <ParallaxImg
         src={parallax2.src}
         alt="Historia de Santa Mónica"
         start={-100}
         end={100}
-        className="w-2/3 sm:w-1/3"
+        className="w-2/3 mb-40 sm:w-1/3 sm:mb-0"
       />
       <ParallaxImg
         src={parallax1.src}
         alt="Historia de Santa Mónica"
         start={100}
         end={100}
-        className="w-2/3 ml-auto sm:w-1/3"
+        className="w-2/3 mb-40 ml-auto sm:w-1/3 sm:mb-0"
       />
       <ParallaxImg
         src={parallax4.src}
         alt="Historia de Santa Mónica"
         start={100}
         end={-100}
-        className="w-2/3 mx-auto sm:w-1/3"
+        className="w-2/3 mx-auto mb-40 sm:w-1/3"
       />
       <ParallaxImg
         src={parallax5.src}
@@ -124,7 +124,7 @@ const ParallaxImg = ({ className, alt, src, start, end }: any) => {
     <motion.img
       src={src}
       alt={alt}
-      className={className + " border-2 border-dark-sm rounded-lg shadow-drop"}
+      className={className + " border-2 border-dark-sm rounded-lg shadow"}
       ref={ref}
       style={{ transform, opacity }}
     />
