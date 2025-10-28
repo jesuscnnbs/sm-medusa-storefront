@@ -20,7 +20,7 @@ export default async function Home() {
   ])
 
   return (
-    <SmoothScroll>
+    <>
       <Hero translation={t('callToActionButton')}/>
       <BestSellers translations={{
         parallaxOne: tHome('BestSellers.ParallaxOne'),
@@ -37,7 +37,7 @@ export default async function Home() {
         textPrimary: tHome('PetFriendly.textPrimary'),
         textSecondary: tHome('PetFriendly.textSecondary'),
       }} />
-    </SmoothScroll>
+    </>
   )
 }
 

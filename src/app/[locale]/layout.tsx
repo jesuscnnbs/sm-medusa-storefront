@@ -39,12 +39,12 @@ export default async function LocaleLayout({
     <html lang={locale} data-mode="light">
       <body className={`${lemonMilkRegular.variable} ${lemonMilkMedium.variable} antialiased`}>
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <main className="relative">
+          <main className="relative w-full" style={{ overflowX: 'clip' }}>
             <div
               style={{
                 backgroundImage: `url(${noise.src})`,
               }}
-              className="pointer-events-none fixed h-full w-full opacity-5 z-[999999]"
+              className="pointer-events-none fixed h-full w-screen opacity-5 z-[999999] left-0 top-0"
             >
             </div>
             {children}

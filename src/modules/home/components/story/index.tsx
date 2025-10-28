@@ -1,20 +1,19 @@
 "use client"
-import { useRef } from "react"
+import { memo } from "react"
 import Image from "next/image"
-import { Button } from "@medusajs/ui"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ParallaxTitle from "@modules/common/components/parallax-title"
-import picture from "../../../../../public/sm-burgers-home.jpg"
+import picture from "../../../../../public/team.jpg"
 import { Translations } from "types/global"
+import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
+import { useImageFadeIn } from "@lib/hooks"
 
 interface StoryProps {
   translations: Translations
 }
 
+const Story = memo(({translations}: StoryProps) => {
+  const { imageRef, handleImageLoad } = useImageFadeIn()
 
-function Story({translations}: StoryProps) {
-  const imageRef = useRef<HTMLImageElement>(null)
-  
   return (
     <section className="pb-20 bg-light-sm">
       <ParallaxTitle
@@ -32,26 +31,22 @@ function Story({translations}: StoryProps) {
           height={0}
           sizes="100vw"
           style={{ width: "100%", height: "auto" }}
-          className="-mt-5 transition-opacity duration-500 rounded-none opacity-0"
-          onLoad={() => {
-            if (imageRef.current) {
-              imageRef.current.classList.replace("opacity-0", "opacity-100")
-            }
-          }}
+          className="-mt-5 transition-opacity duration-500 border-2 rounded-lg opacity-0 border-dark-sm"
+          onLoad={handleImageLoad}
         />
         <p className="mt-10 text-lg text-dark-sm">
           {translations.description}
         </p>
       </div>
       <div className="flex justify-center mt-10">
-        <LocalizedClientLink href="/about" data-testid="about-link">
-          <Button variant="secondary" className="uppercase rounded-none text-light-sm-lighter">
+        <BrutalButtonLink href="/about" data-testid="about-link" variant="secondary">
             {translations.learnMore}
-          </Button>
-        </LocalizedClientLink>
+        </BrutalButtonLink>
       </div>
     </section>
   )
-}
+})
+
+Story.displayName = "Story"
 
 export default Story

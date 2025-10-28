@@ -1,6 +1,5 @@
 import PageTitle from "@modules/common/components/page-title"
 import MenuComponent from "@modules/menu"
-import SmoothScroll from "@modules/common/components/smooth-scroll"
 import { listMenuItems } from "@lib/db/queries"
 import CommingSoon from "../../comming-soon"
 import { Metadata } from "next/types"
@@ -20,7 +19,7 @@ export default async function MenuPage({
   const menuItems = await listMenuItems(locale)
   
   return (
-    <SmoothScroll>
+    <>
       {/** Section Tittle */}
       {menuItems.length === 0 ? (
         <CommingSoon />
@@ -36,6 +35,6 @@ export default async function MenuPage({
           </div>
         </section>
       )}
-    </SmoothScroll>
+    </>
   )
 }

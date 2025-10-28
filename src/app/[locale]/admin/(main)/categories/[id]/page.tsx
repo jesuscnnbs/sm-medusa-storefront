@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { getMenuCategoryById, toggleMenuCategoryActive, hardDeleteMenuCategory } from "@lib/db/queries/menu-categories"
 import CategoryForm from "@modules/admin/components/category-form"
 import { notFound, useRouter } from "next/navigation"
-import { Trash } from "@medusajs/icons"
+import { Trash, CircleMinus, CircleSolid } from "@medusajs/icons"
 import { useParams } from "@lib/hooks"
 import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
 import BrutalButton from "@modules/admin/components/brutal-button"
@@ -167,7 +167,17 @@ export default function CategoryDetailsPage({ params }: CategoryDetailsProps) {
               variant={category.isActive ? "neutral" : "primary"}
               size="sm"
             >
-              {toggling ? "Cambiando..." : category.isActive ? "Desactivar" : "Activar"}
+              {category.isActive ? (
+                <>
+                <CircleMinus className="inline-block w-4 h-4 mr-2" />
+                <span>Desactivar</span>
+                </>
+              ) : (
+                <>
+                <CircleSolid className="inline-block w-4 h-4 mr-2" />
+                <span>Activar</span>
+                </>
+              )}
             </BrutalButton>
             <BrutalButton
               onClick={handleDelete}
@@ -223,7 +233,7 @@ export default function CategoryDetailsPage({ params }: CategoryDetailsProps) {
               </div>
 
               {/* Image */}
-              <div>
+              {/*<div>
                 <BrutalLabel>Imagen</BrutalLabel>
                 {category.image ? (
                   <div className="flex items-center gap-4">
@@ -245,6 +255,7 @@ export default function CategoryDetailsPage({ params }: CategoryDetailsProps) {
                   </div>
                 )}
               </div>
+              */}
             </div>
           </BrutalFormContainer>
         </div>

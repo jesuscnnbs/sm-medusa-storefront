@@ -8,7 +8,6 @@ import { BrutalToggle } from "@modules/admin/components/brutal-toggle"
 import { twMerge } from "tailwind-merge"
 import BrutalButton from "../brutal-button"
 import Image from "next/image"
-import { convertGoogleDriveUrl, isValidImageUrl } from "@lib/utils/image-utils"
 
 interface DishCardProps {
   dish: {
@@ -52,9 +51,9 @@ export const DishCard = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center flex-1">
             <div className="flex-shrink-0">
-              {dish.image && isValidImageUrl(dish.image) ? (
+              {dish.image ? (
                 <Image
-                  src={convertGoogleDriveUrl(dish.image)}
+                  src={dish.image}
                   alt={dish.name || 'Plato'}
                   width={64}
                   height={64}

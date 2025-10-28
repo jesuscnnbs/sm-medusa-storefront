@@ -34,9 +34,9 @@ export const NeuButton = ({
 
   // Default active background colors based on variant
   const defaultActiveColor = {
-    primary: "bg-primary-sm",
-    secondary: "bg-secondary-sm",
-    neutral: "bg-light-sm",
+    primary: "bg-light-sm-lighter",
+    secondary: "bg-light-sm-lighter",
+    neutral: "bg-light-sm-lighter",
   }
 
   // Determine text color based on background
@@ -47,7 +47,7 @@ export const NeuButton = ({
     return "text-dark-sm"
   }
 
-  const activeBgColor = activeColor || defaultActiveColor[variant]
+  const activeBgColor = activeColor || "bg-light-sm-lighter"
   const activeTextColor = getTextColor(activeBgColor)
 
   const buttonVariantClasses = {
@@ -77,7 +77,7 @@ export const NeuButton = ({
           "w-full origin-bottom-left rounded-lg border-2 font-medium transition-all",
           sizeClasses[size],
           buttonVariantClasses[variant],
-          active && "-translate-y-1",
+          active && "-translate-y-0.5 -translate-x-0.5",
           disabled && "opacity-50 cursor-not-allowed"
         )}
       >

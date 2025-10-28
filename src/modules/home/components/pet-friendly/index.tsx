@@ -1,19 +1,20 @@
 "use client"
-import { useRef } from "react"
+import { memo } from "react"
 import Image from "next/image"
 import ParallaxTitle from "@modules/common/components/parallax-title"
 import picture from "../../../../../public/pet-friendly-dog.jpeg"
 import { Translations } from "types/global"
+import { useImageFadeIn } from "@lib/hooks"
 
 interface PetFriendlyProps {
   translations: Translations
 }
 
-function PetFriendly({ translations }: PetFriendlyProps) {
-  const imageRef = useRef<HTMLImageElement>(null)
-  
+const PetFriendly = memo(({ translations }: PetFriendlyProps) => {
+  const { imageRef, handleImageLoad } = useImageFadeIn("opacity-0", "opacity-30")
+
   return (
-    <section className="relative pt-[400px] pb-[100px] bg-secondary-sm">
+    <section className="relative pt-[400px] pb-[100px] bg-secondary-sm border-y-2 border-secondary-sm-darker">
        <Image
           ref={imageRef}
           src={picture.src}
@@ -22,11 +23,7 @@ function PetFriendly({ translations }: PetFriendlyProps) {
           fill={true}
           objectFit="cover"
           className="transition-opacity duration-1000 opacity-0"
-          onLoad={() => {
-            if (imageRef.current) {
-              imageRef.current.classList.replace("opacity-0", "opacity-30")
-            }
-          }}
+          onLoad={handleImageLoad}
         />
       <ParallaxTitle
         textPrimary={translations.textPrimary}
@@ -35,6 +32,8 @@ function PetFriendly({ translations }: PetFriendlyProps) {
       />
     </section>
   )
-}
+})
+
+PetFriendly.displayName = "PetFriendly"
 
 export default PetFriendly

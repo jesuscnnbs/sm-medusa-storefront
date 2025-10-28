@@ -4,7 +4,7 @@ import React, { useEffect } from "react"
 import { motion } from "framer-motion"
 import { XMark, CheckCircle, BellAlert, InformationCircle, XCircle } from "@medusajs/icons"
 
-const NOTIFICATION_TTL = 5000
+const NOTIFICATION_TTL = 2000
 
 export type NotificationType = "success" | "error" | "info" | "warning"
 

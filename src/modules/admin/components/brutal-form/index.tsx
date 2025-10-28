@@ -176,3 +176,6 @@ export const BrutalAlert: React.FC<BrutalAlertProps> = ({
     </div>
   )
 }
+
+// Export BrutalFileInput from its own module
+export { BrutalFileInput } from "../brutal-file-input"

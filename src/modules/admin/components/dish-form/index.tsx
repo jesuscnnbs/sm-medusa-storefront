@@ -14,7 +14,9 @@ import {
   BrutalAlert,
   BrutalSelect,
 } from "../brutal-form"
+import { ImageSelector } from "../image-selector"
 import { useNotification } from "@lib/context/notification-context"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 interface DishData {
   id?: string
@@ -225,25 +227,14 @@ export default function DishForm({
 
             {/* Image */}
             <div>
-              <BrutalLabel>URL de Imagen</BrutalLabel>
-              <BrutalInput
-                type="text"
+              <ImageSelector
+                label="Imagen del Plato"
                 value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                placeholder="https://ejemplo.com/imagen.jpg"
+                onChange={(url) => setFormData({ ...formData, image: url })}
               />
-              {formData.image && (
-                <div className="mt-2">
-                  <img
-                    src={formData.image}
-                    alt="Preview"
-                    className="object-cover w-32 h-32 border-2 rounded-lg border-dark-sm"
-                    onError={(e) => {
-                      e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23ddd' width='100' height='100'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EError%3C/text%3E%3C/svg%3E"
-                    }}
-                  />
-                </div>
-              )}
+              <p className="mt-2 text-xs text-grey-sm">
+                💡 Gestiona las imágenes (subir/eliminar) en <LocalizedClientLink href="/admin/image-gallery" className="font-bold underline text-primary-sm">Admin → Imágenes del Menú</LocalizedClientLink>
+              </p>
             </div>
 
             {/* Ingredients and Allergens */}

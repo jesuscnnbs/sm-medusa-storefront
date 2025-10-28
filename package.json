@@ -51,9 +51,9 @@
     "next-intl": "^3.26.5",
     "pg": "^8.11.3",
     "qs": "^6.12.1",
-    "react": "19.0.0-rc-66855b96-20241106",
+    "react": "^19.2.0",
     "react-country-flag": "^3.1.0",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "^19.2.0",
     "react-icons": "^5.4.0",
     "react-iframe": "^1.8.5",
     "react-instantsearch-hooks-web": "^6.47.3",
@@ -86,11 +86,11 @@
   },
   "packageManager": "yarn@3.2.3",
   "resolutions": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc"
   },
   "overrides": {
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }
