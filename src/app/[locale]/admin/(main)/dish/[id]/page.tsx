@@ -12,6 +12,7 @@ import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
 import BrutalButton from "@modules/admin/components/brutal-button"
 import { BrutalFormContainer, BrutalLabel } from "@modules/admin/components/brutal-form"
 import { useNotification } from "@lib/context/notification-context"
+import { BarLoader } from "@modules/admin/components/bar-loader"
 
 interface DishDetailsProps {
   params: Promise<{
@@ -105,7 +106,7 @@ export default function DishDetailsPage({ params }: DishDetailsProps) {
   if (loading || !resolvedParams) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-grey-sm">Cargando plato...</div>
+        <BarLoader />
       </div>
     )
   }

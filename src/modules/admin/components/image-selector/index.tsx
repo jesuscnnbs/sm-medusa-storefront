@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import { twMerge } from "tailwind-merge"
 import { XMark, Photo } from "@medusajs/icons"
 import { ImageGallerySelector } from "../image-gallery-selector"
+import Image from "next/image"
 
 interface ImageSelectorProps {
   value?: string
@@ -60,10 +61,12 @@ export const ImageSelector = React.forwardRef<HTMLDivElement, ImageSelectorProps
           <div className="relative p-4 border-2 rounded-lg border-dark-sm bg-light-sm">
             <div className="flex items-start gap-4">
               <div className="relative flex-shrink-0 w-24 h-24 overflow-hidden border-2 rounded-lg border-dark-sm">
-                <img
+                <Image
                   src={value}
                   alt="Preview"
                   className="object-cover w-full h-full"
+                  width={96}
+                  height={96}
                   onError={(e) => {
                     e.currentTarget.src =
                       "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23ddd' width='100' height='100'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EError%3C/text%3E%3C/svg%3E"

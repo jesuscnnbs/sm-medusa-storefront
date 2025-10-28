@@ -59,29 +59,18 @@ const Modal = ({
               <DialogPanel
                 data-testid={dataTestId}
                 className={clx(
-                  "flex flex-col justify-start w-full transform p-1 sm:p-4 text-left align-middle transition-all h-fit will-change-transform border-2 border-dark-sm shadow-drop",
+                  "flex flex-col justify-start w-full transform text-left align-middle transition-all h-fit will-change-transform border-2 border-dark-sm shadow-drop",
                   {
                     "max-w-md": size === "small",
                     "max-w-xl": size === "medium",
                     "max-w-3xl": size === "large",
                     "bg-transparent shadow-none": search,
-                    "bg-ui-bg-base shadow-xl border rounded-lg": !search,
+                    "bg-ui-bg-base shadow-xl rounded-lg": !search,
                   }
                 )}
               >
                 <ModalProvider close={close}>
-                  {!search && (
-                    <button
-                      onClick={close}
-                      className="absolute right-0 z-10 top-5"
-                      aria-label="Close modal"
-                    >
-                      <XMark className="w-8 h-8 text-dark-sm" />
-                    </button>
-                  )}
-                  <div className="p-1 sm:p-4">
                     {children}
-                  </div>
                 </ModalProvider>
               </DialogPanel>
             </TransitionChild>
@@ -96,8 +85,13 @@ const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { close } = useModal()
 
   return (
-    <DialogTitle className="flex items-center justify-between">
-      <div className="text-large-semi">{children}</div>
+    <DialogTitle className="flex items-center justify-between border-b-2 border-dark-sm">
+      <div className="px-2 text-large-semi">{children}</div>
+      <div className="flex items-center justify-center pt-2 pl-2 border-l-2 rounded-tr-md border-dark-sm hover:bg-light-sm-darker">
+        <button onClick={close} data-testid="close-modal-button">
+          <XMark className="size-6 text-dark-sm" />
+        </button>
+      </div>
     </DialogTitle>
   )
 }

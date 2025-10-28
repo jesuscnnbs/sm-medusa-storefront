@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { getAllMenuItems } from "@lib/db/queries"
 import BrutalButton from "../brutal-button"
 import { BrutalInput, BrutalFormContainer } from "../brutal-form"
+import { BarLoader } from "@modules/admin/components/bar-loader"
 
 interface MenuItem {
   id: string
@@ -97,7 +98,7 @@ export default function MenuItemSelector({
   if (loading) {
     return (
       <BrutalFormContainer>
-        <div className="text-center font-bold uppercase text-grey-sm">Cargando platos...</div>
+        <BarLoader />
       </BrutalFormContainer>
     )
   }
@@ -106,10 +107,10 @@ export default function MenuItemSelector({
     <BrutalFormContainer>
       {/* Header */}
       <div className="mb-6">
-        <h3 className="text-lg font-bold uppercase text-dark-sm mb-2">
+        <h3 className="mb-2 text-lg font-bold uppercase text-dark-sm">
           Seleccionar Platos del Menú
         </h3>
-        <p className="text-sm font-medium text-grey-sm mb-4">
+        <p className="mb-4 text-sm font-medium text-grey-sm">
           {selectedCount} plato{selectedCount !== 1 ? 's' : ''} seleccionado{selectedCount !== 1 ? 's' : ''}
         </p>
 
@@ -147,11 +148,11 @@ export default function MenuItemSelector({
       {/* Table */}
       <div className="overflow-x-auto">
         {filteredItems.length === 0 ? (
-          <p className="text-center font-bold uppercase text-grey-sm py-8">
+          <p className="py-8 font-bold text-center uppercase text-grey-sm">
             {searchTerm ? 'No se encontraron platos' : 'No hay platos disponibles'}
           </p>
         ) : (
-          <div className="border-2 border-dark-sm overflow-hidden">
+          <div className="overflow-hidden border-2 border-dark-sm">
             <table className="w-full">
               <thead>
                 <tr className="bg-dark-sm text-light-sm">
@@ -169,9 +170,9 @@ export default function MenuItemSelector({
                       className="w-5 h-5 border-2 border-light-sm accent-primary-sm"
                     />
                   </th>
-                  <th className="px-3 py-3 text-left text-xs font-black uppercase">Nombre</th>
-                  <th className="px-3 py-3 text-left text-xs font-black uppercase">Categoría</th>
-                  <th className="px-3 py-3 text-right text-xs font-black uppercase">Precio</th>
+                  <th className="px-3 py-3 text-xs font-black text-left uppercase">Nombre</th>
+                  <th className="px-3 py-3 text-xs font-black text-left uppercase">Categoría</th>
+                  <th className="px-3 py-3 text-xs font-black text-right uppercase">Precio</th>
                 </tr>
               </thead>
               <tbody>
@@ -205,7 +206,7 @@ export default function MenuItemSelector({
                       <td className="px-3 py-3">
                         <div className="font-bold text-dark-sm">{displayName}</div>
                         {displayDescription && (
-                          <div className="text-xs text-grey-sm mt-1 line-clamp-1">
+                          <div className="mt-1 text-xs text-grey-sm line-clamp-1">
                             {displayDescription}
                           </div>
                         )}

@@ -4,11 +4,34 @@ import React, { useState, useEffect } from "react"
 import { twMerge } from "tailwind-merge"
 import { listMenuImages } from "@lib/actions/upload-image"
 import { XMark, Check } from "@medusajs/icons"
+import Image from "next/image"
+import { BrutalInput } from "@modules/admin/components/brutal-form"
 
 interface ImageGallerySelectorProps {
   onSelect: (url: string) => void
   onClose: () => void
   currentValue?: string
+}
+
+// Utilidad para limpiar el nombre de la imagen
+const getCleanImageName = (imageUrl: string): string => {
+  // Extraer el nombre del archivo de la URL
+  const fileName = imageUrl.split('/').pop() || imageUrl
+
+  // Remover la extensión (.jpg, .png, .webp, etc.)
+  const nameWithoutExt = fileName.replace(/\.[^.]+$/, '')
+
+  // Remover el timestamp al inicio (formato: 1761666398387-nombre.jpg)
+  const nameWithoutTimestamp = nameWithoutExt.replace(/^\d+-/, '')
+
+  // Reemplazar guiones y underscores con espacios y capitalizar
+  const cleanName = nameWithoutTimestamp
+    .replace(/[-_]/g, ' ')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+
+  return cleanName
 }
 
 export const ImageGallerySelector: React.FC<ImageGallerySelectorProps> = ({
@@ -19,6 +42,7 @@ export const ImageGallerySelector: React.FC<ImageGallerySelectorProps> = ({
   const [images, setImages] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState<string | null>(currentValue || null)
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
     loadImages()
@@ -43,6 +67,18 @@ export const ImageGallerySelector: React.FC<ImageGallerySelectorProps> = ({
     }
   }
 
+  const getFilteredImages = () => {
+    if (!searchTerm) return images
+
+    return images.filter(image => {
+      const cleanName = getCleanImageName(image)
+      const searchLower = searchTerm.toLowerCase()
+      return cleanName.toLowerCase().includes(searchLower)
+    })
+  }
+
+  const filteredImages = getFilteredImages()
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
       <div className="w-full max-w-4xl max-h-[90vh] bg-light-sm border-2 border-dark-sm rounded-lg shadow-[8px_8px_0px_black] flex flex-col">
@@ -59,6 +95,16 @@ export const ImageGallerySelector: React.FC<ImageGallerySelectorProps> = ({
           </button>
         </div>
 
+        {/* Search Bar */}
+        <div className="px-4 py-2 border-dark-sm">
+          <BrutalInput
+            type="text"
+            placeholder="Buscar imágenes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
         {/* Gallery */}
         <div className="flex-1 p-4 overflow-y-auto">
           {loading ? (
@@ -72,34 +118,47 @@ export const ImageGallerySelector: React.FC<ImageGallerySelectorProps> = ({
                 Sube una imagen nueva usando el botón de arriba
               </p>
             </div>
+          ) : filteredImages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64 text-center">
+              <p className="text-sm font-bold text-dark-sm">No se encontraron imágenes</p>
+              <p className="mt-2 text-xs text-grey-sm">
+                Intenta con otro término de búsqueda
+              </p>
+            </div>
           ) : (
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {images.map((image) => (
-                <button
-                  key={image}
-                  type="button"
-                  onClick={() => setSelectedImage(image)}
-                  className={twMerge(
-                    "relative aspect-square border-2 rounded-lg overflow-hidden",
-                    "transition-all hover:scale-105",
-                    selectedImage === image
-                      ? "border-primary-sm shadow-[4px_4px_0px_black]"
-                      : "border-dark-sm hover:border-primary-sm"
-                  )}
-                >
-                  <img
-                    src={image}
-                    alt={image}
-                    className="object-cover w-full h-full"
-                  />
-                  {selectedImage === image && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-primary-sm/20">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-sm">
-                        <Check className="w-6 h-6 text-light-sm" />
+              {filteredImages.map((image) => (
+                <div key={image} className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedImage(image)}
+                    className={twMerge(
+                      "relative aspect-square border-2 rounded-lg overflow-hidden",
+                      "transition-all hover:scale-105",
+                      selectedImage === image
+                        ? "border-primary-sm shadow-brutal-primary"
+                        : "border-dark-sm hover:border-primary-sm"
+                    )}
+                  >
+                    <Image
+                      src={image}
+                      alt={getCleanImageName(image)}
+                      width={300}
+                      height={300}
+                      className="object-cover w-full h-full"
+                    />
+                    {selectedImage === image && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-primary-sm/20">
+                        <div className="flex items-center justify-center w-10 h-10 p-3 rounded-full bg-primary-sm">
+                          <Check className="w-6 h-4 text-light-sm" />
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </button>
+                    )}
+                  </button>
+                  <p className="text-xs font-medium text-center truncate text-dark-sm">
+                    {getCleanImageName(image)}
+                  </p>
+                </div>
               ))}
             </div>
           )}

@@ -78,27 +78,29 @@ const Menu = ({menuItems}: Props) => {
         )
       })}
       <Modal isOpen={modalOpen} close={handleClose} size="large">
+        <Modal.Title> 
+          <Heading level="h3" className="text-xl font-bold">
+            {itemSelected?.title || ""}
+          </Heading>
+        </Modal.Title>
         {itemSelected && (
           <React.Fragment>
             <div className="p-3 sm:p-5">
               {itemSelected.image && (
-                <div className="mb-4 text-center">
-                  <div className="relative overflow-hidden rounded-lg size-60 sm:size-82">
+                <div className="flex justify-center mb-4">
+                  <div className="relative w-full max-w-sm overflow-hidden rounded-lg aspect-square max-h-[50vh]">
                     <Image
                       src={itemSelected.image}
                       alt={itemSelected.title}
                       fill
-                      className="object-contain w-full h-full border rounded-lg border-secondary-sm-darker"
-                      sizes="(max-width: 768px) 100vw, 240px"
+                      className="object-cover w-full h-full border rounded-lg border-secondary-sm-darker"
+                      sizes="(max-width: 768px) 90vw, 384px"
                       priority
                     />
                   </div>
                 </div>
               )}
               <div className="flex items-start justify-between mb-3">
-                <Heading level="h3" className="text-xl font-bold">
-                  {itemSelected.title}
-                </Heading>
                 <Text className="text-lg font-bold text-secondary-sm-darker">
                   {(itemSelected.price / 100).toFixed(2)} €
                 </Text>

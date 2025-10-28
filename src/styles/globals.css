@@ -332,6 +332,15 @@
   .shadow-drop {
     @apply drop-shadow-[4px_4px_0px_var(--secondary-sm-darker)] lg:drop-shadow-[6px_6px_0px_var(--secondary-sm-darker)]
   }
+  .shadow-drop-primary {
+    @apply drop-shadow-[4px_4px_0px_var(--primary-sm-darker)] lg:drop-shadow-[6px_6px_0px_var(--primary-sm-darker)]
+  }
+  .shadow-brutal-primary {
+    box-shadow: 4px 4px 0px var(--primary-sm-darker);
+  }
+  .shadow-brutal-secondary {
+    box-shadow: 4px 4px 0px var(--secondary-sm-darker);
+  }
   .font-outline-2 {
     text-shadow: 1px 1px 1px var(--dark-sm),
     -1px 1px 1px var(--dark-sm),

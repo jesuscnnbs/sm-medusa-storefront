@@ -16,6 +16,7 @@ import {
 } from "../brutal-form"
 import { ImageSelector } from "../image-selector"
 import { useNotification } from "@lib/context/notification-context"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 interface DishData {
   id?: string
@@ -232,7 +233,7 @@ export default function DishForm({
                 onChange={(url) => setFormData({ ...formData, image: url })}
               />
               <p className="mt-2 text-xs text-grey-sm">
-                💡 Gestiona las imágenes (subir/eliminar) en <a href="/admin/menu-images" className="font-bold underline text-primary-sm">Admin → Imágenes del Menú</a>
+                💡 Gestiona las imágenes (subir/eliminar) en <LocalizedClientLink href="/admin/image-gallery" className="font-bold underline text-primary-sm">Admin → Imágenes del Menú</LocalizedClientLink>
               </p>
             </div>
 
