@@ -86,12 +86,14 @@ const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <DialogTitle className="flex items-center justify-between border-b-2 border-dark-sm">
-      <div className="px-2 text-large-semi">{children}</div>
-      <div className="flex items-center justify-center pt-2 pl-2 border-l-2 rounded-tr-md border-dark-sm hover:bg-light-sm-darker">
-        <button onClick={close} data-testid="close-modal-button">
-          <XMark className="size-6 text-dark-sm" />
-        </button>
-      </div>
+      <div className="px-2 py-2 text-large-semi">{children}</div>
+      <button
+        onClick={close}
+        data-testid="close-modal-button"
+        className="self-stretch px-3 transition-colors border-l-2 rounded-tr-md border-dark-sm hover:bg-light-sm-darker"
+      >
+        <XMark className="size-4 text-dark-sm" />
+      </button>
     </DialogTitle>
   )
 }
