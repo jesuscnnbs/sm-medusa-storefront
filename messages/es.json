@@ -6,7 +6,9 @@
     "store": "Tienda",
     "reserve": "Reservar",
     "callToActionButton": "Reservar",
-    "soon": "Próximamente"
+    "soon": "Próximamente",
+    "cookiesPolicy": "Política de Cookies",
+    "privacyPolicy": "Política de Privacidad"
   },
   "Home": {
     "BestSellers": {
@@ -31,5 +33,62 @@
     "2023": "En 2023, Santa Mónica se establece como un nombre reconocido en la escena gastronómica local. Con un menú que combina sabores clásicos y modernos, nuestros clientes disfrutan de una experiencia culinaria única.",
     "2024": "En 2024, Santa Mónica continúa innovando y expandiendo su menú. Con nuevas recetas y colaboraciones con chefs locales, seguimos comprometidos a ofrecer lo mejor en hamburguesas.",
     "2025": "En 2025, Santa Mónica celebra su tercer aniversario. Agradecemos a nuestros clientes por su apoyo continuo y esperamos seguir sirviendo las mejores hamburguesas de la ciudad durante muchos años más. <3"
+  },
+  "CookiesPolicy": {
+    "title": "Política de Cookies",
+    "intro": "Esta Política de Cookies explica qué son las cookies y cómo las utilizamos en Santa Mónica.",
+    "whatAreCookies": {
+      "title": "¿Qué son las cookies?",
+      "description": "Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Nos ayudan a mejorar tu experiencia, recordar tus preferencias y entender cómo utilizas nuestro sitio."
+    },
+    "howWeUseCookies": {
+      "title": "¿Cómo utilizamos las cookies?",
+      "description": "Utilizamos cookies para:",
+      "essential": "Cookies esenciales: Necesarias para el funcionamiento básico del sitio web.",
+      "analytics": "Cookies analíticas: Nos ayudan a entender cómo los visitantes interactúan con nuestro sitio.",
+      "preferences": "Cookies de preferencias: Recuerdan tus configuraciones y preferencias.",
+      "marketing": "Cookies de marketing: Se utilizan para mostrar anuncios relevantes."
+    },
+    "manageCookies": {
+      "title": "Gestionar cookies",
+      "description": "Puedes controlar y/o eliminar las cookies según desees. Puedes eliminar todas las cookies que ya están en tu ordenador y puedes configurar la mayoría de los navegadores para que no se instalen."
+    },
+    "lastUpdated": "Última actualización"
+  },
+  "PrivacyPolicy": {
+    "title": "Política de Privacidad",
+    "intro": "En Santa Mónica, nos comprometemos a proteger tu privacidad. Esta Política de Privacidad explica cómo recopilamos, utilizamos y protegemos tu información personal.",
+    "dataCollection": {
+      "title": "Información que recopilamos",
+      "description": "Podemos recopilar la siguiente información:",
+      "personal": "Información personal: nombre, correo electrónico, número de teléfono cuando realizas una reserva o te registras.",
+      "usage": "Información de uso: datos sobre cómo utilizas nuestro sitio web.",
+      "technical": "Información técnica: dirección IP, tipo de navegador, dispositivo utilizado."
+    },
+    "dataUse": {
+      "title": "Cómo utilizamos tu información",
+      "description": "Utilizamos tu información para:",
+      "service": "Proporcionar y mantener nuestros servicios.",
+      "improve": "Mejorar, personalizar y expandir nuestro sitio web.",
+      "communication": "Comunicarnos contigo sobre reservas, pedidos y promociones.",
+      "security": "Proteger la seguridad de nuestro sitio y prevenir fraudes."
+    },
+    "dataProtection": {
+      "title": "Protección de datos",
+      "description": "Implementamos medidas de seguridad apropiadas para proteger tu información personal contra acceso no autorizado, alteración, divulgación o destrucción."
+    },
+    "yourRights": {
+      "title": "Tus derechos",
+      "description": "Tienes derecho a:",
+      "access": "Acceder a tu información personal.",
+      "rectify": "Rectificar información inexacta.",
+      "delete": "Solicitar la eliminación de tu información.",
+      "object": "Oponerte al procesamiento de tus datos."
+    },
+    "contact": {
+      "title": "Contacto",
+      "description": "Si tienes preguntas sobre esta política, contáctanos en nuestra ubicación en Almería o a través de nuestros canales de contacto."
+    },
+    "lastUpdated": "Última actualización"
   }
 }
