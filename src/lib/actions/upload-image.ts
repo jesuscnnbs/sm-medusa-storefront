@@ -89,27 +89,21 @@ export async function uploadMenuImage(formData: FormData): Promise<UploadResult>
  * Get all images from /public/menu/ directory
  * Used for image gallery/selector
  *
- * In production (Vercel), fetches images.json file generated at build time
+ * In production (Vercel), imports static JSON file generated at build time
  * In development, reads directory directly for real-time updates
  */
 export async function listMenuImages(): Promise<string[]> {
   try {
-    // In production, fetch from pre-generated JSON index (served as static file)
+    // In production, import pre-generated JSON index
     if (process.env.NODE_ENV === "production") {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : 'http://localhost:8000'
-
-      const response = await fetch(`${baseUrl}/menu/images.json`, {
-        cache: 'no-store' // Always get fresh data
-      })
-
-      if (response.ok) {
-        const images = await response.json()
-        return images
+      try {
+        // Import the JSON file that was generated during build
+        const images = await import("../../../public/menu/images.json")
+        return images.default || []
+      } catch (error) {
+        console.error("Error importing images.json:", error)
+        return []
       }
-
-      return []
     }
 
     // In development, read directory directly for real-time updates
