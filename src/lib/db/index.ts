@@ -2,26 +2,32 @@ import { lt } from 'drizzle-orm'
 import * as schema from './schema'
 
 // Environment-specific database configuration
-// Production: Use Neon serverless driver (edge-compatible)
-// Local: Use PostgreSQL with node-postgres
+// Neon: Use serverless driver (edge-compatible)
+// PostgreSQL local: Use node-postgres
 const connectionString = process.env.DATABASE_URL
 
 if (!connectionString) {
   throw new Error('DATABASE_URL environment variable is required')
 }
 
-// Dynamic import and connection based on environment
+// Detect if using Neon database (based on connection string)
+const isNeonDatabase = connectionString.includes('neon.tech') ||
+                       connectionString.includes('neon.') ||
+                       process.env.USE_NEON_DRIVER === 'true'
+
+// Dynamic import and connection based on database type
 let db: any
 let sql: any
 
-if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
-  // Production/Vercel: Use Neon serverless driver
+if (isNeonDatabase) {
+  // Neon database: Use serverless driver (works in development and production)
   const { drizzle } = require('drizzle-orm/neon-http')
   const { neon } = require('@neondatabase/serverless')
   sql = neon(connectionString)
   db = drizzle(sql, { schema })
+  console.log('✓ Connected to Neon database')
 } else {
-  // Local development: Use PostgreSQL with node-postgres
+  // Local PostgreSQL: Use node-postgres
   const { drizzle } = require('drizzle-orm/node-postgres')
   const { Pool } = require('pg')
   const pool = new Pool({
@@ -30,6 +36,7 @@ if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
   })
   db = drizzle(pool, { schema })
   sql = pool
+  console.log('✓ Connected to local PostgreSQL')
 }
 
 export { db }
@@ -43,7 +50,7 @@ export type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 // Helper para validar conexión
 export async function testDbConnection(): Promise<boolean> {
   try {
-    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    if (isNeonDatabase) {
       // Neon: direct function call
       await sql('SELECT 1')
     } else {

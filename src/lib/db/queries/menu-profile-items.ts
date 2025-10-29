@@ -72,11 +72,14 @@ export async function updateMenuProfileItemSortOrder(menuProfileId: string, menu
 }
 
 export async function setMenuProfileItems(menuProfileId: string, menuItemIds: string[]) {
-  await db.transaction(async (tx) => {
-    await tx
+  try {
+    // Delete existing associations
+    // Note: neon-http driver doesn't support transactions, so we do operations sequentially
+    await db
       .delete(schema.menuProfileItems)
       .where(eq(schema.menuProfileItems.menuProfileId, menuProfileId))
 
+    // Insert new associations if any
     if (menuItemIds.length > 0) {
       const associations = menuItemIds.map((menuItemId, index) => ({
         menuProfileId,
@@ -84,9 +87,17 @@ export async function setMenuProfileItems(menuProfileId: string, menuItemIds: st
         sortOrder: index
       }))
 
-      await tx
+      const inserted = await db
         .insert(schema.menuProfileItems)
         .values(associations)
+        .returning()
+
+      return { success: true, count: inserted.length }
     }
-  })
+
+    return { success: true, count: 0 }
+  } catch (error) {
+    console.error('Error in setMenuProfileItems:', error)
+    throw error
+  }
 }
