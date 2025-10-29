@@ -5,7 +5,7 @@ import CommingSoon from "../../comming-soon"
 import { Metadata } from "next/types"
 
 export const metadata: Metadata = {
-  title: "Santa Mónica",
+  title: "Burgers - Santa Mónica",
   description:
     "Comida americana con sabor venezolano. Hamburguesas gourmet, carne de la mejor calidad, pollo crujiente, opciones vegetarianas, postres, tequeños y mucho más. ¡Pide a domicilio o recoge en local!",
 }

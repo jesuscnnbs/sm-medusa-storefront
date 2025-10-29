@@ -6,7 +6,9 @@
     "store": "Store",
     "reserve": "Reserve",
     "callToActionButton": "Reserve",
-    "soon": "Coming soon"
+    "soon": "Coming soon",
+    "cookiesPolicy": "Cookies Policy",
+    "privacyPolicy": "Privacy Policy"
   },
   "Home": {
     "BestSellers": {
@@ -31,5 +33,62 @@
     "2023": "In 2023, Santa Monica establishes itself as a recognised name in the local dining scene. With a menu that combines classic and modern flavours, our guests enjoy a unique dining experience.",
     "2024": "In 2024, Santa Monica continues to innovate and expand its menu. With new recipes and collaborations with local chefs, we remain committed to offering the best in burgers.",
     "2025": "In 2025, Santa Monica celebrates its third anniversary. We thank our customers for their continued support and look forward to serving the best burgers in town for many years to come. <3"
+  },
+  "CookiesPolicy": {
+    "title": "Cookies Policy",
+    "intro": "This Cookies Policy explains what cookies are and how we use them at Santa Monica.",
+    "whatAreCookies": {
+      "title": "What are cookies?",
+      "description": "Cookies are small text files that are stored on your device when you visit a website. They help us improve your experience, remember your preferences, and understand how you use our site."
+    },
+    "howWeUseCookies": {
+      "title": "How we use cookies",
+      "description": "We use cookies for:",
+      "essential": "Essential cookies: Necessary for the basic functioning of the website.",
+      "analytics": "Analytics cookies: Help us understand how visitors interact with our site.",
+      "preferences": "Preference cookies: Remember your settings and preferences.",
+      "marketing": "Marketing cookies: Used to display relevant advertisements."
+    },
+    "manageCookies": {
+      "title": "Managing cookies",
+      "description": "You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed."
+    },
+    "lastUpdated": "Last updated"
+  },
+  "PrivacyPolicy": {
+    "title": "Privacy Policy",
+    "intro": "At Santa Monica, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and protect your personal information.",
+    "dataCollection": {
+      "title": "Information we collect",
+      "description": "We may collect the following information:",
+      "personal": "Personal information: name, email address, phone number when you make a reservation or register.",
+      "usage": "Usage information: data about how you use our website.",
+      "technical": "Technical information: IP address, browser type, device used."
+    },
+    "dataUse": {
+      "title": "How we use your information",
+      "description": "We use your information to:",
+      "service": "Provide and maintain our services.",
+      "improve": "Improve, personalize, and expand our website.",
+      "communication": "Communicate with you about reservations, orders, and promotions.",
+      "security": "Protect the security of our site and prevent fraud."
+    },
+    "dataProtection": {
+      "title": "Data protection",
+      "description": "We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction."
+    },
+    "yourRights": {
+      "title": "Your rights",
+      "description": "You have the right to:",
+      "access": "Access your personal information.",
+      "rectify": "Rectify inaccurate information.",
+      "delete": "Request deletion of your information.",
+      "object": "Object to the processing of your data."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "If you have questions about this policy, contact us at our location in Almería or through our contact channels."
+    },
+    "lastUpdated": "Last updated"
   }
 }
