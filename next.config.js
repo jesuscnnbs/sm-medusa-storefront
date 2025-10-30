@@ -9,9 +9,6 @@ checkEnvVariables()
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: false,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -37,5 +34,5 @@ const nextConfig = {
   },
 }
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 module.exports = withNextIntl(nextConfig);
