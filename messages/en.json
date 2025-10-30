@@ -10,6 +10,13 @@
     "cookiesPolicy": "Cookies Policy",
     "privacyPolicy": "Privacy Policy"
   },
+  "CookieConsent": {
+    "title": "We use cookies 🍪",
+    "description": "We use cookies to improve your browsing experience, show personalized content, and analyze our traffic. By clicking 'Accept', you consent to our use of cookies.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "close": "Close"
+  },
   "Home": {
     "BestSellers": {
       "ParallaxOne": "Top",
@@ -49,9 +56,19 @@
       "preferences": "Preference cookies: Remember your settings and preferences.",
       "marketing": "Marketing cookies: Used to display relevant advertisements."
     },
+    "cookiesList": {
+      "title": "Cookies we use",
+      "essentialTitle": "Essential Cookies (no consent required):",
+      "essentialDescription": "These cookies are strictly necessary for the website to function properly.",
+      "nextLocale": "NEXT_LOCALE: Stores your language preference (English/Spanish)",
+      "analyticsTitle": "Analytics Cookies (require consent):",
+      "analyticsDescription": "These cookies help us understand how visitors use our website.",
+      "vercelAnalytics": "Vercel Analytics (_va): Collects anonymous usage data to improve our service",
+      "speedInsights": "Speed Insights (_si): Measures website performance metrics"
+    },
     "manageCookies": {
       "title": "Managing cookies",
-      "description": "You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed."
+      "description": "You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. Essential cookies cannot be disabled as they are necessary for the website to function."
     },
     "lastUpdated": "Last updated"
   },
