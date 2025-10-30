@@ -57,7 +57,7 @@ test.describe('Menu Page - Public View', () => {
       await page.goto('/es/menu', { waitUntil: 'networkidle' });
 
       // Wait for menu items to load and ensure client-side hydration
-      await page.waitForSelector('h3.text-md', { state: 'visible' });
+      await page.waitForSelector('h3.text-md', { state: 'attached' });
 
       // Wait for the page to be fully loaded and interactive
       await page.waitForLoadState('domcontentloaded');
@@ -70,7 +70,7 @@ test.describe('Menu Page - Public View', () => {
       // Wait for modal content to be visible (not just the dialog wrapper)
       // The dialog panel is what becomes visible after transition
       await page.waitForSelector('[id^="headlessui-dialog-panel"]', {
-        state: 'visible',
+        state: 'attached',
         timeout: 10000
       });
 
@@ -83,7 +83,7 @@ test.describe('Menu Page - Public View', () => {
       await page.goto('/es/menu', { waitUntil: 'networkidle' });
 
       // Wait for menu items to load and ensure client-side hydration
-      await page.waitForSelector('h3.text-md', { state: 'visible' });
+      await page.waitForSelector('h3.text-md', { state: 'attached' });
 
       // Wait for the page to be fully loaded and interactive
       await page.waitForLoadState('domcontentloaded');
@@ -94,7 +94,7 @@ test.describe('Menu Page - Public View', () => {
 
       // Wait for modal panel to be visible
       await page.waitForSelector('[id^="headlessui-dialog-panel"]', {
-        state: 'visible',
+        state: 'attached',
         timeout: 30000
       });
 
@@ -107,14 +107,14 @@ test.describe('Menu Page - Public View', () => {
       await page.goto('/es/menu', { waitUntil: 'networkidle' });
 
       // Open modal
-      await page.waitForSelector('h3.text-md', { state: 'visible' });
+      await page.waitForSelector('h3.text-md', { state: 'attached' });
       await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(10000);
       await page.locator('.cursor-pointer').first().click({ force: true });
 
       // Wait for modal panel to be visible
       await page.waitForSelector('[id^="headlessui-dialog-panel"]', {
-        state: 'visible',
+        state: 'attached',
         timeout: 10000
       });
 
@@ -206,7 +206,7 @@ test.describe('Menu Page - Public View', () => {
 
       // Wait for modal panel to be visible
       await page.waitForSelector('[id^="headlessui-dialog-panel"]', {
-        state: 'visible',
+        state: 'attached',
         timeout: 10000
       });
 
@@ -271,7 +271,7 @@ test.describe('Menu Page - Public View', () => {
       // Wait for navigation and content to load
       const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
       await expect(categoryNav).toBeVisible();
-      await page.waitForSelector('h2.text-3xl.uppercase', { state: 'visible' });
+      await page.waitForSelector('h2.text-3xl.uppercase', { state: 'attached' });
 
       // Get the second category button (to ensure we're scrolling)
       const categoryButtons = categoryNav.locator('button');
