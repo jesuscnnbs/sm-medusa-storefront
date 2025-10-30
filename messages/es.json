@@ -10,6 +10,13 @@
     "cookiesPolicy": "Política de Cookies",
     "privacyPolicy": "Política de Privacidad"
   },
+  "CookieConsent": {
+    "title": "Usamos cookies 🍪",
+    "description": "Utilizamos cookies para mejorar tu experiencia de navegación, mostrar contenido personalizado y analizar nuestro tráfico. Al hacer clic en 'Aceptar', consientes el uso de cookies.",
+    "accept": "Aceptar",
+    "decline": "Rechazar",
+    "close": "Cerrar"
+  },
   "Home": {
     "BestSellers": {
       "ParallaxOne": "Nuestras",
@@ -49,9 +56,19 @@
       "preferences": "Cookies de preferencias: Recuerdan tus configuraciones y preferencias.",
       "marketing": "Cookies de marketing: Se utilizan para mostrar anuncios relevantes."
     },
+    "cookiesList": {
+      "title": "Cookies que utilizamos",
+      "essentialTitle": "Cookies Esenciales (sin consentimiento requerido):",
+      "essentialDescription": "Estas cookies son estrictamente necesarias para que el sitio web funcione correctamente.",
+      "nextLocale": "NEXT_LOCALE: Almacena tu preferencia de idioma (Español/Inglés)",
+      "analyticsTitle": "Cookies de Análisis (requieren consentimiento):",
+      "analyticsDescription": "Estas cookies nos ayudan a comprender cómo los visitantes utilizan nuestro sitio web.",
+      "vercelAnalytics": "Vercel Analytics (_va): Recopila datos de uso anónimos para mejorar nuestro servicio",
+      "speedInsights": "Speed Insights (_si): Mide métricas de rendimiento del sitio web"
+    },
     "manageCookies": {
       "title": "Gestionar cookies",
-      "description": "Puedes controlar y/o eliminar las cookies según desees. Puedes eliminar todas las cookies que ya están en tu ordenador y puedes configurar la mayoría de los navegadores para que no se instalen."
+      "description": "Puedes controlar y/o eliminar las cookies según desees. Puedes eliminar todas las cookies que ya están en tu ordenador y puedes configurar la mayoría de los navegadores para que no se instalen. Las cookies esenciales no se pueden desactivar ya que son necesarias para el funcionamiento del sitio web."
     },
     "lastUpdated": "Última actualización"
   },
