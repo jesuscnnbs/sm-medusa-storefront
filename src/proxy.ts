@@ -105,7 +105,8 @@ export const config = {
      * - api routes que no sean de admin
      * - archivos estáticos (_next/static)
      * - archivos de imagen, favicon, etc.
+     * - SEO files (robots.txt, sitemap.xml)
      */
-    '/((?!api(?!/admin)|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api(?!/admin)|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
