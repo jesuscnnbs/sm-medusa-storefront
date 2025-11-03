@@ -229,6 +229,11 @@ npm run db:seed
 npm run dev
 ```
 
+### **🎭 Run playwrigth Tests**
+```bash
+npx playwright test --ui
+```
+
 Your site is now running at http://localhost:8000!
 
 # Payment integrations (Ready for Implementation)
