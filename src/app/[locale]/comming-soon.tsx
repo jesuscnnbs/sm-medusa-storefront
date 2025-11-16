@@ -15,13 +15,10 @@ const caveat = Caveat({
 export default function CommingSoon() {
   const t = useTranslations('Common')
   return (
-    <div className="flex items-center justify-center min-h-screen bg-ui-bg-base ">
+    <div className="flex items-center justify-center min-h-[50vh]">
       <h1
       >
-        <PageTitle text={t('soon')} classNames={clsx(
-          'text-5xl md:text-8xl font-bold text-secondary-sm-darker tracking-tighter drop-shadow-[0px_7px_2px_rgba(0,0,0,0.2)] lg:drop-shadow-[0px_14px_2px_rgba(0,0,0,0.2)]',
-          caveat.className
-        )} />
+        <PageTitle text={t('soon')} classNames="santa-monica font-lemonMilk text-2xl md:text-8xl" />
       </h1>
     </div>
   )

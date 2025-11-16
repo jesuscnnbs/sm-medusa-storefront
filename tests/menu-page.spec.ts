@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import {
+  deactivateAllMenuProfiles,
+  activateDefaultMenuProfile,
+  getActiveMenuProfilesCount
+} from './helpers/database';
 
 test.describe('Menu Page - Public View', () => {
   // Dismiss cookie banner before all tests by setting localStorage
@@ -163,21 +168,58 @@ test.describe('Menu Page - Public View', () => {
   //end region
   // region No Menu Items
   test.describe('No Menu Items - Coming Soon', () => {
-    // This test assumes you have a way to test the empty state
-    // You might need to create a test database state or mock the API
-    test.skip('should display Coming Soon when no menu items exist', async ({ page }) => {
-      // TODO: This requires setting up test data or mocking
-      // For now, we skip this test
-      // In a real scenario, you'd:
-      // 1. Clear all menu items from test database
-      // 2. Navigate to /es/menu
-      // 3. Verify Coming Soon component is visible
+    test('should display Coming Soon when no menu items exist', async ({ page }) => {
+      // Step 1: Deactivate all menu profiles to simulate empty menu state
+      await deactivateAllMenuProfiles();
 
+      // Verify that no profiles are active
+      const activeCount = await getActiveMenuProfilesCount();
+      console.info("region No Menu Items Cuenta: ",activeCount)
+      expect(activeCount).toBe(0);
+
+      try {
+        // Step 2: Navigate to the menu page
+        await page.goto('/es/menu');
+
+        // Wait for page to load
+        await page.waitForLoadState("domcontentloaded");
+
+        // Step 3: Verify Coming Soon component is visible
+        // The text will be "Próximamente" in Spanish
+        const comingSoon = page.getByText(/Próximamente|Coming soon/i);
+        await expect(comingSoon).toBeVisible({ timeout: 10000 });
+
+        // Verify that menu items are NOT displayed
+        const menuItems = page.locator('h3.text-md');
+        await expect(menuItems).toHaveCount(0);
+
+        // Verify the doodle background is NOT present (since there are no items)
+        const menuContainer = page.locator('.bg-doodle');
+        await expect(menuContainer).not.toBeVisible();
+      } finally {
+        // Step 4: Restore the menu profile for subsequent tests
+        await activateDefaultMenuProfile();
+
+        // Verify restoration
+        const restoredCount = await getActiveMenuProfilesCount();
+        expect(restoredCount).toBeGreaterThan(0);
+      }
+    });
+
+    test('should show menu items after reactivating menu profile', async ({ page }) => {
+      // This test verifies that the restoration in the previous test worked
       await page.goto('/es/menu');
 
-      // This would check for the CommingSoon component
-      // const comingSoon = page.locator('text=/coming soon/i');
-      // await expect(comingSoon).toBeVisible();
+      // Wait for menu items to load
+      await page.waitForSelector('h3.text-md', { timeout: 10000 });
+
+      // Verify menu items are displayed
+      const menuItems = page.locator('h3.text-md');
+      await expect(menuItems.first()).toBeVisible();
+
+      // Verify menu container is visible
+      const menuContainer = page.locator('.bg-doodle');
+      await expect(menuContainer).toBeVisible();
     });
   });
   //end region
