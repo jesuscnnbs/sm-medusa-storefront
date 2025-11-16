@@ -20,11 +20,12 @@ export default async function MenuPage({
   
   return (
     <>
+      
       {/** Section Tittle */}
       {menuItems.length === 0 ? (
         <CommingSoon />
       ) : (
-         <section className="pt-20 pb-20 bg-secondary-sm bg-doodle">
+        <section className="pt-20 pb-20 bg-secondary-sm bg-doodle">
           <div className="flex flex-col items-center justify-center px-10 pb-10">
             <h1 className="santa-monica font-lemonMilk">
               <PageTitle text="Menú" />
@@ -35,6 +36,7 @@ export default async function MenuPage({
           </div>
         </section>
       )}
+      
     </>
   )
 }
