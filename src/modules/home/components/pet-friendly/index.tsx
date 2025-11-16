@@ -21,7 +21,7 @@ const PetFriendly = memo(({ translations }: PetFriendlyProps) => {
           alt="Santa Mónica Burger"
           loading="lazy"
           fill={true}
-          objectFit="cover"
+          style={{ objectFit: "cover", objectPosition: "center" }}
           className="transition-opacity duration-1000 opacity-0"
           onLoad={handleImageLoad}
         />

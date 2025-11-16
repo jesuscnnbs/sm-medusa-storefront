@@ -17,7 +17,7 @@ const Hero = memo(({translation}: {translation: string}) => {
         alt="Santa Mónica Burger"
         priority
         fill={true}
-        objectFit="cover"
+        style={{ objectFit: "cover", objectPosition: "center" }}
         className="transition-opacity duration-1000 opacity-0 blur-[2px]"
         onLoad={handleImageLoad}
       />

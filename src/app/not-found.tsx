@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import Image from "next/image"
 import SantaMonicaIcon from "@modules/common/icons/santa-monica"
-import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link";
 
 export const metadata: Metadata = {
   title: "404",
@@ -26,7 +26,7 @@ export default async function NotFound({
 
           {/* 404 Box */}
           <div className="w-full max-w-lg p-16 border-4 rounded-lg bg-opacity-35 border-dark-sm bg-light-sm-lighter shadow-brutal-primary">
-            <div className="space-y-6 text-center">
+            <div className="space-y-0 text-center">
               {/* 404 Number */}
               <h1 className="font-black leading-none text-8xl text-primary-sm font-lemonMilk">
                 404
@@ -39,9 +39,16 @@ export default async function NotFound({
 
               {/* Description */}
               <p className="text-base font-medium text-dark-sm/80">
-                El sabor que buscabas no está aquí.
-                La página no existe o se ha movido a otra parte. 
+                ¿Es esto lo que estabas buscando?
               </p>
+
+              <Image 
+                src="/cute-cat-burger.gif"
+                alt="Cute Cat Burger"
+                width={200}
+                height={200}
+                className="mx-auto"
+              />
 
               {/* Button */}
               <Link
