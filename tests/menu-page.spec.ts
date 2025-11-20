@@ -16,6 +16,11 @@ test.describe('Menu Page - Public View', () => {
 
   // region Spanish Tests
   test.describe('Spanish (ES) - Default Locale', () => {
+    // Ensure menu profiles are active before each test
+    test.beforeEach(async () => {
+      await activateDefaultMenuProfile();
+    });
+
     test('should display menu page with title and items', async ({ page }) => {
       await page.goto('/es/menu');
 
@@ -139,6 +144,11 @@ test.describe('Menu Page - Public View', () => {
 
   // region English
   test.describe('English (EN)', () => {
+    // Ensure menu profiles are active before each test
+    test.beforeEach(async () => {
+      await activateDefaultMenuProfile();
+    });
+
     test('should display menu page in English', async ({ page }) => {
       await page.goto('/en/menu');
 
@@ -168,6 +178,9 @@ test.describe('Menu Page - Public View', () => {
   //end region
   // region No Menu Items
   test.describe('No Menu Items - Coming Soon', () => {
+    test.beforeEach(async () => {
+      await activateDefaultMenuProfile();
+    });
     test('should display Coming Soon when no menu items exist', async ({ page }) => {
       // Step 1: Deactivate all menu profiles to simulate empty menu state
       await deactivateAllMenuProfiles();
@@ -186,7 +199,7 @@ test.describe('Menu Page - Public View', () => {
 
         // Step 3: Verify Coming Soon component is visible
         // The text will be "Próximamente" in Spanish
-        const comingSoon = page.getByText(/Próximamente|Coming soon/i);
+        const comingSoon = page.getByText(/Próximamente|Comingsoon/i);
         await expect(comingSoon).toBeVisible({ timeout: 10000 });
 
         // Verify that menu items are NOT displayed

@@ -44,6 +44,7 @@ export async function activateDefaultMenuProfile(): Promise<void> {
   const client = await pool.connect();
   try {
     await client.query('UPDATE menu_profiles SET is_active = true WHERE is_default = true');
+    console.log("Default menu profile activated.");
   } finally {
     client.release();
   }

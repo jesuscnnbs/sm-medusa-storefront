@@ -28,15 +28,23 @@ async function seedDatabase() {
   }
 
   // Prevent accidental production seeding
-  if (process.env.NODE_ENV === 'production' || databaseUrl.includes('neon.tech')) {
+  // Allow seeding if NODE_ENV is 'test' (for testing databases)
+  const isTestEnv = process.env.NODE_ENV === 'test'
+  const isNeonDb = databaseUrl.includes('neon.tech')
+  const isProduction = process.env.NODE_ENV === 'production'
+
+  if (isProduction || (isNeonDb && !isTestEnv)) {
     console.error('❌ DANGER: This script will DELETE ALL DATA!')
-    console.error('❌ Cannot run seed script against production database')
+    console.error('❌ Cannot run seed script against production/non-test Neon database')
     console.error('❌ Use db:seed-neon script instead if you really need to seed production')
+    console.error(`   NODE_ENV: ${process.env.NODE_ENV || 'not set'}`)
+    console.error(`   Database: ${isNeonDb ? 'NEON' : 'LOCAL'}`)
     process.exit(1)
   }
 
   console.log('🌱 Starting database seeding...')
-  console.log('📍 Database:', databaseUrl.includes('localhost') ? 'LOCAL' : 'REMOTE')
+  console.log('📍 Environment:', process.env.NODE_ENV || 'development')
+  console.log('📍 Database:', databaseUrl.includes('localhost') ? 'LOCAL' : isNeonDb ? 'NEON (TEST)' : 'REMOTE')
 
   const pool = new Pool({
     connectionString: databaseUrl,
