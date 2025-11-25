@@ -37,10 +37,14 @@ const Menu = ({menuItems}: Props) => {
     <div className="max-w-2xl px-6 py-12 mx-auto border-2 rounded-lg bg-light-sm-lighter border-dark-sm">
       {menuItems.map((category, index) => {
         return (
-          <div className="mb-16" key={index}>
+          <div
+            className="mb-16"
+            key={index}
+            id={`category-${category.id}`}
+          >
             <h2
               key={index}
-              className="text-3xl uppercase font-lemonMilk text-secondary-sm-darker"
+              className="text-3xl uppercase font-lemonMilk text-secondary-sm-darker scroll-mt-24"
             >
               {category.title}
             </h2>
