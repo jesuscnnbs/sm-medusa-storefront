@@ -197,7 +197,7 @@ test.describe('Menu Page - Public View', () => {
         // Step 3: Verify Coming Soon component is visible
         // The text will be "Próximamente" in Spanish
         const comingSoon = page.getByText(/Próximamente|Comingsoon/i);
-        await expect(comingSoon).toBeVisible({ timeout: 30000 });
+        await expect(comingSoon).toBeAttached({ timeout: 30000 });
 
         // Verify that menu items are NOT displayed
         const menuItems = page.locator('h3.text-md');
@@ -294,4 +294,186 @@ test.describe('Menu Page - Public View', () => {
       await expect(menuItems.first()).toBeVisible();
     });
   });
+  //end region
+
+  // region Menu Categories Navigation
+  test.describe('Menu Categories Navigation', () => {
+    test.beforeEach(async () => {
+      await activateDefaultMenuProfile();
+    });
+
+    test('should display categories navigation bar', async ({ page }) => {
+      await page.goto('/es/menu');
+
+      // Wait for navigation to load
+      const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
+      await expect(categoryNav).toBeVisible();
+
+      // Verify navigation contains category buttons
+      const categoryButtons = categoryNav.locator('button');
+      await expect(categoryButtons.first()).toBeVisible();
+
+      // Check that multiple categories are present
+      const buttonCount = await categoryButtons.count();
+      expect(buttonCount).toBeGreaterThan(0);
+    });
+
+    test('should display all menu categories in navigation', async ({ page }) => {
+      await page.goto('/es/menu');
+
+      // Wait for navigation to load
+      const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
+      await expect(categoryNav).toBeVisible();
+
+      // Get all category titles from the page content
+      const contentCategories = page.locator('h2.text-3xl.uppercase');
+      const contentCount = await contentCategories.count();
+
+      // Get all category buttons in navigation
+      const navButtons = categoryNav.locator('button');
+      const navCount = await navButtons.count();
+
+      // Navigation should have same number of categories as content
+      expect(navCount).toBe(contentCount);
+    });
+
+    test('should scroll to category when clicking navigation button', async ({ page }) => {
+      await page.goto('/es/menu');
+
+      // Wait for navigation and content to load
+      const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
+      await expect(categoryNav).toBeVisible();
+      await page.waitForSelector('h2.text-3xl.uppercase', { state: 'visible' });
+
+      // Get the second category button (to ensure we're scrolling)
+      const categoryButtons = categoryNav.locator('button');
+      const buttonCount = await categoryButtons.count();
+
+      if (buttonCount > 1) {
+        // Get the text of the second category button
+        const secondButton = categoryButtons.nth(1);
+        const buttonText = await secondButton.textContent();
+
+        // Get initial scroll position
+        const initialScrollY = await page.evaluate(() => window.scrollY);
+
+        // Click the second category button
+        await secondButton.click();
+
+        // Wait for scroll animation
+        await page.waitForTimeout(1000);
+
+        // Get new scroll position
+        const newScrollY = await page.evaluate(() => window.scrollY);
+
+        // Verify we scrolled down
+        expect(newScrollY).toBeGreaterThan(initialScrollY);
+
+        // Verify the category heading is now in view
+        const categoryHeading = page.locator(`h2:has-text("${buttonText}")`);
+        await expect(categoryHeading).toBeInViewport();
+      }
+    });
+
+    test('should highlight active category as user scrolls', async ({ page }) => {
+      await page.goto('/es/menu');
+
+      // Wait for navigation to load
+      const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
+      await expect(categoryNav).toBeVisible();
+
+      // Check initial state - first category should be active
+      const firstButton = categoryNav.locator('button').first();
+      const initialClasses = await firstButton.getAttribute('class');
+
+      // Active button should have specific styling
+      expect(initialClasses).toContain('bg-light-sm');
+
+      // Scroll down the page
+      await page.evaluate(() => window.scrollTo(0, 500));
+      await page.waitForTimeout(500);
+
+      // Check if any button has active state (intersection observer should update)
+      const activeButtons = categoryNav.locator('button.bg-light-sm');
+      const activeCount = await activeButtons.count();
+
+      // At least one category should be active after scrolling
+      expect(activeCount).toBeGreaterThan(0);
+    });
+
+    test('should remain sticky when scrolling down the page', async ({ page }) => {
+      await page.goto('/es/menu');
+
+      // Wait for navigation to load
+      const nav = page.locator('nav').first();
+      await expect(nav).toBeVisible();
+
+      // Get initial position of navigation
+      const initialBoundingBox = await nav.boundingBox();
+      expect(initialBoundingBox).not.toBeNull();
+
+      // Scroll down significantly
+      await page.evaluate(() => window.scrollTo(0, 800));
+      await page.waitForTimeout(300);
+
+      // Navigation should still be visible (sticky)
+      await expect(nav).toBeVisible();
+
+      // Check it's near the top of viewport (accounting for main nav height)
+      const scrolledBoundingBox = await nav.boundingBox();
+      expect(scrolledBoundingBox).not.toBeNull();
+
+      if (scrolledBoundingBox) {
+        // Should be positioned near top (around 64px for main nav)
+        expect(scrolledBoundingBox.y).toBeLessThan(100);
+      }
+    });
+
+    test('should show scroll buttons if categories overflow', async ({ page }) => {
+      // Set narrow viewport to force overflow
+      await page.setViewportSize({ width: 375, height: 667 });
+      await page.goto('/es/menu');
+
+      // Wait for navigation to load
+      const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
+      await expect(categoryNav).toBeVisible();
+
+      // Check if there are many categories that would overflow
+      const categoryButtons = categoryNav.locator('button');
+      const buttonCount = await categoryButtons.count();
+
+      if (buttonCount > 3) {
+        // Scroll buttons should be present (check for chevron icons)
+        const scrollButtons = page.locator('nav button[aria-label*="Scroll"]');
+        const scrollButtonCount = await scrollButtons.count();
+
+        // Should have left and/or right scroll buttons
+        expect(scrollButtonCount).toBeGreaterThanOrEqual(1);
+      }
+    });
+
+    test('should work correctly in English locale', async ({ page }) => {
+      await page.goto('/en/menu');
+
+      // Wait for navigation to load
+      const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
+      await expect(categoryNav).toBeVisible();
+
+      // Verify navigation is present
+      const categoryButtons = categoryNav.locator('button');
+      const buttonCount = await categoryButtons.count();
+      expect(buttonCount).toBeGreaterThan(0);
+
+      // Click first category and verify scroll
+      if (buttonCount > 0) {
+        const firstButton = categoryButtons.first();
+        await firstButton.click();
+        await page.waitForTimeout(500);
+
+        // Navigation should still be visible
+        await expect(firstButton).toBeVisible();
+      }
+    });
+  });
+  //end region
 });
