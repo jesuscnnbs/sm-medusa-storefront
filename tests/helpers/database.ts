@@ -6,9 +6,9 @@
 import { Pool } from 'pg';
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || "postgresql://jesus:@localhost:5432/santa_monica_db",
+  connectionString: process.env.DATABASE_URL || "",
   max: 5,
-  connectionTimeoutMillis: 5000,
+  connectionTimeoutMillis: 45000,
 });
 
 /**
@@ -46,6 +46,7 @@ export async function activateDefaultMenuProfile(): Promise<void> {
     await client.query('UPDATE menu_profiles SET is_active = true WHERE is_default = true');
     console.log("Default menu profile activated.");
   } finally {
+    console.log("Releasing database client.");
     client.release();
   }
 }

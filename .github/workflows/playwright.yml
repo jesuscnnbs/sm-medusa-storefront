@@ -8,6 +8,9 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -17,6 +20,11 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Create test environment file
+      run: |
+        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.test
+        echo "NODE_ENV=test" >> .env.test
+        echo "✓ Created .env.test"
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4

@@ -5,6 +5,8 @@ import * as schema from './schema'
 // Neon: Use serverless driver (edge-compatible)
 // PostgreSQL local: Use node-postgres
 const connectionString = process.env.DATABASE_URL
+const nodeEnv = process.env.NODE_ENV || 'development'
+const isTestEnv = nodeEnv === 'test'
 
 if (!connectionString) {
   throw new Error('DATABASE_URL environment variable is required')
@@ -15,25 +17,41 @@ const isNeonDatabase = connectionString.includes('neon.tech') ||
                        connectionString.includes('neon.') ||
                        process.env.USE_NEON_DRIVER === 'true'
 
+// Log database connection info (helpful for debugging tests)
+const maskedUrl = connectionString.replace(/:[^:@]*@/, ':***@')
+console.log(`🗄️  Database: ${isNeonDatabase ? 'NEON' : 'LOCAL'} | Environment: ${nodeEnv}`)
+console.log(`📍 Connection: ${maskedUrl}`)
+
 // Dynamic import and connection based on database type
 let db: any
 let sql: any
 
 if (isNeonDatabase) {
-  // Neon database: Use serverless driver (works in development and production)
+  // Neon database: Use serverless driver (works in development, test, and production)
   const { drizzle } = require('drizzle-orm/neon-http')
   const { neon } = require('@neondatabase/serverless')
-  sql = neon(connectionString)
+
+  // In test environment, ensure fresh connections
+  const neonConfig = isTestEnv ? {
+    fetchConnectionCache: false, // Disable connection caching for tests
+  } : {}
+
+  sql = neon(connectionString, neonConfig)
   db = drizzle(sql, { schema })
   console.log('✓ Connected to Neon database')
 } else {
   // Local PostgreSQL: Use node-postgres
   const { drizzle } = require('drizzle-orm/node-postgres')
   const { Pool } = require('pg')
-  const pool = new Pool({
+
+  // Adjust pool size based on environment
+  const poolConfig = {
     connectionString: connectionString,
-    max: 10,
-  })
+    max: isTestEnv ? 5 : 10, // Smaller pool for tests
+    idleTimeoutMillis: isTestEnv ? 1000 : 30000, // Shorter timeout for tests
+  }
+
+  const pool = new Pool(poolConfig)
   db = drizzle(pool, { schema })
   sql = pool
   console.log('✓ Connected to local PostgreSQL')
