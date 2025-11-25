@@ -5,18 +5,29 @@ const bcrypt = require('bcryptjs')
 const { readFileSync } = require('fs')
 const { join } = require('path')
 
-// Load environment variables from .env.local manually
+// Load environment variables based on NODE_ENV
+const nodeEnv = process.env.NODE_ENV || 'development'
+const envFile = nodeEnv === 'test' ? '.env.test' : '.env.local'
+
+console.log(`📂 Loading environment from: ${envFile}`)
+
 try {
-  const envLocal = readFileSync(join(process.cwd(), '.env.local'), 'utf8')
-  envLocal.split('\n').forEach(line => {
-    const [key, ...valueParts] = line.split('=')
+  const envContent = readFileSync(join(process.cwd(), envFile), 'utf8')
+  envContent.split('\n').forEach(line => {
+    const trimmed = line.trim()
+    // Skip empty lines and comments
+    if (!trimmed || trimmed.startsWith('#')) return
+
+    const [key, ...valueParts] = trimmed.split('=')
     if (key && valueParts.length) {
       const value = valueParts.join('=').replace(/^["']|["']$/g, '')
       process.env[key.trim()] = value.trim()
     }
   })
+  console.log(`✓ Loaded ${envFile}`)
 } catch (error) {
-  // .env.local doesn't exist, that's fine
+  console.warn(`⚠️  Could not load ${envFile}: ${error.message}`)
+  console.log('   Continuing with existing environment variables...')
 }
 
 async function seedDatabase() {

@@ -6,8 +6,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import dotenv from 'dotenv';
 import path from 'path';
-dotenv.config({ path: path.resolve(__dirname, '.env.local') });
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '.env.test') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -16,6 +15,8 @@ export default defineConfig({
   testDir: './tests',
   /* Global setup file - seeds database before tests */
   globalSetup: './tests/global-setup.ts',
+  /* Global teardown file - cleanup after all tests */
+  globalTeardown: './tests/global-teardown.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -79,5 +80,10 @@ export default defineConfig({
     url: 'http://localhost:8000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
+    env: {
+      // Pass test database URL to Next.js dev server
+      DATABASE_URL: process.env.DATABASE_URL || '',
+      NODE_ENV: 'test',
+    },
   },
 });
