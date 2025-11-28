@@ -5,29 +5,57 @@ const bcrypt = require('bcryptjs')
 const { readFileSync } = require('fs')
 const { join } = require('path')
 
-// Load environment variables from .env.local manually
+// Load environment variables based on NODE_ENV
+const nodeEnv = process.env.NODE_ENV || 'development'
+const envFile = nodeEnv === 'test' ? '.env.test' : '.env.local'
+
+console.log(`📂 Loading environment from: ${envFile}`)
+
 try {
-  const envLocal = readFileSync(join(process.cwd(), '.env.local'), 'utf8')
-  envLocal.split('\n').forEach(line => {
-    const [key, ...valueParts] = line.split('=')
+  const envContent = readFileSync(join(process.cwd(), envFile), 'utf8')
+  envContent.split('\n').forEach(line => {
+    const trimmed = line.trim()
+    // Skip empty lines and comments
+    if (!trimmed || trimmed.startsWith('#')) return
+
+    const [key, ...valueParts] = trimmed.split('=')
     if (key && valueParts.length) {
       const value = valueParts.join('=').replace(/^["']|["']$/g, '')
       process.env[key.trim()] = value.trim()
     }
   })
+  console.log(`✓ Loaded ${envFile}`)
 } catch (error) {
-  // .env.local doesn't exist, that's fine
+  console.warn(`⚠️  Could not load ${envFile}: ${error.message}`)
+  console.log('   Continuing with existing environment variables...')
 }
 
 async function seedDatabase() {
   const databaseUrl = process.env.DATABASE_URL
-  
+
   if (!databaseUrl) {
     console.error('❌ DATABASE_URL not found in environment variables')
     process.exit(1)
   }
 
+  // Prevent accidental production seeding
+  // Allow seeding if NODE_ENV is 'test' (for testing databases)
+  const isTestEnv = process.env.NODE_ENV === 'test'
+  const isNeonDb = databaseUrl.includes('neon.tech')
+  const isProduction = process.env.NODE_ENV === 'production'
+
+  if (isProduction || (isNeonDb && !isTestEnv)) {
+    console.error('❌ DANGER: This script will DELETE ALL DATA!')
+    console.error('❌ Cannot run seed script against production/non-test Neon database')
+    console.error('❌ Use db:seed-neon script instead if you really need to seed production')
+    console.error(`   NODE_ENV: ${process.env.NODE_ENV || 'not set'}`)
+    console.error(`   Database: ${isNeonDb ? 'NEON' : 'LOCAL'}`)
+    process.exit(1)
+  }
+
   console.log('🌱 Starting database seeding...')
+  console.log('📍 Environment:', process.env.NODE_ENV || 'development')
+  console.log('📍 Database:', databaseUrl.includes('localhost') ? 'LOCAL' : isNeonDb ? 'NEON (TEST)' : 'REMOTE')
 
   const pool = new Pool({
     connectionString: databaseUrl,
@@ -40,7 +68,7 @@ async function seedDatabase() {
 
     // Clear existing data (optional - comment out if you want to keep existing data)
     console.log('🧹 Clearing existing data...')
-    await client.query('TRUNCATE TABLE menu_items, menu_categories, menu_profiles, admin_sessions, admin_users, site_settings RESTART IDENTITY CASCADE')
+    await client.query('TRUNCATE TABLE menu_profile_items, menu_items, menu_categories, menu_profiles, admin_sessions, admin_users, site_settings, rate_limiting RESTART IDENTITY CASCADE')
 
     // Create admin user
     console.log('👤 Creating admin user...')
@@ -221,21 +249,22 @@ async function seedDatabase() {
       }
     ]
 
+    const menuItemIds = []
     for (const item of menuItems) {
-      await client.query(`
+      const result = await client.query(`
         INSERT INTO menu_items (
-          name, name_en, description, description_en, price, 
-          menu_profile_id, category_id, ingredients, allergens, 
+          name, name_en, description, description_en, price,
+          category_id, ingredients, allergens,
           is_available, is_popular, sort_order
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        RETURNING id
       `, [
         item.name,
         item.nameEn,
         item.description,
         item.descriptionEn,
         item.price,
-        menuProfileId,
         categoryIds[item.categoryName],
         JSON.stringify(item.ingredients),
         JSON.stringify(item.allergens),
@@ -243,6 +272,16 @@ async function seedDatabase() {
         item.isPopular,
         item.sortOrder
       ])
+      menuItemIds.push(result.rows[0].id)
+    }
+
+    // Link menu items to the menu profile using the junction table
+    console.log('🔗 Linking menu items to menu profile...')
+    for (let i = 0; i < menuItemIds.length; i++) {
+      await client.query(`
+        INSERT INTO menu_profile_items (menu_profile_id, menu_item_id, sort_order)
+        VALUES ($1, $2, $3)
+      `, [menuProfileId, menuItemIds[i], i + 1])
     }
 
     // Create site settings
@@ -306,6 +345,7 @@ async function seedDatabase() {
     console.log('- 1 Menu profile created')
     console.log('- 4 Menu categories created')
     console.log('- 8 Menu items created')
+    console.log('- 8 Menu profile associations created')
     console.log('- 5 Site settings created')
     
     console.log('\n🔑 Admin Login:')
