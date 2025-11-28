@@ -5,7 +5,7 @@ import { Trash } from "@medusajs/icons"
 import { BrutalButtonLink } from "@modules/admin/components/brutal-button-link"
 import { CircularText } from "@modules/admin/components/circular-text"
 import { BrutalToggle } from "@modules/admin/components/brutal-toggle"
-import { twMerge } from "tailwind-merge"
+import Markdown from "@modules/common/components/markdown-component"
 import BrutalButton from "../brutal-button"
 import Image from "next/image"
 
@@ -79,9 +79,7 @@ export const DishCard = ({
                     </p>
                   )}
                   {dish.description && (
-                    <p className="mt-1 text-sm text-grey-sm line-clamp-2">
-                      {dish.description}
-                    </p>
+                    <Markdown content={dish.description} />
                   )}
                   <div className="flex items-center gap-2 mt-2">
                     <p className="text-lg font-bold text-dark-sm">
