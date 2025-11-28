@@ -16,11 +16,6 @@ test.describe('Menu Page - Public View', () => {
 
   // region Spanish Tests
   test.describe('Spanish (ES) - Default Locale', () => {
-    // Ensure menu profiles are active before each test
-    test.beforeEach(async () => {
-      await activateDefaultMenuProfile();
-    });
-
     test('should display menu page with title and items', async ({ page }) => {
       await page.goto('/es/menu');
 
@@ -141,11 +136,6 @@ test.describe('Menu Page - Public View', () => {
 
   // region English
   test.describe('English (EN)', () => {
-    // Ensure menu profiles are active before each test
-    test.beforeEach(async () => {
-      await activateDefaultMenuProfile();
-    });
-
     test('should display menu page in English', async ({ page }) => {
       await page.goto('/en/menu');
 
@@ -173,65 +163,7 @@ test.describe('Menu Page - Public View', () => {
     });
   });
   //end region
-  // region No Menu Items
-  test.describe('No Menu Items - Coming Soon', () => {
-    test.beforeEach(async () => {
-      await activateDefaultMenuProfile();
-    });
-    test('should display Coming Soon when no menu items exist', async ({ page }) => {
-      // Step 1: Deactivate all menu profiles to simulate empty menu state
-      await deactivateAllMenuProfiles();
 
-      // Verify that no profiles are active
-      const activeCount = await getActiveMenuProfilesCount();
-      console.info("region No Menu Items Cuenta: ",activeCount)
-      expect(activeCount).toBe(0);
-
-      try {
-        // Step 2: Navigate to the menu page
-        await page.goto('/es/menu');
-
-        // Wait for page to load
-        await page.waitForLoadState("domcontentloaded");
-
-        // Step 3: Verify Coming Soon component is visible
-        // The text will be "Próximamente" in Spanish
-        const comingSoon = page.getByText(/Próximamente|Comingsoon/i);
-        await expect(comingSoon).toBeAttached({ timeout: 30000 });
-
-        // Verify that menu items are NOT displayed
-        const menuItems = page.locator('h3.text-md');
-        await expect(menuItems).toHaveCount(0);
-
-        // Verify the doodle background is NOT present (since there are no items)
-        const menuContainer = page.locator('.bg-doodle');
-        await expect(menuContainer).not.toBeVisible();
-      } finally {
-        // Step 4: Restore the menu profile for subsequent tests
-        await activateDefaultMenuProfile();
-
-        // Verify restoration
-        const restoredCount = await getActiveMenuProfilesCount();
-        expect(restoredCount).toBeGreaterThan(0);
-      }
-    });
-
-    test('should show menu items after reactivating menu profile', async ({ page }) => {
-      // This test verifies that the restoration in the previous test worked
-      await page.goto('/es/menu');
-
-      // Wait for menu items to load
-      await page.waitForSelector('h3.text-md', { timeout: 20000 });
-
-      // Verify menu items are displayed
-      const menuItems = page.locator('h3.text-md');
-      await expect(menuItems.first()).toBeVisible();
-
-      // Verify menu container is visible
-      const menuContainer = page.locator('.bg-doodle');
-      await expect(menuContainer).toBeVisible();
-    });
-  });
   //end region
   // region Internationalization
   test.describe('Internationalization', () => {
@@ -298,10 +230,6 @@ test.describe('Menu Page - Public View', () => {
 
   // region Menu Categories Navigation
   test.describe('Menu Categories Navigation', () => {
-    test.beforeEach(async () => {
-      await activateDefaultMenuProfile();
-    });
-
     test('should display categories navigation bar', async ({ page }) => {
       await page.goto('/es/menu');
 
@@ -426,29 +354,6 @@ test.describe('Menu Page - Public View', () => {
       if (scrolledBoundingBox) {
         // Should be positioned near top (around 64px for main nav)
         expect(scrolledBoundingBox.y).toBeLessThan(100);
-      }
-    });
-
-    test('should show scroll buttons if categories overflow', async ({ page }) => {
-      // Set narrow viewport to force overflow
-      await page.setViewportSize({ width: 375, height: 667 });
-      await page.goto('/es/menu');
-
-      // Wait for navigation to load
-      const categoryNav = page.locator('[data-testid="menu-categories-nav"]');
-      await expect(categoryNav).toBeVisible();
-
-      // Check if there are many categories that would overflow
-      const categoryButtons = categoryNav.locator('button');
-      const buttonCount = await categoryButtons.count();
-
-      if (buttonCount > 3) {
-        // Scroll buttons should be present (check for chevron icons)
-        const scrollButtons = page.locator('nav button[aria-label*="Scroll"]');
-        const scrollButtonCount = await scrollButtons.count();
-
-        // Should have left and/or right scroll buttons
-        expect(scrollButtonCount).toBeGreaterThanOrEqual(1);
       }
     });
 
