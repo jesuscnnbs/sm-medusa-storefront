@@ -16,7 +16,7 @@ const pool = new Pool({
  * Si algo falla, se hace rollback automático.
  */
 export async function deactivateAllMenuProfiles(): Promise<number> {
-  console.log("Url de la base de datos:", process.env.DATABASE_URL);
+  //console.log("Url de la base de datos:", process.env.DATABASE_URL);
   const client = await pool.connect();
   
   try {
@@ -44,9 +44,9 @@ export async function activateDefaultMenuProfile(): Promise<void> {
   const client = await pool.connect();
   try {
     await client.query('UPDATE menu_profiles SET is_active = true WHERE is_default = true');
-    console.log("Default menu profile activated.");
+    //console.log("Default menu profile activated.");
   } finally {
-    console.log("Releasing database client.");
+    //console.log("Releasing database client.");
     client.release();
   }
 }
