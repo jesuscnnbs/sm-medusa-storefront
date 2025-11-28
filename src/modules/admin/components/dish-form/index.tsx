@@ -12,7 +12,7 @@ import {
   BrutalCheckbox,
   BrutalFormContainer,
   BrutalAlert,
-  BrutalSelect,
+  BrutalMarkdownEditor,
 } from "../brutal-form"
 import { ImageSelector } from "../image-selector"
 import { useNotification } from "@lib/context/notification-context"
@@ -175,22 +175,20 @@ export default function DishForm({
 
             {/* Descriptions */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <BrutalLabel>Descripción (Español)</BrutalLabel>
-                <BrutalTextarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows={4}
-                />
-              </div>
-              <div>
-                <BrutalLabel>Descripción (Inglés)</BrutalLabel>
-                <BrutalTextarea
-                  value={formData.descriptionEn}
-                  onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
-                  rows={4}
-                />
-              </div>
+              <BrutalMarkdownEditor
+                label="Descripción (Español)"
+                value={formData.description || ""}
+                onChange={(value) => setFormData({ ...formData, description: value })}
+                rows={4}
+                placeholder="Ej: **Deliciosa** hamburguesa con ingredientes frescos..."
+              />
+              <BrutalMarkdownEditor
+                label="Descripción (Inglés)"
+                value={formData.descriptionEn || ""}
+                onChange={(value) => setFormData({ ...formData, descriptionEn: value })}
+                rows={4}
+                placeholder="Ex: **Delicious** burger with fresh ingredients..."
+              />
             </div>
 
             {/* Price and Category */}
