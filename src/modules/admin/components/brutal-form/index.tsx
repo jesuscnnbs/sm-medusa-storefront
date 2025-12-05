@@ -1,7 +1,8 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { twMerge } from "tailwind-merge"
+import { MarkdownComponent } from "@modules/common/components/markdown-component"
 
 // Label Component
 interface BrutalLabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
@@ -173,6 +174,99 @@ export const BrutalAlert: React.FC<BrutalAlertProps> = ({
       )}
     >
       {children}
+    </div>
+  )
+}
+
+// Markdown Editor Component
+interface BrutalMarkdownEditorProps {
+  value: string
+  onChange: (value: string) => void
+  label?: string
+  required?: boolean
+  rows?: number
+  placeholder?: string
+  className?: string
+}
+
+export const BrutalMarkdownEditor: React.FC<BrutalMarkdownEditorProps> = ({
+  value,
+  onChange,
+  label,
+  required,
+  rows = 6,
+  placeholder,
+  className,
+}) => {
+  const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit")
+
+  return (
+    <div className={className}>
+      {label && (
+        <BrutalLabel required={required}>
+          {label}
+        </BrutalLabel>
+      )}
+
+      <div className="border-2 rounded-lg border-dark-sm bg-light-sm overflow-hidden">
+        {/* Tab Navigation */}
+        <div className="flex border-b-2 border-dark-sm bg-grey-sm/10">
+          <button
+            type="button"
+            onClick={() => setActiveTab("edit")}
+            className={twMerge(
+              "px-4 py-2 text-xs font-bold uppercase transition-colors",
+              activeTab === "edit"
+                ? "bg-light-sm text-dark-sm border-r-2 border-dark-sm"
+                : "text-grey-sm hover:bg-grey-sm/20"
+            )}
+          >
+            Editar
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("preview")}
+            className={twMerge(
+              "px-4 py-2 text-xs font-bold uppercase transition-colors",
+              activeTab === "preview"
+                ? "bg-light-sm text-dark-sm border-l-2 border-dark-sm"
+                : "text-grey-sm hover:bg-grey-sm/20"
+            )}
+          >
+            Vista Previa
+          </button>
+        </div>
+
+        {/* Content Area */}
+        <div className="p-3">
+          {activeTab === "edit" ? (
+            <textarea
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              rows={rows}
+              placeholder={placeholder}
+              className={twMerge(
+                "w-full px-0 py-0 border-0 bg-transparent resize-none",
+                "focus:outline-none focus:ring-0",
+                "text-dark-sm font-mono text-sm"
+              )}
+            />
+          ) : (
+            <div className="min-h-[150px]">
+              {value ? (
+                <MarkdownComponent content={value} variant="admin" />
+              ) : (
+                <p className="text-grey-sm italic">Sin contenido para previsualizar</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Help Text */}
+      <p className="mt-2 text-xs text-grey-sm">
+        Soporta Markdown: **negrita**, *cursiva*, # títulos, - listas, etc.
+      </p>
     </div>
   )
 }

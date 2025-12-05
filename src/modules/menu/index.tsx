@@ -5,6 +5,7 @@ import Image from "next/image"
 import Modal from "@modules/common/components/modal"
 import { InformationCircleSolid } from "@medusajs/icons"
 import { MenuCategoryType } from "types/global"
+import { MarkdownComponent } from "@modules/common/components/markdown-component"
 
 interface Props {
   menuItems: MenuCategoryType[]
@@ -109,9 +110,11 @@ const Menu = ({menuItems}: Props) => {
                   {(itemSelected.price / 100).toFixed(2)} €
                 </Text>
               </div>
-              <Text className="mb-4 text-gray-600">
-                {itemSelected.description}
-              </Text>
+              <MarkdownComponent
+                content={itemSelected.description || ""}
+                variant="menu"
+                className="mb-4"
+              />
               
               {itemSelected.ingredients && itemSelected.ingredients.length > 0 && (
                 <div className="mb-3">
