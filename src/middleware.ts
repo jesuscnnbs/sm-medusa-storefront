@@ -52,7 +52,7 @@ function addSecurityHeaders(response: NextResponse, request: NextRequest): NextR
   return response
 }
 
-export async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Check for admin API routes (these don't use locale)
