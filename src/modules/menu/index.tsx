@@ -6,12 +6,34 @@ import Modal from "@modules/common/components/modal"
 import { InformationCircleSolid } from "@medusajs/icons"
 import { MenuCategoryType } from "types/global"
 import { MarkdownComponent } from "@modules/common/components/markdown-component"
+import { useTranslations } from "next-intl"
 
 interface Props {
   menuItems: MenuCategoryType[]
 }
 
+// Allergen Icon Component with Tooltip
+const AllergenIcon: React.FC<{ allergen: string; label: string }> = ({ allergen, label }) => {
+  return (
+    <div className="relative group">
+      <Image
+        src={"/icons/alergens/" + allergen + ".svg"}
+        alt={label}
+        width={64}
+        height={64}
+        className="transition-transform cursor-help hover:scale-110"
+      />
+      {/* Tooltip */}
+      <div className="absolute z-10 px-2 py-1 mb-2 text-xs font-medium transition-opacity -translate-x-1/2 bg-gray-900 rounded-lg opacity-0 pointer-events-none bottom-full left-1/2 whitespace-nowrap group-hover:opacity-100 text-light-sm">
+        {label}
+        <div className="absolute w-2 h-2 transform rotate-45 -translate-x-1/2 -translate-y-1/2 bg-gray-900 top-full left-1/2"></div>
+      </div>
+    </div>
+  )
+}
+
 const Menu = ({menuItems}: Props) => {
+  const t = useTranslations("Allergens")
   const [itemSelected, setItemSelected] = React.useState<any>(null)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
 
@@ -120,7 +142,7 @@ const Menu = ({menuItems}: Props) => {
                 <div className="mb-3">
                   <Text className="mb-2 font-semibold">Ingredientes:</Text>
                   <Text className="text-sm text-gray-600">
-                    {itemSelected.ingredients}
+                    {itemSelected.ingredients.join(', ')}
                   </Text>
                 </div>
               )}
@@ -128,9 +150,19 @@ const Menu = ({menuItems}: Props) => {
               {itemSelected.allergens && itemSelected.allergens.length > 0 && (
                 <div className="mb-3">
                   <Text className="mb-2 font-semibold text-orange-600">Alérgenos:</Text>
-                  <Text className="text-sm text-orange-600">
-                    {itemSelected.allergens.join(', ')}
-                  </Text>
+                  <div className="flex flex-wrap gap-2">
+                    {itemSelected.allergens.map((allergen: string) => {
+                      // Fallback to allergen name if translation not found
+                      const label = t(allergen.toLowerCase() as any) || allergen
+                      return (
+                        <AllergenIcon
+                          key={allergen}
+                          allergen={allergen.toLowerCase()}
+                          label={label}
+                        />
+                      )
+                    })}
+                  </div>
                 </div>
               )}
             </div>

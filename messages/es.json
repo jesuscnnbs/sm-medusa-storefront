@@ -107,5 +107,21 @@
       "description": "Si tienes preguntas sobre esta política, contáctanos en nuestra ubicación en Almería o a través de nuestros canales de contacto."
     },
     "lastUpdated": "Última actualización"
+  },
+  "Allergens": {
+    "egg": "Huevo",
+    "sesame": "Sésamo",
+    "celery": "Apio",
+    "sulfites": "Sulfitos",
+    "nuts": "Frutos Secos",
+    "lupins": "Altramuces",
+    "soy": "Soja",
+    "mustard": "Mostaza",
+    "peanut": "Cacahuete",
+    "shellfish": "Moluscos",
+    "gluten": "Gluten",
+    "milk": "Lácteos",
+    "crustaceans": "Crustáceos",
+    "fish": "Pescado"
   }
 }
