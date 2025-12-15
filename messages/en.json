@@ -107,5 +107,21 @@
       "description": "If you have questions about this policy, contact us at our location in Almería or through our contact channels."
     },
     "lastUpdated": "Last updated"
+  },
+  "Allergens": {
+    "egg": "Egg",
+    "sesame": "Sesame",
+    "celery": "Celery",
+    "sulfites": "Sulfites",
+    "nuts": "Tree Nuts",
+    "lupins": "Lupins",
+    "soy": "Soy",
+    "mustard": "Mustard",
+    "peanut": "Peanut",
+    "shellfish": "Shellfish",
+    "gluten": "Gluten",
+    "milk": "Milk/Dairy",
+    "crustaceans": "Crustaceans",
+    "fish": "Fish"
   }
 }

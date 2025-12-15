@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { createMenuItem, updateMenuItem } from "@lib/db/queries"
 import { listMenuCategories } from "@lib/db/queries/menu-categories"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import BrutalButton from "../brutal-button"
 import {
   BrutalLabel,
@@ -17,6 +18,41 @@ import {
 import { ImageSelector } from "../image-selector"
 import { useNotification } from "@lib/context/notification-context"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+
+// Valid allergens based on available icons
+const VALID_ALLERGENS = [
+  "egg",
+  "sesame",
+  "celery",
+  "sulfites",
+  "nuts",
+  "lupins",
+  "soy",
+  "mustard",
+  "peanut",
+  "shellfish",
+  "gluten",
+  "milk",
+  "crustaceans",
+  "fish",
+] as const
+
+const ALLERGEN_LABELS: Record<string, string> = {
+  egg: "Huevo / Egg",
+  sesame: "Sésamo / Sesame",
+  celery: "Apio / Celery",
+  sulfites: "Sulfitos / Sulfites",
+  nuts: "Frutos secos / Nuts",
+  lupins: "Altramuces / Lupins",
+  soy: "Soja / Soy",
+  mustard: "Mostaza / Mustard",
+  peanut: "Cacahuete / Peanut",
+  shellfish: "Moluscos / Shellfish",
+  gluten: "Gluten / Gluten",
+  milk: "Lácteos / Milk",
+  crustaceans: "Crustáceos / Crustaceans",
+  fish: "Pescado / Fish",
+}
 
 interface DishData {
   id?: string
@@ -69,8 +105,10 @@ export default function DishForm({
   const [ingredientsText, setIngredientsText] = useState(
     initialData?.ingredients?.join(", ") || ""
   )
-  const [allergensText, setAllergensText] = useState(
-    initialData?.allergens?.join(", ") || ""
+
+  // Check for invalid allergens from initial data
+  const invalidAllergens = (initialData?.allergens || []).filter(
+    (allergen) => !VALID_ALLERGENS.includes(allergen as any)
   )
 
   useEffect(() => {
@@ -101,13 +139,16 @@ export default function DishForm({
     try {
       setLoading(true)
 
+      // Filter out invalid allergens before saving
+      const validAllergensOnly = (formData.allergens || []).filter((allergen) =>
+        VALID_ALLERGENS.includes(allergen as any)
+      )
+
       const dataToSubmit = {
         ...formData,
+        allergens: validAllergensOnly,
         ingredients: ingredientsText
           ? ingredientsText.split(",").map(i => i.trim()).filter(Boolean)
-          : [],
-        allergens: allergensText
-          ? allergensText.split(",").map(a => a.trim()).filter(Boolean)
           : [],
         categoryId: formData.categoryId || null,
       }
@@ -235,26 +276,60 @@ export default function DishForm({
               </p>
             </div>
 
-            {/* Ingredients and Allergens */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <BrutalLabel>Ingredientes (separados por comas)</BrutalLabel>
-                <BrutalTextarea
-                  value={ingredientsText}
-                  onChange={(e) => setIngredientsText(e.target.value)}
-                  rows={3}
-                  placeholder="Carne, Lechuga, Tomate, Cebolla"
-                />
+            {/* Ingredients */}
+            <div>
+              <BrutalLabel>Ingredientes (separados por comas)</BrutalLabel>
+              <BrutalTextarea
+                value={ingredientsText}
+                onChange={(e) => setIngredientsText(e.target.value)}
+                rows={3}
+                placeholder="Carne, Lechuga, Tomate, Cebolla"
+              />
+            </div>
+
+            {/* Allergens Multi-Select */}
+            <div>
+              <BrutalLabel>Alérgenos</BrutalLabel>
+
+              {/* Warning for invalid allergens */}
+              {invalidAllergens.length > 0 && (
+                <BrutalAlert variant="warning" className="mb-4">
+                  <span className="font-black uppercase">⚠️ Advertencia:</span> Los siguientes alérgenos no son válidos: <strong>{invalidAllergens.join(", ")}</strong>.
+                  Estos valores no se guardarán en el servidor. Por favor, selecciona solo alérgenos de la lista disponible.
+                </BrutalAlert>
+              )}
+
+              <div className="grid grid-cols-1 gap-3 p-4 border-2 rounded-lg md:grid-cols-2 lg:grid-cols-3 border-dark-sm bg-light-sm">
+                {VALID_ALLERGENS.map((allergen) => (
+                  <div key={allergen} className="flex items-center gap-2 p-2 rounded border border-grey-sm/20 hover:border-primary-sm/50 transition-colors">
+                    <Image
+                      src={`/icons/alergens/${allergen}.svg`}
+                      alt={allergen}
+                      width={24}
+                      height={24}
+                      className="flex-shrink-0"
+                    />
+                    <BrutalCheckbox
+                      id={`allergen-${allergen}`}
+                      label={ALLERGEN_LABELS[allergen]}
+                      checked={formData.allergens?.includes(allergen) || false}
+                      onChange={(e) => {
+                        const newAllergens = e.target.checked
+                          ? [...(formData.allergens || []), allergen]
+                          : (formData.allergens || []).filter((a) => a !== allergen)
+                        setFormData({ ...formData, allergens: newAllergens })
+                      }}
+                      labelClassName="text-xs"
+                    />
+                  </div>
+                ))}
               </div>
-              <div>
-                <BrutalLabel>Alérgenos (separados por comas)</BrutalLabel>
-                <BrutalTextarea
-                  value={allergensText}
-                  onChange={(e) => setAllergensText(e.target.value)}
-                  rows={3}
-                  placeholder="Gluten, Lácteos, Frutos secos"
-                />
-              </div>
+
+              {formData.allergens && formData.allergens.length > 0 && (
+                <p className="mt-2 text-xs text-grey-sm">
+                  Seleccionados: {formData.allergens.join(", ")}
+                </p>
+              )}
             </div>
 
             {/* Additional Settings */}
